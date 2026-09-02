@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRM 團隊資源管理與情境模擬教學</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/night.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* === 全域與視覺主題 (Design System) === */
+    :root {
+      --accent:  #e8643a;   /* 暖橘主強調 */
+      --accent2: #4fc3f7;   /* 霓虹青次強調 */
+      --success: #81c784;   /* 螢光綠正面 */
+      --warn:    #ffb74d;   /* 琥珀金警示 */
+      --bg-dark: #0d1117;   /* 主背景深黑藍 */
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      font-family: 'Segoe UI', 'Noto Sans TC', sans-serif;
+    }
+
+    .reveal {
+      font-family: 'Segoe UI', 'Noto Sans TC', sans-serif;
+      color: #e6edf3;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      font-family: 'Segoe UI', 'Noto Sans TC', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: none;
+    }
+
+    .reveal h1 { font-size: 2.1em; color: #ffffff; text-shadow: 0 0 20px rgba(79,195,247,0.3); }
+    .reveal h2 { font-size: 1.5em; color: var(--accent2); margin-bottom: 0.6em; }
+    .reveal h3 { font-size: 1.1em; color: var(--accent); }
+
+    .reveal .progress { color: var(--accent2); height: 5px; }
+    .reveal .controls { color: var(--accent2); }
+
+    /* 玻璃擬態卡片通用樣式 */
+    .glass-card {
+      background: rgba(22, 27, 34, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(79, 195, 247, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px 0 rgba(79, 195, 247, 0.15);
+    }
+
+    /* 封面樣式 */
+    .title-slide { text-align: center; }
+    .title-slide .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), #f4511e);
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 30px;
+      font-size: 0.5em;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.2em;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(232, 100, 58, 0.4);
+    }
+
+    .title-slide .subtitle { font-size: 0.75em; color: #a3b8cc; margin-top: 0.6em; }
+    .title-slide .author { margin-top: 2.2em; font-size: 0.52em; color: #8b949e; }
+
+    /* 網格與卡片排版 */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; text-align: left; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; text-align: left; }
+
+    .card-icon {
+      font-size: 2em;
+      color: var(--accent2);
+      margin-bottom: 12px;
+      display: inline-block;
+      text-shadow: 0 0 12px rgba(79, 195, 247, 0.5);
+    }
+
+    .card-title { font-size: 0.7em; font-weight: 700; color: #ffffff; margin-bottom: 8px; }
+    .card-desc  { font-size: 0.48em; color: #8b949e; line-height: 1.6; }
+
+    /* Highlight Highlight box */
+    .highlight-box {
+      background: rgba(232, 100, 58, 0.12);
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 0.55em;
+      margin-top: 15px;
+      color: #f0f6fc;
+    }
+
+    /* 比較 Slider UI [VIZ] */
+    .slider-comparison {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .slider-pane {
+      position: absolute;
+      inset: 0;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slider-before {
+      background: linear-gradient(135deg, #1f1418, #3b171e);
+      color: #ffab91;
+      text-align: left;
+    }
+
+    .slider-after {
+      background: linear-gradient(135deg, #0d2538, #004d40);
+      color: #80ebd9;
+      text-align: left;
+      clip-path: inset(0 50% 0 0);
+      transition: clip-path 0.05s ease-out;
+    }
+
+    .slider-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: #4fc3f7;
+      box-shadow: 0 0 16px #4fc3f7;
+      pointer-events: none;
+    }
+
+    .slider-input {
+      position: absolute;
+      bottom: 12px;
+      left: 10%;
+      width: 80%;
+      z-index: 10;
+      accent-color: #4fc3f7;
+      cursor: pointer;
+    }
+
+    /* 標籤 Badge */
+    .badge-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.4em;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+    .badge-accent  { background: rgba(232, 100, 58, 0.25); color: var(--accent); border: 1px solid var(--accent); }
+    .badge-accent2 { background: rgba(79, 195, 247, 0.25); color: var(--accent2); border: 1px solid var(--accent2); }
+    .badge-success { background: rgba(129, 199, 132, 0.25); color: var(--success); border: 1px solid var(--success); }
+
+    /* 列表與字型調整 */
+    .reveal ul { font-size: 0.52em; line-height: 1.8; color: #c9d1d9; }
+    .reveal ol { font-size: 0.52em; line-height: 1.8; color: #c9d1d9; }
+
+    /* 講師視窗提示 */
+    .speaker-hint {
+      position: fixed;
+      bottom: 12px;
+      right: 16px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      z-index: 100;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="speaker-hint">按鍵盤「S」鍵可開啟雙螢幕講師講稿模式</div>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- Slide 1: 封面 [BG] -->
+    <section data-background-image="images/cover.jpg" data-background-opacity="0.35">
+      <div class="title-slide">
+        <div class="badge"><i class="fa-solid fa-graduation-cap"></i> 醫療團隊資源管理與情境模擬工作坊</div>
+        <h1>TRM 團隊資源管理與情境模擬教學</h1>
+        <h2 style="color:var(--accent2); font-size: 1.1em; margin-top: 0.4em;">從理論、臨床實戰到教學引導口袋指南</h2>
+        <p class="subtitle">建構高可靠度照護團隊 · 淬煉守護病安的直覺反應</p>
+        <p class="author"><i class="fa-solid fa-user-doctor"></i> 主講人：江老師 | 佳里奇美醫院</p>
+      </div>
+      <aside class="notes">
+        首先，要特別感謝黃總的邀請！說真的，我一直非常珍惜這種『最後上台』的機會。
+        這次是我第一次嘗試簡報全 AI 協作製作，從找資料整理到內容講稿都不例外。
+        我想跟大家聊兩件非常重要的事：
+        第一個是 TRM（團隊資源管理），第二個是情境模擬教學。
+        什麼是情境模擬？講白了，就是『讓我們在最安全的地方，去練習那些在臨床上最不想遇到、但一旦遇到就非得處理好不可的事』。
+        急救往往不是叫叫 CABD 這麼簡單而已，也不是一個人機能完成的，是要靠整個團隊。這時候 TRM 技巧就非常重要！
+      </aside>
+    </section>
+
+    <!-- Slide 2: 開場提問 [INTERACT:wordcloud] -->
+    <section>
+      <h2><i class="fa-solid fa-comments-question"></i> 開場思索：混亂當下的團隊現狀</h2>
+      <div class="grid-2">
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-users-line" style="color:var(--warn);"></i> 同一空間各忙各的？</h3>
+          <p class="card-desc">當突發危急事件發生時，大家是在「真正合作」，還是只是剛好「在同一個空間裡各自忙碌」？</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-shield-virus" style="color:var(--accent2);"></i> 最致命的臨床風險</h3>
+          <p class="card-desc">醫療作業最致命的風險從來不是『工作太忙』，而是『每個人都忙，卻根本沒人知道旁邊的夥伴到底正在做什麼』。</p>
+        </div>
+      </div>
+      <div class="highlight-box fragment">
+        <strong style="color:var(--accent2);"><i class="fa-solid fa-lightbulb"></i> 真正合作的核心解法：</strong>
+        全團隊成員對「現在發生什麼事、我們的目標是什麼、誰負責什麼、下一步該做什麼」達成高默契共識——這就是 TRM 中的<strong>『共享心智模式 (Shared Mental Model)』</strong>。
+      </div>
+      <aside class="notes">
+        當突發危急事件的時候，我想請大家思考一個問題：『在那個最混亂的當下，我們到底是在「真正合作」？還是大家只是剛好「在同一個空間裡各自忙碌」？』
+        醫療作業最致命的風險從來都不是『工作太忙』，而是『每個人都忙，卻根本沒人知道旁邊的夥伴到底正在做什麼』。
+        什麼才是真正合作？就是整個團隊的每個人，對現場發生什麼事、目標是什麼、誰負責什麼、下一步該做什麼，都有相同的地圖。
+      </aside>
+    </section>
+
+    <!-- Slide 3: TRM 核心哲學 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-user-shield"></i> TRM 核心哲學：神隊友防呆與自動補位</h2>
+      <p style="font-size:0.52em; color:#8b949e; margin-bottom: 20px;">「只要是人，就一定會犯錯。」TRM 坦然承認人類記憶與專注力的極限。</p>
+      <div class="grid-3">
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-eye"></i></div>
+          <div class="card-title">恍神與提醒</div>
+          <div class="card-desc">當有人恍神犯錯時，團隊其他成員能及早察覺並友善提醒。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-hand-holding-hand"></i></div>
+          <div class="card-title">遺漏與補位</div>
+          <div class="card-desc">當有人工作負荷過重而不小心漏掉步驟時，夥伴立刻遞補上去補位。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="card-title">失誤與質疑</div>
+          <div class="card-desc">當判斷失誤時，有人能挺身而出走過去給予最關鍵的防護提醒。</div>
+        </div>
+      </div>
+      <aside class="notes">
+        每當臨床上出現醫療疏失，檢討時最常聽到：「你為什麼這樣做？誰教的？」
+        但事實上「只要是人，就一定會犯錯」，就算是機器人也有當機的時候。
+        TRM 的核心精神，不是要把大家變成不會犯錯的神人。相反地，它是要幫我們在現場建立一套『神隊友機制』：
+        當有人恍神犯錯了，團隊能及早發現；當有人不小心漏了，旁邊的人立刻補位；當有人判斷失誤，有人能走過去給關鍵提醒。
+        TRM 就是我們醫療團隊的『防呆系統』與安全網。
+      </aside>
+    </section>
+
+    <!-- Slide 4: 四大核心支柱 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-landmark"></i> TRM 以病人為中心四大核心支柱</h2>
+      <div class="grid-4">
+        <div class="glass-card fragment">
+          <div class="card-icon"><i class="fa-solid fa-compass"></i></div>
+          <div class="card-title">1. 領導 (Leadership)</div>
+          <div class="card-desc">掌握目標、分配認知負荷，擔任現場的醫療 GPS 指引方向。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="card-title">2. 情況監測 (Situation Monitoring)</div>
+          <div class="card-desc">持續追蹤患者、團隊與環境，在錯誤發生前超前發現風險。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-people-carry-box"></i></div>
+          <div class="card-title">3. 互助合作 (Mutual Support)</div>
+          <div class="card-desc">承認極限、互相支援，運用 CUS 與二次挑戰為病安喊 STOP。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-bullhorn"></i></div>
+          <div class="card-title">4. 有效溝通 (Communication)</div>
+          <div class="card-desc">結構化交班 (ISBAR)、Call-Out 通報與閉環式溝通 (Closed-Loop)。</div>
+        </div>
+      </div>
+      <aside class="notes">
+        TRM 真正的核心精神就是『以病人為中心』，透過四個支柱撐起整個系統：
+        『領導、情況監測、互助合作、有效溝通』。
+        TRM 裡面的工具絕對不是為了應付評鑑，而是要在臨床最前線建構出一個真正安全、可靠的照護團隊。
+      </aside>
+    </section>
+
+    <!-- Slide 5: 核心一：領導力 [BG] -->
+    <section data-background-image="images/leadership.jpg" data-background-opacity="0.3">
+      <h2><i class="fa-solid fa-compass"></i> 核心一：指定型 vs 情境型領導者</h2>
+      <div class="grid-2">
+        <div class="glass-card fragment">
+          <span class="badge-tag badge-accent">行政職務</span>
+          <h3>指定型領導者 (Designated Leader)</h3>
+          <p class="card-desc">單位主管、組長或固定班表指定的負責人。負責行政管理與大方向維護。</p>
+        </div>
+        <div class="glass-card fragment">
+          <span class="badge-tag badge-accent2">臨床危急事件</span>
+          <h3>情境型領導者 (Situational Leader)</h3>
+          <p class="card-desc"><strong>看能力不看年資！</strong>在特定事件中誰最進入狀況、最懂該領域規範（如 MRI 磁場安全），誰就是那一刻的領導！</p>
+        </div>
+      </div>
+      <div class="highlight-box fragment">
+        <i class="fa-solid fa-map-location-dot"></i> <strong>真正的領導：</strong>現場亂成一團時，願意站出來當大家的 <strong>GPS</strong>——讓團隊清楚知道：目標是什麼、發生了什麼事、接下來每個人該做什麼！
+      </div>
+      <aside class="notes">
+        很多人一聽到『領導』，直覺就會想：『那不就是組長或現場最資深放射師的事嗎？我只是小咖。』
+        領導其實分成兩種：第一種叫『指定型領導者』，也就是單位主管。
+        但在臨床突發事件的戰場上，我們更需要第二種：『情境型領導者』。
+        情境型領導是看能力不看年資！比如在 MRI 檢查室突發危急，誰最了解 MRI 安全規範？肯定是當班 MRI 放射師！如果讓不了解環境安全的人指揮急救，把鐵製急救車推進去，結果會更慘！
+        真正的領導絕對不是自己死撐進去拼命做，而是當大家的 GPS！
+      </aside>
+    </section>
+
+    <!-- Slide 6: 危機生理效應 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-brain"></i> 危機當下的「管狀視野 (Tunnel Vision)」</h2>
+      <p style="font-size:0.52em; color:#8b949e;">急救與危急當下，大腦因高度壓迫會出現四大「斷線模式」：</p>
+      <div class="grid-4">
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-eye-slash"></i></div>
+          <div class="card-title">1. 看得更窄</div>
+          <div class="card-desc">焦點完全被眼前的單一動作或螢幕死死鎖住。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="card-title">2. 想得更少</div>
+          <div class="card-desc">大腦陷入僵局，無法思考其他可能的處置方案。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-ear-deaf"></i></div>
+          <div class="card-title">3. 聽得更少</div>
+          <div class="card-desc">耳邊如塞耳塞，夥伴在旁邊提醒通報卻完全聽不到。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-box-archive"></i></div>
+          <div class="card-title">4. 記得更少</div>
+          <div class="card-desc">平時熟練的 SOP 或急救步驟莫名遺漏。</div>
+        </div>
+      </div>
+      <aside class="notes">
+        在危急時，我們每個人都一定經歷過生理現象：『管狀視野（Tunnel Vision）』。
+        大腦會出現四個非常致命的斷線模式：
+        第一『看得更窄』：只專注眼前事物；
+        第二『想得更少』：沒辦法思考其他可能性；
+        第三『聽得更少』：耳朵像塞耳塞，別人的提醒進不來；
+        第四『記得更少』：熟記的急救步驟會莫名遺漏。
+        合格領導者的重要職責就是把視野重新拉開，不只看手上動作，還要看患者臉色、同事表情、整體流程！
+      </aside>
+    </section>
+
+    <!-- Slide 7: 認知負荷管理 [CARD] -->
+    <section>
+      <h2><i class="fa-solid fa-weight-hanging"></i> 大腦認知負荷與工作量管理</h2>
+      <div class="grid-2">
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-battery-quarter" style="color:var(--accent);"></i> 記憶體有限</h3>
+          <p class="card-desc">每個人大腦工作記憶 (Working Memory) 都有容量上限。當壓力和資訊瞬間衝高，個人記憶體就會爆掉過載。</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-share-nodes" style="color:var(--accent2);"></i> 分散團隊扛責任</h3>
+          <p class="card-desc">領導者的主要任務是『工作量管理』——組織團隊、分配任務，把原本壓在某一個人身上的認知負荷，分散給整個團隊一起扛！</p>
+        </div>
+      </div>
+      <div class="highlight-box fragment">
+        <i class="fa-solid fa-circle-check" style="color:var(--success);"></i> <strong>優秀領導者的現場姿態：</strong>混亂現場中他不會是一直埋頭苦幹的人，反而是看起來最游刃有餘的人，因為他的核心任務是確保現場沒有人會忙到出錯！
+      </div>
+      <aside class="notes">
+        大腦為什麼會斷線？因為大腦超載了，這叫『認知負荷』。
+        既然一個人的記憶體有限，那身為領導者重要的工作就是『工作量管理』。
+        組織團隊、分配任務、整合資源、建立目標、促進合作。這一切動作本質上就是把本來壓在某一個人身上的認知負荷，分散給整個團隊一起扛。
+        領導者在混亂現場絕對不會是一直埋頭拼命做的人。相反地他看起來最游刃有餘，因為他要確保夥伴不會忙到出錯。
+      </aside>
+    </section>
+
+    <!-- Slide 8: 領導黃金三部曲 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-rotate"></i> 領導黃金工具：臨床安全動態迴路</h2>
+      <div class="grid-3">
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-clipboard-check"></i></div>
+          <div class="card-title">1. Brief (事前說明)</div>
+          <div class="card-desc">檢查或班表開始前，花 1-2 分鐘快速對齊分工、目標與風險預測。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-comments"></i></div>
+          <div class="card-title">2. Huddle (過程中討論)</div>
+          <div class="card-desc">突發變故或現況改變時，暫停 30 秒評估：現況 S、新方案 P、資源 R。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-chart-pie"></i></div>
+          <div class="card-title">3. Debrief (事後檢視)</div>
+          <div class="card-desc">事件或演練結束後，檢討亮點、盲點與系統升級（無責備文化）。</div>
+        </div>
+      </div>
+      <aside class="notes">
+        領導者最重要的工作是：讓團隊在正確的時間，擁有相同的資訊、相同的目標與相同的方向。
+        因此 TRM 提供領導者三項黃金工具：
+        1. Brief（行前說明）
+        2. Huddle（過程中討論）
+        3. Debrief（事後檢討）
+        這三部曲構成了高可靠度團隊的核心節律。
+      </aside>
+    </section>
+
+    <!-- Slide 9: Step 1: Brief [CARD] -->
+    <section>
+      <h2><i class="fa-solid fa-clipboard-list"></i> Step 1: 事前說明 (Briefs) 點檢表</h2>
+      <div class="glass-card" style="text-align:left;">
+        <ul style="font-size:0.55em; line-height:2.2;">
+          <li class="fragment"><span class="badge-tag badge-accent">明確分工</span> 誰操作儀器？誰負責急救喊話？誰負責聯繫與紀錄？</li>
+          <li class="fragment"><span class="badge-tag badge-accent2">設定目標</span> 本班次/演練預計完成的檢查與照護品質目標是什麼？</li>
+          <li class="fragment"><span class="badge-tag badge-warn">風險預測</span> 「今天有腎功能異常或過敏史患者嗎？嚴重過敏藥物在哪裡？」</li>
+          <li class="fragment"><span class="badge-tag badge-success">心理安全感</span> 領導者宣告：<strong>「過程中只要發現任何不對勁，請立刻開口提醒我！」</strong></li>
+        </ul>
+      </div>
+      <aside class="notes">
+        1. Brief（行前說明）目的：建立共識。我們要做什麼？誰負責什麼？有哪些風險需要注意？
+        Brief 不需要很久，一兩分鐘就夠。
+        重點是把角色、目標和風險先講清楚。
+        最關鍵的是最後一句：「只要任何人發現不對勁，請立刻提醒我！」直接宣告建立心理安全感。
+      </aside>
+    </section>
+
+    <!-- Slide 10: Step 2: Huddle [CARD] -->
+    <section>
+      <h2><i class="fa-solid fa-people-arrows"></i> Step 2: 動態小組會議 (Huddle)</h2>
+      <p style="font-size:0.5em; color:#8b949e;">時機：現況改變、儀器故障、患者突發累積。不追求冗長討論，只問 3 件事：</p>
+      <div class="grid-3" style="margin-top:15px;">
+        <div class="glass-card fragment">
+          <h3 style="color:var(--accent);">S - Situation</h3>
+          <p class="card-desc"><strong>現況是什麼？</strong><br>「3號 CT 室突然故障，外面病患開始大排長龍。」</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3 style="color:var(--accent2);">P - Plan</h3>
+          <p class="card-desc"><strong>新方案是什麼？</strong><br>「學妹先引導患者至 2號室，學長立刻聯繫報修。」</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3 style="color:var(--success);">R - Resources</h3>
+          <p class="card-desc"><strong>有哪些可用資源？</strong><br>「2號室檢查剛好結束，放射師可支援雙跑。」</p>
+        </div>
+      </div>
+      <aside class="notes">
+        2. Huddle（過程中討論）目的：修正方向。
+        當情況跟原本計畫不一樣時（如 CT 故障、病患塞爆），暫停幾秒鐘重建認知。
+        Huddle 只問三件事：現在發生什麼？解決方案是什麼？我們有哪些資源？
+        這時領導帶領團隊快速轉向。
+      </aside>
+    </section>
+
+    <!-- Slide 11: Step 3: Debrief [CARD] -->
+    <section>
+      <h2><i class="fa-solid fa-arrows-spin"></i> Step 3: 事後檢視 (Debriefing) 三部曲</h2>
+      <div class="grid-3">
+        <div class="glass-card fragment">
+          <h3 style="color:var(--success);"><i class="fa-solid fa-star"></i> 1. 肯定亮點</h3>
+          <p class="card-desc">「今天我們哪裡做得很好？」肯定夥伴的即時互助與精準通報。</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3 style="color:var(--warn);"><i class="fa-solid fa-magnifying-glass"></i> 2. 檢討盲點</h3>
+          <p class="card-desc">「今天哪裡遇到瓶頸？如果重來一次可以怎麼改進？」</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3 style="color:var(--accent2);"><i class="fa-solid fa-wrench"></i> 3. 系統升級</h3>
+          <p class="card-desc">「為了避免再發生，我們需要修改流程、表單還是調整設備？」</p>
+        </div>
+      </div>
+      <div class="highlight-box fragment">
+        <i class="fa-solid fa-shield-halved"></i> <strong>聚焦系統防禦，而非個人咎責 (No-Blame Culture)：</strong>好的 Debrief 結束時，團隊不是帶著悔慚離開，而是充滿信心變得更強大！
+      </div>
+      <aside class="notes">
+        3. Debrief（事後檢討）目的：持續改善。事件結束後的資訊交換與回饋。
+        討論重點：第一先鼓勵肯定大家；第二討論哪裡可改善；最後將過失系統化改善。
+        重點不是檢討人，而是改善流程。好的 Debrief 讓團隊帶著力量離開。
+      </aside>
+    </section>
+
+    <!-- Slide 12: 實務對比演練 [VIZ] 滑桿 UI -->
+    <section>
+      <h2><i class="fa-solid fa-sliders"></i> 實務對比：對比劑嚴重過敏急救演練</h2>
+      <p style="font-size:0.45em; color:#8b949e; margin-bottom:10px;">請拖曳下方滑桿，對比「傳統各自為政」與「TRM 混亂化為精準」之差異：</p>
+      
+      <div class="slider-comparison">
+        <div class="slider-pane slider-before">
+          <h3><i class="fa-solid fa-circle-xmark" style="color:#ff5252;"></i> 傳統各自為政 (混亂與延誤)</h3>
+          <ul style="font-size:0.48em; line-height:1.7; color:#ffcdd2;">
+            <li>放射師專注盯著電腦螢幕傳影像，忽視現場變化。</li>
+            <li>護理師孤軍奮戰獨自幫喉頭水腫患者量 NIBP / SpO2。</li>
+            <li>無人指揮，放射師慌亂大喊：「快通報 999！」但無指定對象。</li>
+            <li>眾人搶著推床（覺得安全有幫忙），關鍵急救任務無人執行。</li>
+          </ul>
+        </div>
+        <div class="slider-pane slider-after" id="slider-after-12">
+          <h3><i class="fa-solid fa-circle-check" style="color:#69f0ae;"></i> TRM 精準介入 (化混亂為秩序)</h3>
+          <ul style="font-size:0.48em; line-height:1.7; color:#b9f6ca;">
+            <li><strong>Huddle 宣告：</strong>「疑似對比劑過敏，啟動急救機制！」</li>
+            <li><strong>明確指派：</strong>護理師做 CPR / 學弟通報 999 / 備急救車維持通路。</li>
+            <li><strong>情境領導：</strong>領導者維持全局視角，準備交班資訊。</li>
+            <li><strong>事後 Debrief：</strong>花 2 分鐘回顧流程，持續升級團隊。</li>
+          </ul>
+        </div>
+        <div class="slider-divider" id="slider-divider-12"></div>
+        <input type="range" min="0" max="100" value="50" class="slider-input" oninput="updateSlider12(this.value)">
+      </div>
+      <aside class="notes">
+        想像一下，檢查做完一半，患者突然喉頭水腫、吸不到半口空氣。
+        各自為政時：放射師盯電腦傳影像，護理師獨自量生命徵象；有人大喊通報 999 但沒指定人，大家搶著去推床，關鍵急救卻空轉！
+        換成 TRM：放射師扮演情境領導，先 Huddle 宣告現狀，接著明確指派誰做 CPR、誰通報 999、誰備車。混亂立刻化為精準！
+      </aside>
+    </section>
+
+    <!-- Slide 13: 共享心智建構 [BG] -->
+    <section data-background-image="images/simulation.jpg" data-background-opacity="0.3">
+      <h2><i class="fa-solid fa-tower-broadcast"></i> 建構共享心智模型：大聲說出口</h2>
+      <div class="glass-card text-left">
+        <p class="card-desc" style="font-size:0.55em; line-height:1.9;">
+          在同一個攝影室裡，兩位放射師合作：一位在裡面擺位，另一位在外面點單 key 資料。<br>
+          如果沒有大聲核對，外面 key 錯病人資料，裡面照樣掃描——這就是「各自以為在合作，但頻率根本沒對上」的典型疏失！
+        </p>
+      </div>
+      <div class="highlight-box fragment" style="margin-top:20px;">
+        <i class="fa-solid fa-bullhorn" style="color:var(--accent);"></i> <strong>大聲說出關鍵資訊 (Call-Out)：</strong>讓團隊從「各自猜」變成「共同知道」，建立起大家腦中看著同一張地圖的 Shared Mental Model！
+      </div>
+      <aside class="notes">
+        要怎麼建構共享心智？常常就是從『大聲說出口來對頻』開始。
+        舉個例子：兩位放射師在同一攝影室合作，裡面的在擺位，另一個幫忙 key 資料。結果資料跟掃的病人完全不一樣！兩位都很認真，但沒有在共同頻率上。
+        所以我們需要大聲說出關鍵訊息，讓團隊從各自猜變成共同知道！
+      </aside>
+    </section>
+
+    <!-- Slide 14: 核心二：情況監測 [BG] -->
+    <section data-background-image="images/simulation.jpg" data-background-opacity="0.3">
+      <h2><i class="fa-solid fa-chart-line"></i> 核心二：情況監測 (Situation Monitoring)</h2>
+      <div class="grid-2">
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-crosshairs" style="color:var(--accent2);"></i> 定位我們在哪裡</h3>
+          <p class="card-desc">領導是在帶領方向，而情況監測則是持續確認：我們現在在哪裡？環境變了嗎？患者變了嗎？團隊資源夠嗎？</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-bell-concierge" style="color:var(--success);"></i> 預警風控的價值</h3>
+          <p class="card-desc">狀況監測真正的價值不在於「發現錯誤之後處理」，而是<strong>「在錯誤發生之前就發現風險」</strong>！</p>
+        </div>
+      </div>
+      <aside class="notes">
+        接下來進入核心二：情況監測。
+        如果說領導是在帶方向，那情況監測就是持續確認：我們現在在哪裡？環境變了嗎？患者變了嗎？團隊資源變了嗎？
+        狀況監測真正的價值不在於發現錯誤，而是在錯誤發生之前發現風險！
+      </aside>
+    </section>
+
+    <!-- Slide 15: 微觀自我監測 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-mirror"></i> 微觀自我監測：I'M SAFE 評估鏡子</h2>
+      <p style="font-size:0.45em; color:#8b949e; margin-bottom:12px;">照顧病人之前，先照見自己。上場前問自己 6 個問題：</p>
+      <div class="grid-3">
+        <div class="glass-card fragment"><span class="badge-tag badge-accent">I</span> <strong>Illness (生病)</strong><p class="card-desc">今天有生理不適或發燒感冒嗎？</p></div>
+        <div class="glass-card fragment"><span class="badge-tag badge-accent2">M</span> <strong>Medication (藥物)</strong><p class="card-desc">服用了會造成嗜睡的感冒藥嗎？</p></div>
+        <div class="glass-card fragment"><span class="badge-tag badge-warn">S</span> <strong>Stress (壓力)</strong><p class="card-desc">有重大情緒或家庭壓力影響注意力嗎？</p></div>
+        <div class="glass-card fragment"><span class="badge-tag badge-success">A</span> <strong>Alcohol (酒精)</strong><p class="card-desc">昨晚宿醉或體內殘留酒精影響判斷？</p></div>
+        <div class="glass-card fragment"><span class="badge-tag badge-accent">F</span> <strong>Fatigue (疲勞)</strong><p class="card-desc">連續夜班或睡眠不足導致反應遲鈍？</p></div>
+        <div class="glass-card fragment"><span class="badge-tag badge-accent2">E</span> <strong>Emotion (情緒)</strong><p class="card-desc">當前情緒是否能理性專注於臨床？</p></div>
+      </div>
+      <aside class="notes">
+        臨床疏失常發生在資深且認真的同仁身上，因為影響表現的不只是能力，還有當下的狀態！
+        TRM 告訴我們：狀況監測不只監測病人，還要監測自己。
+        I'M SAFE 不是 6 個英文字母，而是一面鏡子！在上場前問自己這六個問題。
+        因為只有安全的醫療人員，才能提供安全的醫療照護！
+      </aside>
+    </section>
+
+    <!-- Slide 16: 巨觀團隊監測 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-diagram-project"></i> 巨觀團隊監測：STEP 原則</h2>
+      <div class="grid-4">
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-bed-pulse"></i></div>
+          <div class="card-title">S - Status</div>
+          <div class="card-desc"><strong>病人狀況：</strong>生命徵象、病史、過敏史、全人社會心理狀態。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-user-group"></i></div>
+          <div class="card-title">T - Team</div>
+          <div class="card-desc"><strong>團隊成員：</strong>觀察夥伴是否疲勞、超載，適時提供支援。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-gear"></i></div>
+          <div class="card-title">E - Environment</div>
+          <div class="card-desc"><strong>周遭環境：</strong>儀器設備運作、急救車耗材與人力資源。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-flag-checkered"></i></div>
+          <div class="card-title">P - Progress</div>
+          <div class="card-desc"><strong>目標邁進：</strong>檢視整體計畫與進度，動態調整 Shared Model。</div>
+        </div>
+      </div>
+      <aside class="notes">
+        巨觀方面看 STEP 原則：
+        S 代表病人的狀況（包含全人照護）；
+        T 代表團隊成員（觀察夥伴是否疲劳或超載）；
+        E 代表周遭環境（設備儀器與耗材資源）；
+        P 代表目標邁進（檢視進度並動態調整計畫）。
+        掌握好這四大要素，危急時才能臨危不亂！
+      </aside>
+    </section>
+
+    <!-- Slide 17: 核心三：互助合作 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-handshake-angle"></i> 核心三：互助合作與替病人發聲</h2>
+      <div class="grid-3">
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-bell"></i></div>
+          <div class="card-title">有人看錯時</div>
+          <div class="card-desc"><strong>有人主動提醒：</strong>及時點出核對誤差。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-hands-holding-child"></i></div>
+          <div class="card-title">有人超載時</div>
+          <div class="card-desc"><strong>有人主動支援：</strong>分擔臨床重擔。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-circle-question"></i></div>
+          <div class="card-title">有人誤判時</div>
+          <div class="card-desc"><strong>有人提出疑慮：</strong>勇敢替病人安全發聲！</div>
+        </div>
+      </div>
+      <aside class="notes">
+        核心三互助合作：重點就是替病人發聲！
+        承認人皆有極限：當有人看錯時有人提醒；當有人超載時有人支援；當有人誤判時有人提出疑慮。
+        這才是 TRM 真正的精神！
+      </aside>
+    </section>
+
+    <!-- Slide 18: 發聲防護工具 [INTERACT:poll] -->
+    <section>
+      <h2><i class="fa-solid fa-shield-cat"></i> 替病人發聲工具：二次挑戰與 CUS</h2>
+      <div class="grid-2">
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-repeat" style="color:var(--accent2);"></i> 二次挑戰原則 (Two-Challenge Rule)</h3>
+          <p class="card-desc">發現病安風險時，<strong>至少提出兩次提醒！</strong><br>
+          第一次：「不好意思，我想再確認一下病人身分。」<br>
+          若未獲回應，第二次：「我再次提醒，病人手圈與單張資料好像不同！」</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-triangle-exclamation" style="color:var(--warn);"></i> CUS 階梯式發聲工具</h3>
+          <p class="card-desc">
+            <strong style="color:var(--accent2);">C - Concerned (擔心)：</strong>「我有點擔心，身分證件好像對不上。」<br>
+            <strong style="color:var(--warn);">U - Uncomfortable (不安)：</strong>「身分沒確定前掃描讓我很不安。」<br>
+            <strong style="color:var(--accent);">S - Safety (安全 STOP)：</strong>「這攸關病人安全！請先暫停！」
+          </p>
+        </div>
+      </div>
+      <aside class="notes">
+        當發現病安風險時，如何優雅且堅定地替病人發聲？
+        工具一：二次挑戰原則——至少提醒兩次！
+        工具二：CUS 工具——Concerned (擔心) -> Uncomfortable (不安) -> Safety (攸關病安 STOP)！
+        明確讓團隊暫停危險流程！
+      </aside>
+    </section>
+
+    <!-- Slide 19: 核心四：有效溝通 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-comments"></i> 核心四：有效溝通四大原則</h2>
+      <p style="font-size:0.45em; color:#8b949e; margin-bottom:15px;">「我有講啊！」不等於對方接收到正確訊息。有效溝通具備四大特徵：</p>
+      <div class="grid-4">
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-cubes"></i></div>
+          <div class="card-title">1. 完整 (Complete)</div>
+          <div class="card-desc">包含重要背景與核心數據，不遺漏關鍵細節。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-eye"></i></div>
+          <div class="card-title">2. 清楚 (Clear)</div>
+          <div class="card-desc">資訊明確無歧義，不使用含糊措辭。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-bolt"></i></div>
+          <div class="card-title">3. 簡潔 (Brief)</div>
+          <div class="card-desc">直奔重點，不夾雜冗長非公務資訊。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-clock"></i></div>
+          <div class="card-title">4. 及時 (Timely)</div>
+          <div class="card-desc">在正確的時間點傳達給正確的人。</div>
+        </div>
+      </div>
+      <aside class="notes">
+        很多病安事件發生後最常聽到：「我有講啊！」
+        溝通不是我有說，而是對方有沒有接收到正確訊息。
+        有效溝通四大原則：完整、清楚、簡潔、及時！
+        TRM 中的溝通，是讓正確的人在正確的時間收到正確訊息並採取正確行動！
+      </aside>
+    </section>
+
+    <!-- Slide 20: 結構化交班 ISBAR [CARD] -->
+    <section>
+      <h2><i class="fa-solid fa-list-check"></i> 結構化溝通工具：ISBAR 與 Call-Out</h2>
+      <div class="grid-2">
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-vcard" style="color:var(--accent2);"></i> ISBAR 結構化交班</h3>
+          <ul style="font-size:0.48em; line-height:1.8;">
+            <li><strong>I (Intro):</strong> 自我介紹（你好，我是某某放射師）</li>
+            <li><strong>S (Situation):</strong> 目前狀況（6012A 病人做腹部 CT 突然失去意識）</li>
+            <li><strong>B (Background):</strong> 重要背景（患者有嚴重對比劑過敏史）</li>
+            <li><strong>A (Assessment):</strong> 生命徵象評估（BP 70/40, HR 130）</li>
+            <li><strong>R (Recommendation):</strong> 建議事項（請急救團隊與醫師立刻前來）</li>
+          </ul>
+        </div>
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-volume-high" style="color:var(--warn);"></i> Call-Out 與 Check-Back</h3>
+          <p class="card-desc">
+            <strong>Call-Out (大聲通報)：</strong>讓全團隊立刻共享關鍵資訊，看見相同的風險！<br><br>
+            <strong>Check-Back (雙向確認)：</strong>發送者通報後，接收者必須回覆確認，防止「以為有講，其實聽錯」。
+          </p>
+        </div>
+      </div>
+      <aside class="notes">
+        結構化溝通工具 ISBAR：Introduction, Situation, Background, Assessment, Recommendation！
+        搭配 Call-Out 大聲通報：讓團隊立即共享重要資訊。
+        通報後還要配合 Check-Back 確認訊息，防止聽錯！
+      </aside>
+    </section>
+
+    <!-- Slide 21: 閉環式溝通 [CARD] -->
+    <section>
+      <h2><i class="fa-solid fa-arrows-spin"></i> 閉環式溝通 (Closed-Loop Communication)</h2>
+      <div class="glass-card text-left" style="margin-bottom:20px;">
+        <p class="card-desc" style="font-size:0.52em;">
+          常見情境：傳呼請病房帶病人下來做 MRI，結果已讀不回，過半小時病人沒下來。打上去詢問回覆「病人在電梯口了」，又等了十幾分鐘……<br>
+          <strong style="color:var(--accent);">訊息發出 ≠ 訊息收到；訊息收到 ≠ 訊息已執行！</strong>
+        </p>
+      </div>
+      <div class="grid-4 fragment">
+        <div class="glass-card text-center"><span class="badge-tag badge-accent">Step 1</span><p class="card-title">發送者</p><p class="card-desc">發出清晰指令</p></div>
+        <div class="glass-card text-center"><span class="badge-tag badge-accent2">Step 2</span><p class="card-title">接收者</p><p class="card-desc">精準複誦指令</p></div>
+        <div class="glass-card text-center"><span class="badge-tag badge-warn">Step 3</span><p class="card-title">發送者</p><p class="card-desc">再次確認無誤</p></div>
+        <div class="glass-card text-center"><span class="badge-tag badge-success">Step 4</span><p class="card-title">接收者</p><p class="card-desc">執行後回報完成</p></div>
+      </div>
+      <aside class="notes">
+        什麼是閉環式溝通？
+        訊息發出不代表收到；收到不代表執行！
+        閉環式溝通四步：發送者發指令 -> 接收者複誦 -> 發送者確認正確 -> 接收者執行後回報完成！
+        TRM 四大核心中，溝通最為重要，因為其他三項能力最後都要透過溝通來發揮作用！
+      </aside>
+    </section>
+
+    <!-- Slide 22: 為何需要模擬訓練 [BG] -->
+    <section data-background-image="images/simulation.jpg" data-background-opacity="0.35">
+      <h2><i class="fa-solid fa-vr-cardboard"></i> 為何需要情境模擬訓練？</h2>
+      <div class="grid-2">
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-heart-pulse" style="color:var(--accent);"></i> 高風險罕見事件</h3>
+          <p class="card-desc">CPR、顯影劑休克不會天天發生，但一旦發生往往攸關生命！平時遇不到，如何累積臨床反應？</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3><i class="fa-solid fa-gamepad" style="color:var(--accent2);"></i> 安全環境刻意練習</h3>
+          <p class="card-desc">利用高擬真劇情與環境，讓學員在<strong>「允許犯錯且不傷害病人」</strong>的安全空間大量重複練習，轉化為直覺反應！</p>
+        </div>
+      </div>
+      <aside class="notes">
+        為什麼我們要模擬訓練？很多事情不能等到真的發生才學！
+        CPR、顯影劑休克不會每天發生，但一旦發生往往攸關生命。
+        模擬訓練利用高擬真劇情與環境，讓學員在安全的環境中學習並容許犯錯，最後將經驗轉化為直覺反應！
+      </aside>
+    </section>
+
+    <!-- Slide 23: 醫學教育典範轉移 [VIZ] 滑桿 UI -->
+    <section>
+      <h2><i class="fa-solid fa-sliders"></i> 醫學教育典範轉移 (Paradigm Shift)</h2>
+      <p style="font-size:0.45em; color:#8b949e; margin-bottom:10px;">請拖曳滑桿，對比傳統醫學教學與現代情境模擬教學：</p>
+      
+      <div class="slider-comparison">
+        <div class="slider-pane slider-before">
+          <h3><i class="fa-solid fa-book-open"></i> 傳統模式 (See One, Do One, Teach One)</h3>
+          <ul style="font-size:0.48em; line-height:1.7; color:#ffcdd2;">
+            <li><strong>See One (跟診見習)：</strong>站在老師身邊看。</li>
+            <li><strong>Do One (臨床實作)：</strong>直接在病人身上摸索。</li>
+            <li><strong>Teach One (獨善其身)：</strong>學會後再去教下一位。</li>
+            <li><strong>困境：</strong>遇到罕見危急情境，學員根本沒有練習機會！</li>
+          </ul>
+        </div>
+        <div class="slider-pane slider-after" id="slider-after-23">
+          <h3><i class="fa-solid fa-wand-magic-sparkles"></i> 現代模擬 (See, Simulate, Practice, Teach)</h3>
+          <ul style="font-size:0.48em; line-height:1.7; color:#b9f6ca;">
+            <li><strong>See One (跟診萃取)：</strong>引導學員萃取學習目標。</li>
+            <li><strong>Simulate Many (刻意練習)：</strong>在安全模擬環境大量練習急救。</li>
+            <li><strong>Clinical Practice (展現能力)：</strong>熟練後再回到臨床照顧病人。</li>
+            <li><strong>Teach Everyone (雨露均霑)：</strong>標準化藍圖確保每位學員品質一致。</li>
+          </ul>
+        </div>
+        <div class="slider-divider" id="slider-divider-23"></div>
+        <input type="range" min="0" max="100" value="50" class="slider-input" oninput="updateSlider23(this.value)">
+      </div>
+      <aside class="notes">
+        傳統模式：See one (跟診)、Do one (臨床實作)、Teach one (獨善其身)。一旦遇到罕見情境，根本沒機會練習。
+        現代醫學教育轉變為全新模式：
+        See one 萃取目標 -> Simulate Many 刻意練習（不把病人當白老鼠）-> 展現能力後回到臨床 -> Teach Everyone 雨露均霑！
+      </aside>
+    </section>
+
+    <!-- Slide 24: S-S-A-D 帶領架構 [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-layer-group"></i> S-S-A-D 情境模擬帶領四步架構</h2>
+      <div class="grid-4">
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-pen-ruler"></i></div>
+          <div class="card-title">Scenario</div>
+          <div class="card-desc"><strong>教案規劃：</strong>根據臨床重點設計擬真教案與腳本。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-masks-theater"></i></div>
+          <div class="card-title">Simulation</div>
+          <div class="card-desc"><strong>情境帶領：</strong>引導學員進入情境，管理認知負荷 (CLT)。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-stethoscope"></i></div>
+          <div class="card-title">Assessment</div>
+          <div class="card-desc"><strong>教學診斷：</strong>評估學員近側發展區 (ZPD)，維持最佳學習區。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-comments-dollar"></i></div>
+          <div class="card-title">Debriefing</div>
+          <div class="card-desc"><strong>回饋反思：</strong>運用經驗學習循環 (ERCP) 引導深層反思。</div>
+        </div>
+      </div>
+      <aside class="notes">
+        教學實務上採用 S-S-A-D 四步架構帶領學生：
+        Scenario (教案規劃) -> Simulation (情境帶領) -> Assessment (教學診斷，評估 ZPD 學習區) -> Debriefing (回饋反思，運用 ERCP 循環)！
+      </aside>
+    </section>
+
+    <!-- Slide 25: 認知負荷理論 CLT [CARD] -->
+    <section>
+      <h2><i class="fa-solid fa-brain"></i> 情境帶領：認知負荷理論 (CLT) 運用</h2>
+      <div class="grid-3">
+        <div class="glass-card fragment">
+          <h3 style="color:var(--accent);">1. 優化內在認知負荷</h3>
+          <p class="card-desc">根據學員先備知識給予適量難度，避免單一教案塞入過多想考的項目造成大腦當機。</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3 style="color:var(--accent2);">2. 降低外在認知負荷</h3>
+          <p class="card-desc">省略與學習目標無關的複雜設計；模擬前充份熟悉環境與設備，避免分心。</p>
+        </div>
+        <div class="glass-card fragment">
+          <h3 style="color:var(--success);">3. 適度拉高增生負荷</h3>
+          <p class="card-desc">建立心理安全氛圍，促使學員產生「成長性思維」，深化體驗學習與經驗建構。</p>
+        </div>
+      </div>
+      <aside class="notes">
+        認知負荷理論 (CLT) 在模擬中的管理：
+        第一：優化內在認知負荷——難度適中，不塞一堆考題；
+        第二：降低外在認知負荷——模擬前充份介紹環境設備；
+        第三：適當拉高增生認知負荷——建立心理安全感，促成成長性思維！
+      </aside>
+    </section>
+
+    <!-- Slide 26: 經驗學習循環 ERCP [ICON] -->
+    <section>
+      <h2><i class="fa-solid fa-rotate-left"></i> 回饋反思：ERCP 經驗學習循環</h2>
+      <div class="grid-4">
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-face-smile"></i></div>
+          <div class="card-title">E - Experience (體驗)</div>
+          <div class="card-desc">不追究錯誤，讓學員重述剛剛體驗，卸下心防。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+          <div class="card-title">R - Reflection (反思)</div>
+          <div class="card-desc">請學員回想哪裡做得好、哪裡需改進，剖析原因。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-book-bookmark"></i></div>
+          <div class="card-title">C - Conceptualization (理論)</div>
+          <div class="card-desc">帶入理論、標準 SOP 或 TRM 工具導正做法。</div>
+        </div>
+        <div class="glass-card fragment">
+          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-rocket"></i></div>
+          <div class="card-title">P - Plan (規劃)</div>
+          <div class="card-desc">討論未來臨床遇到相同狀況時的具体行動計畫。</div>
+        </div>
+      </div>
+      <aside class="notes">
+        ERCP 經驗學習循環四步：
+        E (體驗)：不追究錯誤，讓學員回想體驗卸下防備；
+        R (反思)：請學員剖析做得好與需改進之處；
+        C (理論)：帶入理論 SOP 應該怎麼做；
+        P (規劃)：想想未來遇到相同問題該怎麼做，轉化為臨床實踐！
+      </aside>
+    </section>
+
+    <!-- Slide 27: 引導者口袋指南 [CARD] -->
+    <section>
+      <h2><i class="fa-solid fa-box-archive"></i> 引導者口袋指南：好 Debrief 的對話錦囊</h2>
+      <div class="glass-card text-left">
+        <ul style="font-size:0.52em; line-height:2.0;">
+          <li class="fragment"><strong>開場安全句：</strong>「剛剛大家都非常辛苦，模擬現場壓力很大，我們現在卸下角色，一起來聊聊剛才的體驗。」</li>
+          <li class="fragment"><strong>引導反思句：</strong>「剛剛在急救喊話時，你當時心裡的考量是什麼？有沒有遇到什麼卡住的地方？」</li>
+          <li class="fragment"><strong>系統優化句：</strong>「如果下次在真實臨床遇到類似狀況，我們的團隊流程或工具可以怎麼調整得更順暢？」</li>
+        </ul>
+      </div>
+      <aside class="notes">
+        給引導者的口袋指南：這不只用在情境模擬，在任何教學回饋都能運用！
+        用安全的問句引導學員開口，關注行為背後的思考脈絡。
+      </aside>
+    </section>
+
+    <!-- Slide 28: 結語與願景 [BG] -->
+    <section data-background-image="images/ending.jpg" data-background-opacity="0.4">
+      <div class="title-slide">
+        <div class="badge" style="background:linear-gradient(135deg, var(--accent2), #0288d1);"><i class="fa-solid fa-shield-heart"></i> 守護病人安全 · 淬煉卓越團隊</div>
+        <h1 style="color:var(--accent2);">化知識為直覺，守護每一次照護</h1>
+        <p class="subtitle" style="font-size:0.7em; color:#e6edf3; margin-top:20px; line-height:1.8;">
+          TRM 是一套真正能讓團隊變強大的實戰系統。<br>
+          透過情境模擬訓練，讓每位夥伴在安全環境下親身體會：<br>
+          <strong>優秀的領導 · 敏銳的監測 · 堅定的互助 · 閉環的溝通</strong>
+        </p>
+        <p class="author" style="font-size:0.6em; color:#8b949e; margin-top:40px;">簡報展示完畢 · 謝謝大家！</p>
+      </div>
+      <aside class="notes">
+        今天介紹的 TRM，就是一套真正能讓團隊變強大的實戰系統。
+        接下來，我們靠『情境模擬訓練』，讓學員能在安全的環境下親身體會：
+        如何在現場當一個優秀的領導、如何做好情況監測、如何與夥伴進行互助合作，以及如何做好結構化交班。
+        這才能好好守護病人的安全！謝謝大家！
+      </aside>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    center: true,
+    progress: true,
+    controls: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    plugins: []
+  });
+
+  // 滑桿對比控制 JS (Slide 12)
+  function updateSlider12(val) {
+    const afterPane = document.getElementById('slider-after-12');
+    const divider = document.getElementById('slider-divider-12');
+    if (afterPane && divider) {
+      afterPane.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+      divider.style.left = val + '%';
+    }
+  }
+
+  // 滑桿對比控制 JS (Slide 23)
+  function updateSlider23(val) {
+    const afterPane = document.getElementById('slider-after-23');
+    const divider = document.getElementById('slider-divider-23');
+    if (afterPane && divider) {
+      afterPane.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+      divider.style.left = val + '%';
+    }
+  }
+</script>
+</body>
+</html>
