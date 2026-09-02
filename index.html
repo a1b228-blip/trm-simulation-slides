@@ -708,13 +708,13 @@
       </aside>
     </section>
 
-    <!-- Slide 20: 結構化交班 ISBAR 與溝通案例影片 [CARD + VIDEO] -->
+    <!-- Slide 20: 結構化交班 ISBAR [CARD] -->
     <section>
-      <h2><i class="fa-solid fa-list-check"></i> 結構化溝通工具：ISBAR 與實務影片</h2>
+      <h2><i class="fa-solid fa-list-check"></i> 結構化溝通工具：ISBAR 與 Call-Out</h2>
       <div class="grid-2">
         <div class="glass-card">
           <h3><i class="fa-solid fa-vcard" style="color:var(--accent2);"></i> ISBAR 結構化交班</h3>
-          <ul style="font-size:0.45em; line-height:1.7;">
+          <ul style="font-size:0.48em; line-height:1.8;">
             <li><strong>I (Intro):</strong> 自我介紹（你好，我是某某放射師）</li>
             <li><strong>S (Situation):</strong> 目前狀況（6012A 病人做腹部 CT 突然失去意識）</li>
             <li><strong>B (Background):</strong> 重要背景（患者有嚴重對比劑過敏史）</li>
@@ -722,61 +722,78 @@
             <li><strong>R (Recommendation):</strong> 建議事項（請急救團隊與醫師立刻前來）</li>
           </ul>
         </div>
-        <div class="glass-card text-center" style="border: 2px solid var(--warn); box-shadow: 0 0 20px rgba(255, 183, 77, 0.3);">
-          <h3 style="color:var(--warn);"><i class="fa-solid fa-film"></i> 臨床溝通情境影片案例</h3>
-          <div style="margin-top: 10px;">
-            <video controls playsinline preload="auto" style="width:100%; max-height:340px; border-radius:10px; border:1px solid rgba(255,255,255,0.3); background:#000;">
-              <source src="videos/media1.mp4" type="video/mp4">
-              您的瀏覽器不支援 HTML5 影片播放。
-            </video>
-          </div>
-          <p class="card-desc" style="margin-top:8px; font-size:0.45em; color:var(--accent2); font-weight:bold;">
-            <i class="fa-solid fa-circle-play"></i> 點擊中央播放：對比溝通訊息接收與「我的了解 vs 你的明白」
+        <div class="glass-card">
+          <h3><i class="fa-solid fa-volume-high" style="color:var(--warn);"></i> Call-Out 與 Check-Back</h3>
+          <p class="card-desc" style="font-size:0.52em; line-height:1.8;">
+            <strong>Call-Out (大聲通報)：</strong>讓全團隊立刻共享關鍵資訊，看見相同的風險！<br><br>
+            <strong>Check-Back (雙向確認)：</strong>發送者通報後，接收者必須回覆確認，防止「以為有講，其實聽錯」。
           </p>
+          <div class="highlight-box" style="margin-top:15px;">
+            <i class="fa-solid fa-circle-play" style="color:var(--accent2);"></i> <strong>下一頁：</strong>播放原 PPT 附帶之臨床溝通案例影片《我的了解 vs 你的明白》
+          </div>
         </div>
       </div>
       <aside class="notes">
         結構化溝通工具 ISBAR：Introduction, Situation, Background, Assessment, Recommendation！
         搭配 Call-Out 大聲通報：讓團隊立即共享重要資訊。
-        影片案例展現溝通時「我的了解跟你的明白」差異，必須透過 Check-Back 雙向確認，防止聽錯！
+        通報後還要配合 Check-Back 確認訊息，防止聽錯！
       </aside>
     </section>
 
-    <!-- Slide 21: 閉環式溝通與案例影片 [CARD + VIDEO] -->
+    <!-- Slide 21: 獨立影片頁面 1 (Media 1) -->
+    <section>
+      <h2><i class="fa-solid fa-film" style="color:var(--warn);"></i> 臨床溝通案例影片：《我的了解 vs 你的明白》</h2>
+      <div class="glass-card text-center" style="max-width:960px; margin:0 auto; padding:24px; border: 2px solid var(--accent2); box-shadow: 0 0 30px rgba(79, 195, 247, 0.4);">
+        <video controls data-autoplay playsinline preload="auto" poster="videos/poster1.jpg" style="width:100%; max-height:460px; border-radius:12px; border:1px solid rgba(255,255,255,0.3); background:#000;">
+          <source src="videos/media1.mp4" type="video/mp4">
+          您的瀏覽器不支援 HTML5 影片播放。
+        </video>
+        <p class="card-desc" style="margin-top:14px; font-size:0.55em; color:var(--accent2); font-weight:bold;">
+          <i class="fa-solid fa-circle-play"></i> 原 PPT 內嵌影片 1：剖析團隊溝通認知落差與「雞同鴉講」風險
+        </p>
+      </div>
+      <aside class="notes">
+        這支影片是原 PPT 內嵌的案例影片，展現溝通時「我的了解跟你的明白」經常存在巨大落差。
+        必須透過 Check-Back 雙向確認與結構化語言，才能避免訊息失控。
+      </aside>
+    </section>
+
+    <!-- Slide 22: 閉環式溝通 [CARD] -->
     <section>
       <h2><i class="fa-solid fa-arrows-spin"></i> 閉環式溝通 (Closed-Loop Communication)</h2>
-      <div class="grid-2" style="margin-bottom:15px;">
-        <div class="glass-card">
-          <h3><i class="fa-solid fa-triangle-exclamation" style="color:var(--accent);"></i> 常見臨床斷點案例</h3>
-          <p class="card-desc" style="font-size:0.48em; line-height:1.7;">
-            傳呼請病房帶病人下來做 MRI，結果已讀不回，過半小時病人沒下來。打上去詢問回覆「病人在電梯口了」，又等了十幾分鐘……<br>
-            <strong style="color:var(--warn);">訊息發出 ≠ 訊息收到；訊息收到 ≠ 訊息已執行！</strong>
-          </p>
-          <div class="grid-2" style="margin-top:10px; gap:8px;">
-            <div class="glass-card text-center" style="padding:10px;"><span class="badge-tag badge-accent">1. 發送</span><p class="card-title" style="font-size:0.45em;">清晰指令</p></div>
-            <div class="glass-card text-center" style="padding:10px;"><span class="badge-tag badge-accent2">2. 複誦</span><p class="card-title" style="font-size:0.45em;">精準回覆</p></div>
-            <div class="glass-card text-center" style="padding:10px;"><span class="badge-tag badge-warn">3. 核對</span><p class="card-title" style="font-size:0.45em;">確認正確</p></div>
-            <div class="glass-card text-center" style="padding:10px;"><span class="badge-tag badge-success">4. 回報</span><p class="card-title" style="font-size:0.45em;">執行完成</p></div>
-          </div>
-        </div>
-        <div class="glass-card text-center" style="border: 2px solid var(--success); box-shadow: 0 0 20px rgba(129, 199, 132, 0.3);">
-          <h3 style="color:var(--success);"><i class="fa-solid fa-circle-play"></i> 閉環溝通示範影片</h3>
-          <div style="margin-top: 10px;">
-            <video controls playsinline preload="auto" style="width:100%; max-height:340px; border-radius:10px; border:1px solid rgba(255,255,255,0.3); background:#000;">
-              <source src="videos/media2.mp4" type="video/mp4">
-              您的瀏覽器不支援 HTML5 影片播放。
-            </video>
-          </div>
-          <p class="card-desc" style="margin-top:8px; font-size:0.45em; color:var(--success); font-weight:bold;">
-            <i class="fa-solid fa-arrows-to-circle"></i> 點擊中央播放：示範完整的發送 ➔ 複誦 ➔ 確認 ➔ 回報 閉環迴圈
-          </p>
-        </div>
+      <div class="glass-card text-left" style="margin-bottom:20px;">
+        <p class="card-desc" style="font-size:0.55em; line-height:1.9;">
+          常見情境：傳呼請病房帶病人下來做 MRI，結果已讀不回，過半小時病人沒下來。打上去詢問回覆「病人在電梯口了」，又等了十幾分鐘……<br>
+          <strong style="color:var(--warn);">訊息發出 ≠ 訊息收到；訊息收到 ≠ 訊息已執行！</strong>
+        </p>
+      </div>
+      <div class="grid-4">
+        <div class="glass-card text-center"><span class="badge-tag badge-accent">Step 1</span><p class="card-title">發送者</p><p class="card-desc">發出清晰指令</p></div>
+        <div class="glass-card text-center"><span class="badge-tag badge-accent2">Step 2</span><p class="card-title">接收者</p><p class=card-desc>精準複誦指令</p></div>
+        <div class="glass-card text-center"><span class="badge-tag badge-warn">Step 3</span><p class="card-title">發送者</p><p class="card-desc">再次確認無誤</p></div>
+        <div class="glass-card text-center"><span class="badge-tag badge-success">Step 4</span><p class="card-title">接收者</p><p class="card-desc">執行後回報完成</p></div>
       </div>
       <aside class="notes">
         什麼是閉環式溝通？
         訊息發出不代表收到；收到不代表執行！
         閉環式溝通四步：發送者發指令 -> 接收者複誦 -> 發送者確認正確 -> 接收者執行後回報完成！
-        TRM 四大核心中，溝通最為重要，因為其他三項能力最後都要透過溝通來發揮作用！
+      </aside>
+    </section>
+
+    <!-- Slide 23: 獨立影片頁面 2 (Media 2) -->
+    <section>
+      <h2><i class="fa-solid fa-circle-play" style="color:var(--success);"></i> 閉環溝通示範影片：《發送 ➔ 複誦 ➔ 核對 ➔ 回報》</h2>
+      <div class="glass-card text-center" style="max-width:960px; margin:0 auto; padding:24px; border: 2px solid var(--success); box-shadow: 0 0 30px rgba(129, 199, 132, 0.4);">
+        <video controls data-autoplay playsinline preload="auto" poster="videos/poster2.jpg" style="width:100%; max-height:460px; border-radius:12px; border:1px solid rgba(255,255,255,0.3); background:#000;">
+          <source src="videos/media2.mp4" type="video/mp4">
+          您的瀏覽器不支援 HTML5 影片播放。
+        </video>
+        <p class="card-desc" style="margin-top:14px; font-size:0.55em; color:var(--success); font-weight:bold;">
+          <i class="fa-solid fa-arrows-to-circle"></i> 原 PPT 內嵌影片 2：示範完整的閉環式溝通傳呼與確認流程
+        </p>
+      </div>
+      <aside class="notes">
+        這支影片是原 PPT 內嵌的閉環溝通示範影片，展示醫護團隊如何透過發送、複誦、核對與回報，達到 100% 的訊息對齊。
       </aside>
     </section>
 
