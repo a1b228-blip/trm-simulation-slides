@@ -178,7 +178,68 @@
     .reveal ul { font-size: 0.52em; line-height: 1.8; color: #c9d1d9; }
     .reveal ol { font-size: 0.52em; line-height: 1.8; color: #c9d1d9; }
 
+    /* 自動依序漸顯登場動畫（免點擊） */
+    .auto-fade {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .present .auto-fade-1 { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+    .present .auto-fade-2 { opacity: 1; transform: translateY(0); transition-delay: 0.8s; }
+    .present .auto-fade-3 { opacity: 1; transform: translateY(0); transition-delay: 1.3s; }
+    .present .auto-fade-4 { opacity: 1; transform: translateY(0); transition-delay: 1.8s; }
+    .present .auto-fade-5 { opacity: 1; transform: translateY(0); transition-delay: 2.3s; }
+
     /* 講師視窗提示 */
+    /* 回到首頁懸浮按鈕 */
+    .custom-nav-bar {
+      position: fixed;
+      bottom: 14px;
+      left: 20px;
+      z-index: 9999;
+      display: flex;
+      gap: 10px;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .nav-btn-home {
+      background: rgba(22, 27, 34, 0.85);
+      color: var(--accent2);
+      border: 1px solid rgba(79, 195, 247, 0.4);
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn-home:hover {
+      background: var(--accent2);
+      color: #0d1117;
+      border-color: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 195, 247, 0.4);
+    }
+
+    /* 當進入 Overview 放大總覽模式時隱藏按鈕 */
+    .reveal.overview ~ .custom-nav-bar,
+    .reveal-viewport.overview .custom-nav-bar,
+    .custom-nav-bar.hidden-mode {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
     .speaker-hint {
       position: fixed;
       bottom: 12px;
@@ -194,17 +255,47 @@
 
 <div class="speaker-hint">按鍵盤「S」鍵可開啟雙螢幕講師講稿模式</div>
 
+<!-- 固定懸浮按鈕：回到首頁 -->
+<div class="custom-nav-bar" id="custom-nav-bar">
+  <button class="nav-btn-home" onclick="Reveal.slide(0, 0)" title="回到首頁 (Slide 1)">
+    <i class="fa-solid fa-house"></i> 回到首頁
+  </button>
+</div>
+
 <div class="reveal">
   <div class="slides">
 
     <!-- Slide 1: 封面 [BG] -->
-    <section data-background-image="images/cover.jpg" data-background-opacity="0.35">
-      <div class="title-slide">
-        <div class="badge"><i class="fa-solid fa-graduation-cap"></i> 醫療團隊資源管理與情境模擬工作坊</div>
-        <h1>TRM 團隊資源管理與情境模擬教學</h1>
-        <h2 style="color:var(--accent2); font-size: 1.1em; margin-top: 0.4em;">從理論、臨床實戰到教學引導口袋指南</h2>
-        <p class="subtitle">建構高可靠度照護團隊 · 淬煉守護病安的直覺反應</p>
-        <p class="author"><i class="fa-solid fa-user-doctor"></i> 主講人：江老師 | 佳里奇美醫院</p>
+    <section data-background-image="images/cover.jpg" data-background-opacity="0.3">
+      <div class="title-slide" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
+        
+        <!-- 大霸氣主標題 -->
+        <h1 style="font-size: 2.2em; line-height: 1.28; letter-spacing: 0.02em; font-weight: 800; text-shadow: 0 0 40px rgba(79, 195, 247, 0.45); margin-bottom: 0.2em;">
+          <span style="background: linear-gradient(135deg, #ffffff 30%, #4fc3f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TRM 團隊資源管理</span><br>
+          <span style="background: linear-gradient(135deg, var(--warn) 20%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">與情境模擬教學</span>
+        </h1>
+        
+        <!-- 玻璃膠囊副標題 -->
+        <div style="display: inline-block; background: rgba(22, 27, 34, 0.85); border: 1px solid rgba(79, 195, 247, 0.35); padding: 8px 24px; border-radius: 30px; margin-top: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.4);">
+          <h2 style="color: var(--accent2); font-size: 0.88em; margin: 0; font-weight: 600; letter-spacing: 0.05em;">
+            <i class="fa-solid fa-graduation-cap" style="margin-right: 6px; color: var(--accent2);"></i> 從理論、臨床實戰到教學引導口袋指南
+          </h2>
+        </div>
+
+        <!-- 願景文案 -->
+        <p class="subtitle" style="font-size: 0.62em; color: #a3b8cc; margin-top: 20px; letter-spacing: 0.06em;">
+          建構高可靠度照護團隊 · 淬煉守護病安的直覺反應
+        </p>
+
+        <!-- 最下方尊榮講者資訊列 -->
+        <div style="margin-top: 45px; background: rgba(13, 17, 23, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 10px 30px; border-radius: 40px; display: flex; align-items: center; gap: 24px; font-size: 0.52em; color: #e6edf3; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          <span><i class="fa-solid fa-user-doctor" style="color: var(--accent2); margin-right: 6px;"></i> <strong>主講人：</strong>江瑞益</span>
+          <span style="color: rgba(255,255,255,0.25);">|</span>
+          <span><i class="fa-solid fa-hospital" style="color: var(--accent); margin-right: 6px;"></i> <strong>單位：</strong>佳里奇美醫院</span>
+          <span style="color: rgba(255,255,255,0.25);">|</span>
+          <span><i class="fa-solid fa-calendar-days" style="color: var(--success); margin-right: 6px;"></i> <strong>日期：</strong>115 年 10 月 1 日</span>
+        </div>
+
       </div>
       <aside class="notes">
         首先，要特別感謝黃總的邀請！說真的，我一直非常珍惜這種『最後上台』的機會。
@@ -216,57 +307,61 @@
       </aside>
     </section>
 
-    <!-- Slide 2: 開場提問 [INTERACT:wordcloud] -->
+    <!-- Slide 2: 混亂當下的團隊現狀 [CARDS] -->
     <section>
-      <h2><i class="fa-solid fa-comments-question"></i> 開場思索：混亂當下的團隊現狀</h2>
-      <div class="grid-2">
-        <div class="glass-card fragment">
-          <h3><i class="fa-solid fa-users-line" style="color:var(--warn);"></i> 同一空間各忙各的？</h3>
-          <p class="card-desc">當突發危急事件發生時，大家是在「真正合作」，還是只是剛好「在同一個空間裡各自忙碌」？</p>
+      <h2><i class="fa-solid fa-triangle-exclamation" style="color:var(--warn);"></i> 混亂當下的團隊現狀</h2>
+      <p style="font-size:0.48em; color:#8b949e; margin-bottom:20px;">當突發危急事件發生時，臨床團隊常面臨的三大痛點困境：</p>
+      
+      <div class="grid-3" style="gap:16px; align-items:stretch;">
+        
+        <!-- 痛點 1 -->
+        <div class="glass-card fragment fade-up text-left" style="border-top:4px solid var(--warn);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="badge-tag badge-warn">痛點 1</span>
+            <i class="fa-solid fa-users-line" style="color:var(--warn); font-size:1.4em;"></i>
+          </div>
+          <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">同一空間各自忙碌？</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9;">
+            突發狀況發生時，團隊是在「真正合作」，還是只是剛好「在同一個空間裡各自手忙腳亂」？
+          </p>
         </div>
-        <div class="glass-card fragment">
-          <h3><i class="fa-solid fa-shield-virus" style="color:var(--accent2);"></i> 最致命的臨床風險</h3>
-          <p class="card-desc">醫療作業最致命的風險從來不是『工作太忙』，而是『每個人都忙，卻根本沒人知道旁邊的夥伴到底正在做什麼』。</p>
+
+        <!-- 痛點 2 -->
+        <div class="glass-card fragment fade-up text-left" style="border-top:4px solid var(--accent);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="badge-tag badge-accent">痛點 2</span>
+            <i class="fa-solid fa-user-ninja" style="color:var(--accent); font-size:1.4em;"></i>
+          </div>
+          <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">致命的資訊黑洞</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9;">
+            醫療作業最致命的風險不是工作太忙，而是「每個人都忙，卻根本沒人知道夥伴正在做什麼」。
+          </p>
         </div>
+
+        <!-- 痛點 3 -->
+        <div class="glass-card fragment fade-up text-left" style="border-top:4px solid #ff5252;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="badge-tag" style="background:rgba(255,82,82,0.25); color:#ff5252; border:1px solid #ff5252;">痛點 3</span>
+            <i class="fa-solid fa-triangle-exclamation" style="color:#ff5252; font-size:1.4em;"></i>
+          </div>
+          <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">缺乏共享心智模型</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9;">
+            各自掌握碎片資訊且缺乏大聲通報 (Call-Out)，導致團隊目標脫節，錯失搶救黃金期！
+          </p>
+        </div>
+
       </div>
-      <div class="highlight-box fragment">
+
+      <div class="highlight-box fragment fade-up" style="margin-top:20px; text-align:left; background:rgba(79, 195, 247, 0.12); border-left-color:var(--accent2);">
         <strong style="color:var(--accent2);"><i class="fa-solid fa-lightbulb"></i> 真正合作的核心解法：</strong>
-        全團隊成員對「現在發生什麼事、我們的目標是什麼、誰負責什麼、下一步該做什麼」達成高默契共識——這就是 TRM 中的<strong>『共享心智模式 (Shared Mental Model)』</strong>。
+        全團隊對「現場狀況、搶救目標、分工權責、下一步行動」達成高度共識——這就是 TRM 中的<strong>『共享心智模型 (Shared Mental Model)』</strong>。
       </div>
+
       <aside class="notes">
         當突發危急事件的時候，我想請大家思考一個問題：『在那個最混亂的當下，我們到底是在「真正合作」？還是大家只是剛好「在同一個空間裡各自忙碌」？』
         醫療作業最致命的風險從來都不是『工作太忙』，而是『每個人都忙，卻根本沒人知道旁邊的夥伴到底正在做什麼』。
+        各自掌握碎片資訊而沒有溝通，就會錯失黃金救援期。
         什麼才是真正合作？就是整個團隊的每個人，對現場發生什麼事、目標是什麼、誰負責什麼、下一步該做什麼，都有相同的地圖。
-      </aside>
-    </section>
-
-    <!-- Slide 3: TRM 核心哲學 [ICON] -->
-    <section>
-      <h2><i class="fa-solid fa-user-shield"></i> TRM 核心哲學：神隊友防呆與自動補位</h2>
-      <p style="font-size:0.52em; color:#8b949e; margin-bottom: 20px;">「只要是人，就一定會犯錯。」TRM 坦然承認人類記憶與專注力的極限。</p>
-      <div class="grid-3">
-        <div class="glass-card fragment">
-          <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-eye"></i></div>
-          <div class="card-title">恍神與提醒</div>
-          <div class="card-desc">當有人恍神犯錯時，團隊其他成員能及早察覺並友善提醒。</div>
-        </div>
-        <div class="glass-card fragment">
-          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-hand-holding-hand"></i></div>
-          <div class="card-title">遺漏與補位</div>
-          <div class="card-desc">當有人工作負荷過重而不小心漏掉步驟時，夥伴立刻遞補上去補位。</div>
-        </div>
-        <div class="glass-card fragment">
-          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-triangle-exclamation"></i></div>
-          <div class="card-title">失誤與質疑</div>
-          <div class="card-desc">當判斷失誤時，有人能挺身而出走過去給予最關鍵的防護提醒。</div>
-        </div>
-      </div>
-      <aside class="notes">
-        每當臨床上出現醫療疏失，檢討時最常聽到：「你為什麼這樣做？誰教的？」
-        但事實上「只要是人，就一定會犯錯」，就算是機器人也有當機的時候。
-        TRM 的核心精神，不是要把大家變成不會犯錯的神人。相反地，它是要幫我們在現場建立一套『神隊友機制』：
-        當有人恍神犯錯了，團隊能及早發現；當有人不小心漏了，旁邊的人立刻補位；當有人判斷失誤，有人能走過去給關鍵提醒。
-        TRM 就是我們醫療團隊的『防呆系統』與安全網。
       </aside>
     </section>
 
@@ -329,32 +424,44 @@
       </aside>
     </section>
 
-    <!-- Slide 6: 危機生理效應 [ICON] -->
+    <!-- Slide 5: 危機生理效應 [ICON] -->
     <section>
-      <h2><i class="fa-solid fa-brain"></i> 危機當下的「管狀視野 (Tunnel Vision)」</h2>
-      <p style="font-size:0.52em; color:#8b949e;">急救與危急當下，大腦因高度壓迫會出現四大「斷線模式」：</p>
-      <div class="grid-4">
-        <div class="glass-card fragment">
+      <h2><i class="fa-solid fa-eye-slash" style="color:var(--accent);"></i> 危機當下的「管狀視野 (Tunnel Vision)」</h2>
+      <p style="font-size:0.48em; color:#8b949e; margin-bottom: 20px;">急救與危急高壓當下，大腦因生理防衛機制出現四大「能力急降模式」：</p>
+      
+      <div class="grid-4" style="gap:14px; align-items:stretch;">
+        
+        <div class="glass-card auto-fade auto-fade-1 text-center" style="border-top: 3px solid var(--accent);">
           <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-eye-slash"></i></div>
-          <div class="card-title">1. 看得更窄</div>
-          <div class="card-desc">焦點完全被眼前的單一動作或螢幕死死鎖住。</div>
+          <h3 style="color:#ffffff; font-size:0.9em; margin-bottom:8px;">1. 看得更窄</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7;">焦點被眼前單一動作或螢幕死死鎖住，無視周遭警訊。</p>
         </div>
-        <div class="glass-card fragment">
-          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-lightbulb"></i></div>
-          <div class="card-title">2. 想得更少</div>
-          <div class="card-desc">大腦陷入僵局，無法思考其他可能的處置方案。</div>
+
+        <div class="glass-card auto-fade auto-fade-2 text-center" style="border-top: 3px solid var(--warn);">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-brain"></i></div>
+          <h3 style="color:#ffffff; font-size:0.9em; margin-bottom:8px;">2. 想得更少</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7;">大腦邏輯極限過載，無法思考第二處置備案與全盤可能。</p>
         </div>
-        <div class="glass-card fragment">
+
+        <div class="glass-card auto-fade auto-fade-3 text-center" style="border-top: 3px solid var(--accent2);">
           <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-ear-deaf"></i></div>
-          <div class="card-title">3. 聽得更少</div>
-          <div class="card-desc">耳邊如塞耳塞，夥伴在旁邊提醒通報卻完全聽不到。</div>
+          <h3 style="color:#ffffff; font-size:0.9em; margin-bottom:8px;">3. 聽得更少</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7;">出現聽覺遮蔽效應，夥伴在身邊大聲提醒通報卻充耳不聞。</p>
         </div>
-        <div class="glass-card fragment">
+
+        <div class="glass-card auto-fade auto-fade-4 text-center" style="border-top: 3px solid var(--success);">
           <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-box-archive"></i></div>
-          <div class="card-title">4. 記得更少</div>
-          <div class="card-desc">平時熟練的 SOP 或急救步驟莫名遺漏。</div>
+          <h3 style="color:#ffffff; font-size:0.9em; margin-bottom:8px;">4. 記得更少</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7;">工作記憶大幅下降，平時最熟練的急救 SOP 步驟莫名遺漏。</p>
         </div>
+
       </div>
+
+      <div class="highlight-box auto-fade auto-fade-5" style="margin-top:20px; text-align:left;">
+        <i class="fa-solid fa-compass" style="color:var(--accent2);"></i> <strong>領導者的關鍵使命：</strong>
+        合格的領導者絕對不只看手上動作，而是要「站高看遠拉開全隊視野」——同時看病人臉色、夥伴表情與整體搶救進度！
+      </div>
+
       <aside class="notes">
         在危急時，我們每個人都一定經歷過生理現象：『管狀視野（Tunnel Vision）』。
         大腦會出現四個非常致命的斷線模式：
@@ -366,22 +473,42 @@
       </aside>
     </section>
 
-    <!-- Slide 7: 認知負荷管理 [CARD] -->
+    <!-- Slide 6: 認知負荷管理 [CARD] -->
     <section>
-      <h2><i class="fa-solid fa-weight-hanging"></i> 大腦認知負荷與工作量管理</h2>
-      <div class="grid-2">
-        <div class="glass-card fragment">
-          <h3><i class="fa-solid fa-battery-quarter" style="color:var(--accent);"></i> 記憶體有限</h3>
-          <p class="card-desc">每個人大腦工作記憶 (Working Memory) 都有容量上限。當壓力和資訊瞬間衝高，個人記憶體就會爆掉過載。</p>
+      <h2><i class="fa-solid fa-brain" style="color:var(--accent2);"></i> 大腦認知負荷與工作量管理</h2>
+      <p style="font-size:0.48em; color:#8b949e; margin-bottom: 20px;">大腦記憶體容量極限有限，領導者的核心責任是「轉移與分散負擔」：</p>
+      
+      <div class="grid-2" style="gap:20px; align-items:stretch;">
+        
+        <div class="glass-card auto-fade auto-fade-1 text-left" style="border-top: 4px solid var(--accent);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span class="badge-tag badge-accent">容量極限</span>
+            <i class="fa-solid fa-battery-quarter" style="color:var(--accent); font-size:1.5em;"></i>
+          </div>
+          <h3 style="color:#ffffff; font-size:1.0em; margin-bottom:10px;">個人工作記憶體 (Working Memory) 有限</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9;">
+            每個人大腦的記憶體容量都有嚴格上限。當臨床突發事件與強烈心理壓力瞬間衝高時，個人記憶體會瞬間爆掉過載。
+          </p>
         </div>
-        <div class="glass-card fragment">
-          <h3><i class="fa-solid fa-share-nodes" style="color:var(--accent2);"></i> 分散團隊扛責任</h3>
-          <p class="card-desc">領導者的主要任務是『工作量管理』——組織團隊、分配任務，把原本壓在某一個人身上的認知負荷，分散給整個團隊一起扛！</p>
+
+        <div class="glass-card auto-fade auto-fade-2 text-left" style="border-top: 4px solid var(--accent2);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span class="badge-tag badge-accent2">團隊分流</span>
+            <i class="fa-solid fa-share-nodes" style="color:var(--accent2); font-size:1.5em;"></i>
+          </div>
+          <h3 style="color:#ffffff; font-size:1.0em; margin-bottom:10px;">組織團隊分工 · 分散認知負荷</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9;">
+            領導者的關鍵任務不是自己獨扛，而是進行<strong>「工作量管理」</strong>——組織團隊與分配任務，將原本壓在單人身上的負荷分散給全隊共同承擔！
+          </p>
         </div>
+
       </div>
-      <div class="highlight-box fragment">
-        <i class="fa-solid fa-circle-check" style="color:var(--success);"></i> <strong>優秀領導者的現場姿態：</strong>混亂現場中他不會是一直埋頭苦幹的人，反而是看起來最游刃有餘的人，因為他的核心任務是確保現場沒有人會忙到出錯！
+
+      <div class="highlight-box auto-fade auto-fade-3" style="margin-top:20px; text-align:left; background:rgba(129, 199, 132, 0.12); border-left-color:var(--success);">
+        <strong style="color:var(--success);"><i class="fa-solid fa-circle-check"></i> 優秀領導者的現場姿態：</strong>
+        混亂現場中他絕對不會是一直埋頭苦幹的人，反而是看起來最游刃有餘的人——因為他的核心任務是掌控全局，確保現場沒有任何夥伴忙到出錯！
       </div>
+
       <aside class="notes">
         大腦為什麼會斷線？因為大腦超載了，這叫『認知負荷』。
         既然一個人的記憶體有限，那身為領導者重要的工作就是『工作量管理』。
@@ -390,26 +517,74 @@
       </aside>
     </section>
 
-    <!-- Slide 8: 領導黃金三部曲 [ICON] -->
+    <!-- Slide 7: 領導黃金三部曲 [ICON] -->
     <section>
-      <h2><i class="fa-solid fa-rotate"></i> 領導黃金工具：臨床安全動態迴路</h2>
-      <div class="grid-3">
-        <div class="glass-card fragment">
-          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-clipboard-check"></i></div>
-          <div class="card-title">1. Brief (事前說明)</div>
-          <div class="card-desc">檢查或班表開始前，花 1-2 分鐘快速對齊分工、目標與風險預測。</div>
+      <h2><i class="fa-solid fa-arrows-spin" style="color:var(--accent2);"></i> 領導黃金工具：臨床安全動態迴路</h2>
+      <p style="font-size:0.48em; color:#8b949e; margin-bottom: 20px;">貫穿臨床照護前、中、後的三大動態溝通與導向迴路：</p>
+      
+      <div class="grid-3" style="gap:16px; align-items:stretch;">
+        
+        <!-- Step 1 -->
+        <div class="glass-card auto-fade auto-fade-1 text-center" style="border-top: 4px solid var(--accent2); position:relative;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="badge-tag badge-accent2">Step 1</span>
+            <i class="fa-solid fa-clipboard-check" style="color:var(--accent2); font-size:1.4em;"></i>
+          </div>
+          <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">Brief (事前說明)</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9; margin-bottom:12px;">
+            檢查或班表開始前，花 1-2 分鐘快速對齊分工、搶救目標與預測臨床風險。
+          </p>
+          <!-- 小小點擊播放按鈕方格 -->
+          <div style="margin-top:10px;">
+            <button onclick="openBriefVideoModal()" style="background:rgba(79, 195, 247, 0.18); color:var(--accent2); border:1px solid var(--accent2); border-radius:14px; padding:6px 14px; font-size:0.44em; font-weight:bold; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s ease;">
+              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看 30 秒教學影片
+            </button>
+          </div>
         </div>
-        <div class="glass-card fragment">
-          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-comments"></i></div>
-          <div class="card-title">2. Huddle (過程中討論)</div>
-          <div class="card-desc">突發變故或現況改變時，暫停 30 秒評估：現況 S、新方案 P、資源 R。</div>
+
+        <!-- Step 2 -->
+        <div class="glass-card auto-fade auto-fade-2 text-center" style="border-top: 4px solid var(--warn); position:relative;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="badge-tag badge-warn">Step 2</span>
+            <i class="fa-solid fa-comments" style="color:var(--warn); font-size:1.4em;"></i>
+          </div>
+          <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">Huddle (過程中討論)</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9; margin-bottom:12px;">
+            突發變故或現況改變時，暫停 30 秒評估：現況 (S)、新方案 (P)、資源 (R)。
+          </p>
+          <!-- 小小點擊播放按鈕方格 -->
+          <div style="margin-top:10px;">
+            <button onclick="openHuddleVideoModal()" style="background:rgba(255, 183, 77, 0.18); color:var(--warn); border:1px solid var(--warn); border-radius:14px; padding:6px 14px; font-size:0.44em; font-weight:bold; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s ease;">
+              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看 30 秒教學影片
+            </button>
+          </div>
         </div>
-        <div class="glass-card fragment">
-          <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-chart-pie"></i></div>
-          <div class="card-title">3. Debrief (事後檢視)</div>
-          <div class="card-desc">事件或演練結束後，檢討亮點、盲點與系統升級（無責備文化）。</div>
+
+        <!-- Step 3 -->
+        <div class="glass-card auto-fade auto-fade-3 text-center" style="border-top: 4px solid var(--success); position:relative;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="badge-tag badge-success">Step 3</span>
+            <i class="fa-solid fa-chart-pie" style="color:var(--success); font-size:1.4em;"></i>
+          </div>
+          <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">Debrief (事後檢視)</h3>
+          <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9; margin-bottom:12px;">
+            事件或演練結束後，檢討亮點、盲點與系統升級（秉持無責備學習文化）。
+          </p>
+          <!-- 小小點擊播放按鈕方格 -->
+          <div style="margin-top:10px;">
+            <button onclick="openDebriefVideoModal()" style="background:rgba(129, 199, 132, 0.18); color:var(--success); border:1px solid var(--success); border-radius:14px; padding:6px 14px; font-size:0.44em; font-weight:bold; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s ease;">
+              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看 30 秒教學影片
+            </button>
+          </div>
         </div>
+
       </div>
+
+      <div class="highlight-box auto-fade auto-fade-4" style="margin-top:20px; text-align:left;">
+        <i class="fa-solid fa-rotate" style="color:var(--accent2);"></i> <strong>高可靠度團隊的動態律動：</strong>
+        讓團隊在正確的時間點，永遠擁有「相同的資訊、相同的目標與相同的方向」！
+      </div>
+
       <aside class="notes">
         領導者最重要的工作是：讓團隊在正確的時間，擁有相同的資訊、相同的目標與相同的方向。
         因此 TRM 提供領導者三項黃金工具：
@@ -420,105 +595,48 @@
       </aside>
     </section>
 
-    <!-- Slide 9: Step 1: Brief [CARD] -->
+    <!-- Slide 8: 實務對比演練 [VIZ] 滑桿 UI -->
     <section>
-      <h2><i class="fa-solid fa-clipboard-list"></i> Step 1: 事前說明 (Briefs) 點檢表</h2>
-      <div class="glass-card" style="text-align:left;">
-        <ul style="font-size:0.55em; line-height:2.2;">
-          <li class="fragment"><span class="badge-tag badge-accent">明確分工</span> 誰操作儀器？誰負責急救喊話？誰負責聯繫與紀錄？</li>
-          <li class="fragment"><span class="badge-tag badge-accent2">設定目標</span> 本班次/演練預計完成的檢查與照護品質目標是什麼？</li>
-          <li class="fragment"><span class="badge-tag badge-warn">風險預測</span> 「今天有腎功能異常或過敏史患者嗎？嚴重過敏藥物在哪裡？」</li>
-          <li class="fragment"><span class="badge-tag badge-success">心理安全感</span> 領導者宣告：<strong>「過程中只要發現任何不對勁，請立刻開口提醒我！」</strong></li>
-        </ul>
-      </div>
-      <aside class="notes">
-        1. Brief（行前說明）目的：建立共識。我們要做什麼？誰負責什麼？有哪些風險需要注意？
-        Brief 不需要很久，一兩分鐘就夠。
-        重點是把角色、目標和風險先講清楚。
-        最關鍵的是最後一句：「只要任何人發現不對勁，請立刻提醒我！」直接宣告建立心理安全感。
-      </aside>
-    </section>
-
-    <!-- Slide 10: Step 2: Huddle [CARD] -->
-    <section>
-      <h2><i class="fa-solid fa-people-arrows"></i> Step 2: 動態小組會議 (Huddle)</h2>
-      <p style="font-size:0.5em; color:#8b949e;">時機：現況改變、儀器故障、患者突發累積。不追求冗長討論，只問 3 件事：</p>
-      <div class="grid-3" style="margin-top:15px;">
-        <div class="glass-card fragment">
-          <h3 style="color:var(--accent);">S - Situation</h3>
-          <p class="card-desc"><strong>現況是什麼？</strong><br>「3號 CT 室突然故障，外面病患開始大排長龍。」</p>
-        </div>
-        <div class="glass-card fragment">
-          <h3 style="color:var(--accent2);">P - Plan</h3>
-          <p class="card-desc"><strong>新方案是什麼？</strong><br>「學妹先引導患者至 2號室，學長立刻聯繫報修。」</p>
-        </div>
-        <div class="glass-card fragment">
-          <h3 style="color:var(--success);">R - Resources</h3>
-          <p class="card-desc"><strong>有哪些可用資源？</strong><br>「2號室檢查剛好結束，放射師可支援雙跑。」</p>
-        </div>
-      </div>
-      <aside class="notes">
-        2. Huddle（過程中討論）目的：修正方向。
-        當情況跟原本計畫不一樣時（如 CT 故障、病患塞爆），暫停幾秒鐘重建認知。
-        Huddle 只問三件事：現在發生什麼？解決方案是什麼？我們有哪些資源？
-        這時領導帶領團隊快速轉向。
-      </aside>
-    </section>
-
-    <!-- Slide 11: Step 3: Debrief [CARD] -->
-    <section>
-      <h2><i class="fa-solid fa-arrows-spin"></i> Step 3: 事後檢視 (Debriefing) 三部曲</h2>
-      <div class="grid-3">
-        <div class="glass-card fragment">
-          <h3 style="color:var(--success);"><i class="fa-solid fa-star"></i> 1. 肯定亮點</h3>
-          <p class="card-desc">「今天我們哪裡做得很好？」肯定夥伴的即時互助與精準通報。</p>
-        </div>
-        <div class="glass-card fragment">
-          <h3 style="color:var(--warn);"><i class="fa-solid fa-magnifying-glass"></i> 2. 檢討盲點</h3>
-          <p class="card-desc">「今天哪裡遇到瓶頸？如果重來一次可以怎麼改進？」</p>
-        </div>
-        <div class="glass-card fragment">
-          <h3 style="color:var(--accent2);"><i class="fa-solid fa-wrench"></i> 3. 系統升級</h3>
-          <p class="card-desc">「為了避免再發生，我們需要修改流程、表單還是調整設備？」</p>
-        </div>
-      </div>
-      <div class="highlight-box fragment">
-        <i class="fa-solid fa-shield-halved"></i> <strong>聚焦系統防禦，而非個人咎責 (No-Blame Culture)：</strong>好的 Debrief 結束時，團隊不是帶著悔慚離開，而是充滿信心變得更強大！
-      </div>
-      <aside class="notes">
-        3. Debrief（事後檢討）目的：持續改善。事件結束後的資訊交換與回饋。
-        討論重點：第一先鼓勵肯定大家；第二討論哪裡可改善；最後將過失系統化改善。
-        重點不是檢討人，而是改善流程。好的 Debrief 讓團隊帶著力量離開。
-      </aside>
-    </section>
-
-    <!-- Slide 12: 實務對比演練 [VIZ] 滑桿 UI -->
-    <section>
-      <h2><i class="fa-solid fa-sliders"></i> 實務對比：對比劑嚴重過敏急救演練</h2>
-      <p style="font-size:0.45em; color:#8b949e; margin-bottom:10px;">請拖曳下方滑桿，對比「傳統各自為政」與「TRM 混亂化為精準」之差異：</p>
+      <h2><i class="fa-solid fa-sliders" style="color:var(--accent2);"></i> 實務對比：對比劑嚴重過敏急救演練</h2>
+      <p style="font-size:0.48em; color:#8b949e; margin-bottom:12px;">請向右拖曳下方滑桿 ◄ ↔ ►，對比「傳統各自為政」與「TRM 精準介入」之劇烈差異：</p>
       
-      <div class="slider-comparison">
-        <div class="slider-pane slider-before">
-          <h3><i class="fa-solid fa-circle-xmark" style="color:#ff5252;"></i> 傳統各自為政 (混亂與延誤)</h3>
-          <ul style="font-size:0.48em; line-height:1.7; color:#ffcdd2;">
-            <li>放射師專注盯著電腦螢幕傳影像，忽視現場變化。</li>
-            <li>護理師孤軍奮戰獨自幫喉頭水腫患者量 NIBP / SpO2。</li>
-            <li>無人指揮，放射師慌亂大喊：「快通報 999！」但無指定對象。</li>
-            <li>眾人搶著推床（覺得安全有幫忙），關鍵急救任務無人執行。</li>
+      <div class="slider-comparison" style="height:380px; border-radius:18px; border:2px solid rgba(255,255,255,0.25); box-shadow:0 10px 40px rgba(0,0,0,0.5);">
+        
+        <!-- 左邊 (Before 傳統各自為政) -->
+        <div class="slider-pane slider-before" style="padding:28px 32px; background:rgba(22, 27, 34, 0.95);">
+          <h3 style="font-size:1.15em; color:#ff5252; margin-bottom:16px;">
+            <i class="fa-solid fa-circle-xmark"></i> 傳統各自為政 (混亂與延誤)
+          </h3>
+          <ul style="font-size:0.56em; line-height:1.9; color:#ffcdd2;">
+            <li>❌ <strong>放射師盯螢幕：</strong>專注傳影像，忽視現場患者呼吸急促變動。</li>
+            <li>❌ <strong>護理師孤軍奮戰：</strong>獨自幫喉頭水腫患者量血壓與 SpO2。</li>
+            <li>❌ <strong>無人指定指揮：</strong>慌亂大喊：「快通報 999！」但未指派具體對象。</li>
+            <li>❌ <strong>資源錯誤浪費：</strong>眾人搶著推床，關鍵急救通報與 CPR 空轉！</li>
           </ul>
         </div>
-        <div class="slider-pane slider-after" id="slider-after-12">
-          <h3><i class="fa-solid fa-circle-check" style="color:#69f0ae;"></i> TRM 精準介入 (化混亂為秩序)</h3>
-          <ul style="font-size:0.48em; line-height:1.7; color:#b9f6ca;">
-            <li><strong>Huddle 宣告：</strong>「疑似對比劑過敏，啟動急救機制！」</li>
-            <li><strong>明確指派：</strong>護理師做 CPR / 學弟通報 999 / 備急救車維持通路。</li>
-            <li><strong>情境領導：</strong>領導者維持全局視角，準備交班資訊。</li>
-            <li><strong>事後 Debrief：</strong>花 2 分鐘回顧流程，持續升級團隊。</li>
+
+        <!-- 右邊 (After TRM 精準介入) -->
+        <div class="slider-pane slider-after" id="slider-after-12" style="padding:28px 32px; background:rgba(13, 27, 23, 0.98); clip-path: inset(0 100% 0 0);">
+          <h3 style="font-size:1.15em; color:#69f0ae; margin-bottom:16px;">
+            <i class="fa-solid fa-circle-check"></i> TRM 精準介入 (化混亂為秩序)
+          </h3>
+          <ul style="font-size:0.56em; line-height:1.9; color:#b9f6ca;">
+            <li>✅ <strong>Huddle 宣告：</strong>「疑似對比劑過敏，啟動急救團隊機制！」</li>
+            <li>✅ <strong>明確指派分工：</strong>護理師 CPR / 學弟通報 999 / 備急救車。</li>
+            <li>✅ <strong>情境領導姿態：</strong>領導者站高看遠，準備 ISBAR 交班資訊。</li>
+            <li>✅ <strong>事後 Debrief：</strong>花 2 分鐘回顧流程盲點，持續升級 SOP。</li>
           </ul>
         </div>
-        <div class="slider-divider" id="slider-divider-12"></div>
-        <input type="range" min="0" max="100" value="50" class="slider-input" oninput="updateSlider12(this.value)">
+
+        <div class="slider-divider" id="slider-divider-12" style="left:0%; background:var(--accent2); box-shadow:0 0 15px var(--accent2);"></div>
+        <input type="range" min="0" max="100" value="0" class="slider-input" oninput="updateSlider12(this.value)">
       </div>
+
+      <!-- 即時動態拖曳狀態顯示框 -->
+      <div id="slider-status-12" style="margin-top:14px; padding:10px 18px; border-radius:12px; font-size:0.5em; border:1px solid #ff5252; background:rgba(255, 82, 82, 0.2); color:#ffcdd2; text-align:center; transition:all 0.3s ease;">
+        <i class="fa-solid fa-circle-xmark" style="color:#ff5252;"></i> <strong>傳統各自為政</strong>：護理師孤軍奮戰，放射師盯螢幕，無人指定通報 999！
+      </div>
+
       <aside class="notes">
         想像一下，檢查做完一半，患者突然喉頭水腫、吸不到半口空氣。
         各自為政時：放射師盯電腦傳影像，護理師獨自量生命徵象；有人大喊通報 999 但沒指定人，大家搶著去推床，關鍵急救卻空轉！
@@ -730,8 +848,8 @@
     <section>
       <h2><i class="fa-solid fa-triangle-exclamation" style="color:var(--warn);"></i> 失敗的溝通</h2>
       <div class="glass-card text-center" style="max-width:960px; margin:0 auto; padding:24px; border: 2px solid var(--warn); box-shadow: 0 0 30px rgba(255, 183, 77, 0.4);">
-        <video controls playsinline preload="auto" poster="videos/poster1.jpg" style="width:100%; max-height:460px; border-radius:12px; border:1px solid rgba(255,255,255,0.3); background:#000;">
-          <source src="videos/media1.mp4" type="video/mp4">
+        <video controls playsinline preload="auto" poster="videos/poster2.jpg" style="width:100%; max-height:460px; border-radius:12px; border:1px solid rgba(255,255,255,0.3); background:#000;">
+          <source src="videos/media2.mp4" type="video/mp4">
           您的瀏覽器不支援 HTML5 影片播放。
         </video>
       </div>
@@ -767,20 +885,6 @@
         結構化溝通工具 ISBAR：Introduction, Situation, Background, Assessment, Recommendation！
         搭配 Call-Out 大聲通報：讓團隊立即共享重要資訊。
         通報後還要配合 Check-Back 確認訊息，防止聽錯！
-      </aside>
-    </section>
-
-    <!-- Slide 23: 獨立影片頁面 2 (Media 2) -->
-    <section>
-      <h2><i class="fa-solid fa-circle-play" style="color:var(--success);"></i> 閉環溝通示範影片：《發送 ➔ 複誦 ➔ 核對 ➔ 回報》</h2>
-      <div class="glass-card text-center" style="max-width:960px; margin:0 auto; padding:24px; border: 2px solid var(--success); box-shadow: 0 0 30px rgba(129, 199, 132, 0.4);">
-        <video controls playsinline preload="auto" poster="videos/poster2.jpg" style="width:100%; max-height:460px; border-radius:12px; border:1px solid rgba(255,255,255,0.3); background:#000;">
-          <source src="videos/media2.mp4" type="video/mp4">
-          您的瀏覽器不支援 HTML5 影片播放。
-        </video>
-      </div>
-      <aside class="notes">
-        這支影片是原 PPT 內嵌的閉環溝通示範影片，展示醫護團隊如何透過發送、複誦、核對與回報，達到 100% 的訊息對齊。
       </aside>
     </section>
 
@@ -894,6 +998,52 @@
       </aside>
     </section>
 
+    <!-- Slide 27: 教學診斷：近側發展區間 ZPD [CARDS] -->
+    <section>
+      <h2><i class="fa-solid fa-crosshairs" style="color:var(--accent2);"></i> 教學診斷：評估學員近側發展區間 (ZPD)</h2>
+      
+      <div class="grid-3" style="gap:15px; align-items:stretch;">
+        <div class="glass-card fragment text-center" style="border: 1px solid rgba(255,255,255,0.15);">
+          <div class="card-icon" style="color:#90a4ae;"><i class="fa-solid fa-snowflake"></i></div>
+          <h3 style="color:#b0bec5;">1. 舒適區 (Comfort Zone)</h3>
+          <span class="badge-tag" style="background:rgba(144,164,174,0.2); color:#b0bec5; margin-bottom:8px;">太簡單 ➔ 無聊</span>
+          <p class="card-desc" style="font-size:0.45em; line-height:1.7;">
+            學員單獨就能輕鬆完成任務，缺乏適度挑戰，難以激發動機與實質進步。
+          </p>
+        </div>
+
+        <div class="glass-card fragment text-center" style="border: 2px solid var(--accent2); box-shadow: 0 0 25px rgba(79, 195, 247, 0.4); transform: scale(1.03); background: rgba(13, 17, 23, 0.85);">
+          <div class="card-icon" style="color:var(--accent2);"><i class="fa-solid fa-fire-flame-curved"></i></div>
+          <h3 style="color:var(--accent2); font-size:1.1em;">2. 最佳學習區 (ZPD)</h3>
+          <span class="badge-tag badge-accent2" style="margin-bottom:8px; font-weight:bold;">★ 最佳黃金成長區</span>
+          <p class="card-desc" style="font-size:0.46em; line-height:1.7; color:#e6edf3;">
+            超出獨自能力，但在引導者搭起<strong>「教學鷹架 (Scaffolding)」</strong>引導下能成功克服！<strong>學習效率最高！</strong>
+          </p>
+        </div>
+
+        <div class="glass-card fragment text-center" style="border: 1px solid rgba(255, 112, 67, 0.4);">
+          <div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <h3 style="color:var(--warn);">3. 恐慌焦慮區 (Anxiety Zone)</h3>
+          <span class="badge-tag badge-warn" style="margin-bottom:8px;">太困難 ➔ 挫折崩潰</span>
+          <p class="card-desc" style="font-size:0.45em; line-height:1.7;">
+            任務遠超學員當前能力與大腦認知負荷極限，導致大腦宕機、心理防衛與無效學習。
+          </p>
+        </div>
+      </div>
+
+      <div class="highlight-box" style="margin-top:15px; text-align:center;">
+        <i class="fa-solid fa-lightbulb" style="color:var(--accent2);"></i>
+        <strong>引導者的使命：</strong>透過情境難度調控與 Debriefing 提問搭建鷹架 (Scaffolding)，精準將學員維持在 ZPD 最佳學習區！
+      </div>
+
+      <aside class="notes">
+        教學診斷工具：近側發展區間 ZPD！
+        學習有三個區域：舒適區太簡單無聊；恐慌區太難崩潰。
+        引導者的價值就是評估學員狀況，搭建學習鷹架 (Scaffolding)，把學員帶入 ZPD 最佳學習區！
+        在適度挑戰中獲得最大的成長與成就感！
+      </aside>
+    </section>
+
     <!-- Slide 26: 經驗學習循環 ERCP [ICON] -->
     <section>
       <h2><i class="fa-solid fa-rotate-left"></i> 回饋反思：ERCP 經驗學習循環</h2>
@@ -983,13 +1133,43 @@
     plugins: []
   });
 
-  // 滑桿對比控制 JS (Slide 12)
+  // 監聽 Overview 總覽/放大檢視模式，自動隱藏回到首頁按鈕
+  const navBar = document.getElementById("custom-nav-bar");
+  if (navBar) {
+    Reveal.on("overviewshown", function() {
+      navBar.classList.add("hidden-mode");
+    });
+    Reveal.on("overviewhidden", function() {
+      navBar.classList.remove("hidden-mode");
+    });
+  }
+
+  // 滑桿對比控制 JS (Slide 8)
   function updateSlider12(val) {
     const afterPane = document.getElementById('slider-after-12');
     const divider = document.getElementById('slider-divider-12');
+    const status = document.getElementById('slider-status-12');
     if (afterPane && divider) {
       afterPane.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
       divider.style.left = val + '%';
+    }
+    if (status) {
+      if (val < 25) {
+        status.innerHTML = '<i class="fa-solid fa-circle-xmark" style="color:#ff5252;"></i> <strong>傳統各自為政</strong>：護理師孤軍奮戰，放射師盯螢幕，無人指定通報 999！';
+        status.style.background = 'rgba(255, 82, 82, 0.2)';
+        status.style.borderColor = '#ff5252';
+        status.style.color = '#ffcdd2';
+      } else if (val < 75) {
+        status.innerHTML = '<i class="fa-solid fa-arrows-left-right" style="color:var(--accent2);"></i> <strong>↔️ 拖曳對比中 (' + val + '%)</strong>：傳統混亂 ➔ TRM 團隊介入演練...';
+        status.style.background = 'rgba(79, 195, 247, 0.2)';
+        status.style.borderColor = 'var(--accent2)';
+        status.style.color = 'var(--accent2)';
+      } else {
+        status.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#69f0ae;"></i> <strong>TRM 精準介入</strong>：Huddle 宣告過敏！明確指派 CPR、通報 999 與備車，秩序建立！';
+        status.style.background = 'rgba(105, 240, 174, 0.2)';
+        status.style.borderColor = '#69f0ae';
+        status.style.color = '#b9f6ca';
+      }
     }
   }
 
@@ -1002,6 +1182,124 @@
       divider.style.left = val + '%';
     }
   }
+
+  // Brief 影音 Lightbox 彈出視窗控制
+  function openBriefVideoModal() {
+    const modal = document.getElementById('brief-video-modal');
+    const player = document.getElementById('brief-modal-player');
+    if (modal) {
+      modal.style.display = 'flex';
+      setTimeout(() => { modal.style.opacity = '1'; }, 10);
+      if (player) {
+        player.currentTime = 0;
+        player.play();
+      }
+    }
+  }
+
+  function closeBriefVideoModal() {
+    const modal = document.getElementById('brief-video-modal');
+    const player = document.getElementById('brief-modal-player');
+    if (modal) {
+      modal.style.opacity = '0';
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+      if (player) {
+        player.pause();
+      }
+    }
+  }
+
+
+  // Huddle 影音 Lightbox 控制
+  function openHuddleVideoModal() {
+    const modal = document.getElementById('huddle-video-modal');
+    const player = document.getElementById('huddle-modal-player');
+    if (modal) {
+      modal.style.display = 'flex';
+      setTimeout(() => { modal.style.opacity = '1'; }, 10);
+      if (player) {
+        player.currentTime = 0;
+        player.play();
+      }
+    }
+  }
+
+  function closeHuddleVideoModal() {
+    const modal = document.getElementById('huddle-video-modal');
+    const player = document.getElementById('huddle-modal-player');
+    if (modal) {
+      modal.style.opacity = '0';
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+      if (player) {
+        player.pause();
+      }
+    }
+  }
+
+  // Debrief 影音 Lightbox 控制
+  function openDebriefVideoModal() {
+    const modal = document.getElementById('debrief-video-modal');
+    const player = document.getElementById('debrief-modal-player');
+    if (modal) {
+      modal.style.display = 'flex';
+      setTimeout(() => { modal.style.opacity = '1'; }, 10);
+      if (player) {
+        player.currentTime = 0;
+        player.play();
+      }
+    }
+  }
+
+  function closeDebriefVideoModal() {
+    const modal = document.getElementById('debrief-video-modal');
+    const player = document.getElementById('debrief-modal-player');
+    if (modal) {
+      modal.style.opacity = '0';
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+      if (player) {
+        player.pause();
+      }
+    }
+  }
+
 </script>
+
+<!-- Modal Lightbox 彈出視窗：30 秒 Brief 教學影片 -->
+<div id="brief-video-modal" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease;">
+  <div style="background:#161b22; border:2px solid var(--accent2); border-radius:20px; padding:24px; max-width:920px; width:90%; position:relative; box-shadow:0 0 40px rgba(79, 195, 247, 0.4); text-align:center;">
+    <button onclick="closeBriefVideoModal()" style="position:absolute; top:16px; right:20px; background:none; border:none; color:#a3b8cc; font-size:24px; cursor:pointer; font-weight:bold;">✕</button>
+    <h3 style="color:var(--accent2); margin-top:0; margin-bottom:14px; font-size:1.2em;"><i class="fa-solid fa-circle-play"></i> 30 秒 Brief (事前說明) 精華教學影片</h3>
+    <video id="brief-modal-player" controls playsinline poster="videos/poster4.jpg" style="width:100%; max-height:480px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:#000;">
+      <source src="videos/media4_brief.mp4" type="video/mp4">
+      您的瀏覽器不支援 HTML5 影片播放。
+    </video>
+  </div>
+</div>
+
+
+<!-- Modal Lightbox 彈出視窗：30 秒 Huddle 教學影片 -->
+<div id="huddle-video-modal" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease;">
+  <div style="background:#161b22; border:2px solid var(--warn); border-radius:20px; padding:24px; max-width:920px; width:90%; position:relative; box-shadow:0 0 40px rgba(255, 183, 77, 0.4); text-align:center;">
+    <button onclick="closeHuddleVideoModal()" style="position:absolute; top:16px; right:20px; background:none; border:none; color:#a3b8cc; font-size:24px; cursor:pointer; font-weight:bold;">✕</button>
+    <h3 style="color:var(--warn); margin-top:0; margin-bottom:14px; font-size:1.2em;"><i class="fa-solid fa-circle-play"></i> 30 秒 Huddle (過程中討論) 精華教學影片</h3>
+    <video id="huddle-modal-player" controls playsinline poster="videos/poster5.jpg" style="width:100%; max-height:480px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:#000;">
+      <source src="videos/media5_huddle.mp4" type="video/mp4">
+      您的瀏覽器不支援 HTML5 影片播放。
+    </video>
+  </div>
+</div>
+
+<!-- Modal Lightbox 彈出視窗：30 秒 Debrief 教學影片 -->
+<div id="debrief-video-modal" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease;">
+  <div style="background:#161b22; border:2px solid var(--success); border-radius:20px; padding:24px; max-width:920px; width:90%; position:relative; box-shadow:0 0 40px rgba(129, 199, 132, 0.4); text-align:center;">
+    <button onclick="closeDebriefVideoModal()" style="position:absolute; top:16px; right:20px; background:none; border:none; color:#a3b8cc; font-size:24px; cursor:pointer; font-weight:bold;">✕</button>
+    <h3 style="color:var(--success); margin-top:0; margin-bottom:14px; font-size:1.2em;"><i class="fa-solid fa-circle-play"></i> 30 秒 Debrief (事後檢視) 精華教學影片</h3>
+    <video id="debrief-modal-player" controls playsinline poster="videos/poster6.jpg" style="width:100%; max-height:480px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:#000;">
+      <source src="videos/media6_debrief.mp4" type="video/mp4">
+      您的瀏覽器不支援 HTML5 影片播放。
+    </video>
+  </div>
+</div>
+
 </body>
 </html>
