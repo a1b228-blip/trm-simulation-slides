@@ -413,12 +413,405 @@
     .present .finale-author {
       animation: finaleBounceUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.6s both;
     }
-    .finale-star-bg {
+    /* ✨ Slide 1 (首頁大片開場：流光霓虹、左右碰撞與物理彈簧登場) */
+    @keyframes coverSlideLeft {
+      0% { opacity: 0; transform: translateX(-140px); filter: blur(6px); }
+      70% { transform: translateX(8px); filter: blur(0); }
+      100% { opacity: 1; transform: translateX(0); filter: blur(0); }
+    }
+    @keyframes coverSlideRight {
+      0% { opacity: 0; transform: translateX(140px); filter: blur(6px); }
+      70% { transform: translateX(-8px); filter: blur(0); }
+      100% { opacity: 1; transform: translateX(0); filter: blur(0); }
+    }
+    @keyframes coverSpringDrop {
+      0% { opacity: 0; transform: translateY(-70px) scale(0.85); }
+      60% { opacity: 1; transform: translateY(12px) scale(1.04); }
+      80% { transform: translateY(-4px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes coverFadeZoom {
+      0% { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes coverShimmerFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 僅在首頁呈現 (.present) 時自動觸發 */
+    .present .cover-title-line1 {
+      display: inline-block;
+      animation: coverSlideLeft 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+    .present .cover-title-line2 {
+      display: inline-block;
+      animation: coverSlideRight 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+    }
+    .present .cover-capsule {
+      animation: coverSpringDrop 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    }
+    .present .cover-capsule:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 12px 35px rgba(79, 195, 247, 0.5);
+    }
+    .present .cover-vision {
+      animation: coverFadeZoom 0.8s ease 0.8s both;
+    }
+    .present .cover-speaker-bar {
+      animation: coverFadeZoom 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.0s both;
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.35s ease;
+    }
+    .present .cover-speaker-bar:hover {
+      transform: translateY(-3px);
+      border-color: rgba(79, 195, 247, 0.45);
+    }
+
+    /* ✨ Slide 2：痛點卡片滑鼠移入放大兩倍 (scale 1.85) ＋ 內部所有資訊同比例放大 ＋ 移開平滑復原 */
+    .stagger-pain-card {
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, background 0.25s ease, border-color 0.25s ease !important;
+      cursor: pointer !important;
+      position: relative !important;
+      z-index: 1 !important;
+      will-change: transform, box-shadow;
+    }
+    .stagger-pain-card:nth-child(1) { transform-origin: 15% 45% !important; }
+    .stagger-pain-card:nth-child(2) { transform-origin: 50% 45% !important; }
+    .stagger-pain-card:nth-child(3) { transform-origin: 85% 45% !important; }
+
+    .stagger-pain-card .card-icon-box {
+      display: inline-block;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+    }
+    .stagger-pain-card .card-desc {
+      transition: color 0.25s ease;
+    }
+
+    /* ✨ 滑鼠移入放大近兩倍 (scale 1.85)，資訊與字體跟隨卡片 100% 同比例放大，置頂遮蔽其他卡片 */
+    .stagger-pain-card:hover,
+    .stagger-pain-card.is-magnified {
+      transform: scale(1.85) !important;
+      z-index: 999999 !important;
+      background: rgba(10, 14, 20, 0.97) !important;
+      backdrop-filter: blur(25px) !important;
+      -webkit-backdrop-filter: blur(25px) !important;
+    }
+    .stagger-pain-card:hover .card-desc,
+    .stagger-pain-card.is-magnified .card-desc {
+      color: #ffffff !important;
+      font-weight: 500 !important;
+    }
+
+    /* 痛點 1 (琥珀黃) 放大發光 */
+    .stagger-card-warn:hover,
+    .stagger-card-warn.is-magnified {
+      border-color: var(--warn) !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 183, 77, 0.7) !important;
+    }
+    .stagger-card-warn:hover .card-icon-box,
+    .stagger-card-warn.is-magnified .card-icon-box {
+      filter: drop-shadow(0 0 16px var(--warn));
+      transform: scale(1.2) rotate(8deg);
+    }
+
+    /* 痛點 2 (珊瑚橘) 放大發光 */
+    .stagger-card-accent:hover,
+    .stagger-card-accent.is-magnified {
+      border-color: var(--accent) !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 45px rgba(232, 100, 58, 0.7) !important;
+    }
+    .stagger-card-accent:hover .card-icon-box,
+    .stagger-card-accent.is-magnified .card-icon-box {
+      filter: drop-shadow(0 0 16px var(--accent));
+      transform: scale(1.2) rotate(8deg);
+    }
+
+    /* 痛點 3 (警戒紅 + 心跳警報) 放大發光 */
+    @keyframes redAlarmPulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(255,82,82,0.6)); }
+      50% { transform: scale(1.35) rotate(-6deg); filter: drop-shadow(0 0 16px rgba(255,82,82,1)); }
+    }
+    .stagger-card-danger .card-icon-box {
+      animation: redAlarmPulse 1.8s ease-in-out infinite;
+    }
+    .stagger-card-danger:hover,
+    .stagger-card-danger.is-magnified {
+      border-color: #ff5252 !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 50px rgba(255, 82, 82, 0.8) !important;
+    }
+    .stagger-card-danger:hover .card-icon-box,
+    .stagger-card-danger.is-magnified .card-icon-box {
+      animation: none;
+      transform: scale(1.25) rotate(-8deg);
+      filter: drop-shadow(0 0 20px #ff5252);
+    }
+
+    /* ✨ Slide 3：四大支柱卡片滑鼠移入放大兩倍 (scale 1.85) ＋ 內部所有資訊同比例放大 ＋ 移開平滑復原 */
+    .stagger-pillar-card {
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, background 0.25s ease, border-color 0.25s ease !important;
+      cursor: pointer !important;
+      position: relative !important;
+      z-index: 1 !important;
+      will-change: transform, box-shadow;
+    }
+    .stagger-pillar-card:nth-child(1) { transform-origin: 10% 45% !important; }
+    .stagger-pillar-card:nth-child(2) { transform-origin: 35% 45% !important; }
+    .stagger-pillar-card:nth-child(3) { transform-origin: 65% 45% !important; }
+    .stagger-pillar-card:nth-child(4) { transform-origin: 90% 45% !important; }
+
+    .stagger-pillar-card .card-icon-box {
+      display: inline-block;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+    }
+    .stagger-pillar-card .card-desc {
+      transition: color 0.25s ease;
+    }
+
+    /* 滑鼠移入放大近兩倍 (scale 1.85)，資訊與字體跟隨卡片 100% 同比例放大，置頂遮蔽其他卡片 */
+    .stagger-pillar-card:hover,
+    .stagger-pillar-card.is-magnified {
+      transform: scale(1.85) !important;
+      z-index: 999999 !important;
+      background: rgba(10, 14, 20, 0.97) !important;
+      backdrop-filter: blur(25px) !important;
+      -webkit-backdrop-filter: blur(25px) !important;
+    }
+    .stagger-pillar-card:hover .card-desc,
+    .stagger-pillar-card.is-magnified .card-desc {
+      color: #ffffff !important;
+      font-weight: 500 !important;
+    }
+
+    /* 支柱 1 (領導 - 科技天藍) */
+    .stagger-pillar-blue:hover,
+    .stagger-pillar-blue.is-magnified {
+      border-color: var(--accent2) !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 45px rgba(79, 195, 247, 0.75) !important;
+    }
+    .stagger-pillar-blue:hover .card-icon-box,
+    .stagger-pillar-blue.is-magnified .card-icon-box {
+      filter: drop-shadow(0 0 16px var(--accent2));
+      transform: scale(1.2) rotate(8deg);
+    }
+
+    /* 支柱 2 (情況監測 - 珊瑚橘紅) */
+    .stagger-pillar-orange:hover,
+    .stagger-pillar-orange.is-magnified {
+      border-color: var(--accent) !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 45px rgba(232, 100, 58, 0.75) !important;
+    }
+    .stagger-pillar-orange:hover .card-icon-box,
+    .stagger-pillar-orange.is-magnified .card-icon-box {
+      filter: drop-shadow(0 0 16px var(--accent));
+      transform: scale(1.2) rotate(-8deg);
+    }
+
+    /* 支柱 3 (互助合作 - 翡翠薄荷綠) */
+    .stagger-pillar-green:hover,
+    .stagger-pillar-green.is-magnified {
+      border-color: var(--success) !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 45px rgba(102, 187, 106, 0.75) !important;
+    }
+    .stagger-pillar-green:hover .card-icon-box,
+    .stagger-pillar-green.is-magnified .card-icon-box {
+      filter: drop-shadow(0 0 16px var(--success));
+      transform: scale(1.2) rotate(8deg);
+    }
+
+    /* 支柱 4 (有效溝通 - 琥珀明黃) */
+    .stagger-pillar-yellow:hover,
+    .stagger-pillar-yellow.is-magnified {
+      border-color: var(--warn) !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 183, 77, 0.75) !important;
+    }
+    .stagger-pillar-yellow:hover .card-icon-box,
+    .stagger-pillar-yellow.is-magnified .card-icon-box {
+      filter: drop-shadow(0 0 16px var(--warn));
+      transform: scale(1.2) rotate(-8deg);
+    }
+
+    /* ✨ Slide 4：下方「醫療 GPS」觸發 ➔ 三個核心指引框格直接往上跳躍，完全覆蓋上方兩張卡片並在中間平均分配 */
+    .slide4-main-stage {
+      position: relative;
+      width: 100%;
+    }
+
+    /* 上方原本的兩張卡片（指定型 vs 情境型） */
+    .slide4-base-cards {
+      transition: opacity 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+    }
+    .slide4-base-cards.is-dimmed {
+      opacity: 0 !important;
+      transform: scale(0.96) !important;
+      pointer-events: none !important;
+    }
+
+    /* 往上跳躍覆蓋的三個框格舞台 (平均分配在頁面中間) */
+    .slide4-trio-stage {
       position: absolute;
-      inset: -50px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 99;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      align-items: stretch;
+      opacity: 0;
       pointer-events: none;
-      background: radial-gradient(circle at 50% 40%, rgba(2, 136, 209, 0.22) 0%, rgba(232, 100, 58, 0.08) 45%, transparent 75%);
-      animation: starTwinkle 6s ease-in-out infinite alternate;
+      transform: translateY(90px) scale(0.92);
+      filter: blur(8px);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25),
+                  filter 0.32s ease;
+    }
+
+    /* 觸發時：直接往上跳，將上面兩個領導者剛好 cover 過去 */
+    .slide4-trio-stage.is-active {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translateY(0) scale(1) !important;
+      filter: blur(0) !important;
+    }
+
+    /* 三個跳躍框格的卡片樣式 */
+    .slide4-jump-card {
+      background: rgba(10, 16, 28, 0.98);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-radius: 12px;
+      padding: 18px 18px 16px 18px;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+    .slide4-jump-card:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    /* 框格 1 (目標是什麼？) */
+    .slide4-jump-1 {
+      border-top: 4px solid var(--accent2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(79, 195, 247, 0.45);
+    }
+    /* 框格 2 (發生了什麼事？) */
+    .slide4-jump-2 {
+      border-top: 4px solid var(--warn);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 183, 77, 0.45);
+    }
+    /* 框格 3 (接下來該做什麼！) */
+    .slide4-jump-3 {
+      border-top: 4px solid var(--success);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(102, 187, 106, 0.45);
+    }
+
+    .slide4-jump-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .slide4-jump-title {
+      font-size: 0.92em !important;
+      font-weight: 800 !important;
+      margin-bottom: 6px !important;
+      letter-spacing: 0.5px;
+    }
+    .slide4-jump-desc {
+      font-size: 0.48em !important;
+      line-height: 1.75 !important;
+      color: #ffffff !important;
+      margin: 0 !important;
+    }
+
+    /* 下方「醫療 GPS」互動格子 */
+    .slide4-gps-trigger-box {
+      margin-top: 20px;
+      text-align: left;
+      background: rgba(79, 195, 247, 0.12);
+      border: 1.5px solid rgba(79, 195, 247, 0.35);
+      border-left: 6px solid var(--accent2);
+      border-radius: 12px;
+      padding: 13px 22px;
+      cursor: pointer;
+      position: relative;
+      z-index: 20;
+      transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide4-gps-trigger-box:hover,
+    .slide4-gps-trigger-box.is-active {
+      background: rgba(14, 22, 36, 0.96) !important;
+      border-color: #ff3344 !important;
+      border-left-color: #ff3344 !important;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 51, 68, 0.45) !important;
+    }
+
+    /* ✨ 關鍵字「醫療 GPS」：字體放大＋鮮明紅色＋高質感呼吸發光 */
+    .slide4-red-gps {
+      color: #ff3344 !important;
+      font-size: 1.3em !important;
+      font-weight: 900 !important;
+      letter-spacing: 1px;
+      padding: 2px 10px;
+      background: rgba(255, 51, 68, 0.14);
+      border: 1.5px solid rgba(255, 51, 68, 0.65);
+      border-radius: 8px;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 6px;
+      animation: redGpsPulse 2.2s infinite ease-in-out;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    @keyframes redGpsPulse {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 51, 68, 0.45), inset 0 0 8px rgba(255, 51, 68, 0.2);
+        border-color: rgba(255, 51, 68, 0.6);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 26px rgba(255, 51, 68, 0.85), inset 0 0 12px rgba(255, 51, 68, 0.4);
+        border-color: #ff5252;
+        transform: scale(1.05);
+      }
+    }
+
+    .slide4-trigger-hint {
+      font-size: 0.42em;
+      color: #ff8a80;
+      background: rgba(255, 51, 68, 0.16);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 51, 68, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      animation: hintFloat 1.8s ease-in-out infinite;
+    }
+    @keyframes hintFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .slide4-mini-indicators {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .slide4-mini-indicators .mini-pill {
+      font-size: 0.42em;
+      color: #c9d1d9;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
   </style>
 </head>
@@ -440,26 +833,26 @@
     <section data-background-image="images/cover.jpg" data-background-opacity="0.3">
       <div class="title-slide" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
         
-        <!-- 大霸氣主標題 -->
+        <!-- 大霸氣主標題：左右碰撞進場 + 專屬流光 -->
         <h1 style="font-size: 2.2em; line-height: 1.28; letter-spacing: 0.02em; font-weight: 800; text-shadow: 0 0 40px rgba(79, 195, 247, 0.45); margin-bottom: 0.2em;">
-          <span style="background: linear-gradient(135deg, #ffffff 30%, #4fc3f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TRM 團隊資源管理</span><br>
-          <span style="background: linear-gradient(135deg, var(--warn) 20%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">與情境模擬教學</span>
+          <span class="cover-title-line1" style="background: linear-gradient(135deg, #ffffff 30%, #4fc3f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TRM 團隊資源管理</span><br>
+          <span class="cover-title-line2" style="background: linear-gradient(135deg, var(--warn) 20%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">與情境模擬教學</span>
         </h1>
         
-        <!-- 玻璃膠囊副標題 -->
-        <div style="display: inline-block; background: rgba(22, 27, 34, 0.85); border: 1px solid rgba(79, 195, 247, 0.35); padding: 8px 24px; border-radius: 30px; margin-top: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.4);">
+        <!-- 玻璃膠囊副標題：物理重力微彈跳 (Cubic-Bezier) 下落 -->
+        <div class="cover-capsule" style="display: inline-block; background: rgba(22, 27, 34, 0.85); border: 1px solid rgba(79, 195, 247, 0.35); padding: 8px 24px; border-radius: 30px; margin-top: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); cursor: default;">
           <h2 style="color: var(--accent2); font-size: 0.88em; margin: 0; font-weight: 600; letter-spacing: 0.05em;">
             <i class="fa-solid fa-graduation-cap" style="margin-right: 6px; color: var(--accent2);"></i> 從理論、臨床實戰到教學引導口袋指南
           </h2>
         </div>
 
-        <!-- 願景文案 -->
-        <p class="subtitle" style="font-size: 0.62em; color: #a3b8cc; margin-top: 20px; letter-spacing: 0.06em;">
+        <!-- 願景文案：平滑由暗漸顯 -->
+        <p class="subtitle cover-vision" style="font-size: 0.62em; color: #a3b8cc; margin-top: 20px; letter-spacing: 0.06em;">
           建構高可靠度照護團隊 · 淬煉守護病安的直覺反應
         </p>
 
-        <!-- 最下方尊榮講者資訊列 -->
-        <div style="margin-top: 45px; background: rgba(13, 17, 23, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 10px 30px; border-radius: 40px; display: flex; align-items: center; gap: 24px; font-size: 0.52em; color: #e6edf3; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <!-- 最下方尊榮講者資訊列：微光浮現 + 懸停微彈跳 -->
+        <div class="cover-speaker-bar" style="margin-top: 45px; background: rgba(13, 17, 23, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 10px 30px; border-radius: 40px; display: flex; align-items: center; gap: 24px; font-size: 0.52em; color: #e6edf3; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
           <span><i class="fa-solid fa-user-doctor" style="color: var(--accent2); margin-right: 6px;"></i> <strong>主講人：</strong>江瑞益</span>
           <span style="color: rgba(255,255,255,0.25);">|</span>
           <span><i class="fa-solid fa-hospital" style="color: var(--accent); margin-right: 6px;"></i> <strong>單位：</strong>佳里奇美醫院</span>
@@ -485,11 +878,11 @@
       
       <div class="grid-3" style="gap:16px; align-items:stretch;">
         
-        <!-- 痛點 1 -->
-        <div class="glass-card auto-fade auto-fade-1 text-left" style="border-top:4px solid var(--warn);">
+        <!-- 痛點 1 (方案 B: 多維度非同步機關式解構) -->
+        <div class="glass-card stagger-pain-card stagger-card-warn auto-fade auto-fade-1 text-left" style="border-top:4px solid var(--warn);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <span class="badge-tag badge-warn">痛點 1</span>
-            <i class="fa-solid fa-users-line" style="color:var(--warn); font-size:1.4em;"></i>
+            <span class="card-icon-box"><i class="fa-solid fa-users-line" style="color:var(--warn); font-size:1.4em;"></i></span>
           </div>
           <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">同一空間各自忙碌？</h3>
           <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9;">
@@ -497,11 +890,11 @@
           </p>
         </div>
 
-        <!-- 痛點 2 -->
-        <div class="glass-card auto-fade auto-fade-2 text-left" style="border-top:4px solid var(--accent);">
+        <!-- 痛點 2 (方案 B: 多維度非同步機關式解構) -->
+        <div class="glass-card stagger-pain-card stagger-card-accent auto-fade auto-fade-2 text-left" style="border-top:4px solid var(--accent);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <span class="badge-tag badge-accent">痛點 2</span>
-            <i class="fa-solid fa-user-ninja" style="color:var(--accent); font-size:1.4em;"></i>
+            <span class="card-icon-box"><i class="fa-solid fa-user-ninja" style="color:var(--accent); font-size:1.4em;"></i></span>
           </div>
           <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">致命的資訊黑洞</h3>
           <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9;">
@@ -509,11 +902,11 @@
           </p>
         </div>
 
-        <!-- 痛點 3 -->
-        <div class="glass-card auto-fade auto-fade-3 text-left" style="border-top:4px solid #ff5252;">
+        <!-- 痛點 3 (方案 B: 多維度非同步機關式解構 + 心跳警戒微動) -->
+        <div class="glass-card stagger-pain-card stagger-card-danger auto-fade auto-fade-3 text-left" style="border-top:4px solid #ff5252;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <span class="badge-tag" style="background:rgba(255,82,82,0.25); color:#ff5252; border:1px solid #ff5252;">痛點 3</span>
-            <i class="fa-solid fa-triangle-exclamation" style="color:#ff5252; font-size:1.4em;"></i>
+            <span class="card-icon-box"><i class="fa-solid fa-triangle-exclamation" style="color:#ff5252; font-size:1.4em;"></i></span>
           </div>
           <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">缺乏共享心智模型</h3>
           <p class="card-desc" style="font-size:0.48em; line-height:1.7; color:#c9d1d9;">
@@ -544,10 +937,10 @@
       <div class="grid-4" style="gap:14px; align-items:stretch;">
         
         <!-- 支柱 1 -->
-        <div class="glass-card auto-fade auto-fade-1 text-left" style="border-top:4px solid var(--accent2);">
+        <div class="glass-card stagger-pillar-card stagger-pillar-blue auto-fade auto-fade-1 text-left" style="border-top:4px solid var(--accent2);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <span class="badge-tag badge-accent2">支柱 1</span>
-            <i class="fa-solid fa-compass" style="color:var(--accent2); font-size:1.3em;"></i>
+            <span class="card-icon-box"><i class="fa-solid fa-compass" style="color:var(--accent2); font-size:1.3em;"></i></span>
           </div>
           <h3 style="color:#ffffff; font-size:0.9em; margin-bottom:8px;">領導 (Leadership)</h3>
           <p class="card-desc" style="font-size:0.46em; line-height:1.7; color:#c9d1d9;">
@@ -556,10 +949,10 @@
         </div>
 
         <!-- 支柱 2 -->
-        <div class="glass-card auto-fade auto-fade-2 text-left" style="border-top:4px solid var(--accent);">
+        <div class="glass-card stagger-pillar-card stagger-pillar-orange auto-fade auto-fade-2 text-left" style="border-top:4px solid var(--accent);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <span class="badge-tag badge-accent">支柱 2</span>
-            <i class="fa-solid fa-chart-line" style="color:var(--accent); font-size:1.3em;"></i>
+            <span class="card-icon-box"><i class="fa-solid fa-chart-line" style="color:var(--accent); font-size:1.3em;"></i></span>
           </div>
           <h3 style="color:#ffffff; font-size:0.9em; margin-bottom:8px;">情況監測 (Monitoring)</h3>
           <p class="card-desc" style="font-size:0.46em; line-height:1.7; color:#c9d1d9;">
@@ -568,10 +961,10 @@
         </div>
 
         <!-- 支柱 3 -->
-        <div class="glass-card auto-fade auto-fade-3 text-left" style="border-top:4px solid var(--success);">
+        <div class="glass-card stagger-pillar-card stagger-pillar-green auto-fade auto-fade-3 text-left" style="border-top:4px solid var(--success);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <span class="badge-tag badge-success">支柱 3</span>
-            <i class="fa-solid fa-people-carry-box" style="color:var(--success); font-size:1.3em;"></i>
+            <span class="card-icon-box"><i class="fa-solid fa-people-carry-box" style="color:var(--success); font-size:1.3em;"></i></span>
           </div>
           <h3 style="color:#ffffff; font-size:0.9em; margin-bottom:8px;">互助合作 (Support)</h3>
           <p class="card-desc" style="font-size:0.46em; line-height:1.7; color:#c9d1d9;">
@@ -580,10 +973,10 @@
         </div>
 
         <!-- 支柱 4 -->
-        <div class="glass-card auto-fade auto-fade-4 text-left" style="border-top:4px solid var(--warn);">
+        <div class="glass-card stagger-pillar-card stagger-pillar-yellow auto-fade auto-fade-4 text-left" style="border-top:4px solid var(--warn);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <span class="badge-tag" style="background:rgba(255,183,77,0.25); color:var(--warn); border:1px solid var(--warn);">支柱 4</span>
-            <i class="fa-solid fa-bullhorn" style="color:var(--warn); font-size:1.3em;"></i>
+            <span class="card-icon-box"><i class="fa-solid fa-bullhorn" style="color:var(--warn); font-size:1.3em;"></i></span>
           </div>
           <h3 style="color:#ffffff; font-size:0.9em; margin-bottom:8px;">有效溝通 (Communication)</h3>
           <p class="card-desc" style="font-size:0.46em; line-height:1.7; color:#c9d1d9;">
@@ -610,38 +1003,102 @@
       <h2><i class="fa-solid fa-compass" style="color:var(--accent2);"></i> 核心一：指定型 vs 情境型領導者</h2>
       <p style="font-size:0.48em; color:#8b949e; margin-bottom:20px;">從傳統階級管理邁向動態情境賦權，打破職級與年資迷思的領導思維：</p>
 
-      <div class="grid-2" style="gap:20px; align-items:stretch;">
+      <div class="slide4-main-stage" id="slide4-main-stage">
         
-        <!-- 卡片 1: 指定型領導者 -->
-        <div class="glass-card auto-fade auto-fade-1 text-left" style="border-top:4px solid var(--accent);">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <span class="badge-tag badge-accent">行政職務 / 組織常設</span>
-            <i class="fa-solid fa-id-card-clip" style="color:var(--accent); font-size:1.4em;"></i>
+        <!-- 上方原本兩張卡片：指定型 vs 情境型 (當被觸發時會被上方跳躍卡片 cover 過去) -->
+        <div class="grid-2 slide4-base-cards" id="slide4-base-cards" style="gap:20px; align-items:stretch;">
+          
+          <!-- 卡片 1: 指定型領導者 -->
+          <div class="glass-card auto-fade auto-fade-1 text-left" style="border-top:4px solid var(--accent);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span class="badge-tag badge-accent">行政職務 / 組織常設</span>
+              <i class="fa-solid fa-id-card-clip" style="color:var(--accent); font-size:1.4em;"></i>
+            </div>
+            <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">指定型領導者 (Designated Leader)</h3>
+            <p class="card-desc" style="font-size:0.48em; line-height:1.8; color:#c9d1d9;">
+              由單位主管、組長或固定班表正式指派的負責人。<br>
+              職責在於<strong>行政維運、資源協調與長期方針管理</strong>，維護醫療科室的穩定日常運作基石。
+            </p>
           </div>
-          <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">指定型領導者 (Designated Leader)</h3>
-          <p class="card-desc" style="font-size:0.48em; line-height:1.8; color:#c9d1d9;">
-            由單位主管、組長或固定班表正式指派的負責人。<br>
-            職責在於<strong>行政維運、資源協調與長期方針管理</strong>，維護醫療科室的穩定日常運作基石。
-          </p>
+
+          <!-- 卡片 2: 情境型領導者 -->
+          <div class="glass-card auto-fade auto-fade-2 text-left" style="border-top:4px solid var(--accent2);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span class="badge-tag badge-accent2">臨床突發 / 動態授權</span>
+              <i class="fa-solid fa-bolt" style="color:var(--accent2); font-size:1.4em;"></i>
+            </div>
+            <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">情境型領導者 (Situational Leader)</h3>
+            <p class="card-desc" style="font-size:0.48em; line-height:1.8; color:#c9d1d9;">
+              <strong>看專業能力不看年資！</strong>在突發高壓危急當下，誰最掌握病患現況、最熟稔現場特殊規範（如 MRI 鐵磁安全），誰就是那一刻全場的總指揮！
+            </p>
+          </div>
+
         </div>
 
-        <!-- 卡片 2: 情境型領導者 -->
-        <div class="glass-card auto-fade auto-fade-2 text-left" style="border-top:4px solid var(--accent2);">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <span class="badge-tag badge-accent2">臨床突發 / 動態授權</span>
-            <i class="fa-solid fa-bolt" style="color:var(--accent2); font-size:1.4em;"></i>
+        <!-- ✨ 游標移向下方的「醫療 GPS」格子時，三個框格直接往上跳，剛好 cover 上方兩個領導者卡片，並平均分配在中間 -->
+        <div class="slide4-trio-stage" id="slide4-trio-stage">
+          
+          <!-- 框格 1: 目標是什麼？ -->
+          <div class="slide4-jump-card slide4-jump-1">
+            <div class="slide4-jump-header">
+              <span class="badge-tag badge-accent2">指引 1</span>
+              <i class="fa-solid fa-bullseye" style="color:var(--accent2); font-size:1.3em;"></i>
+            </div>
+            <h3 class="slide4-jump-title" style="color:#80d8ff;">目標是什麼？</h3>
+            <p class="slide4-jump-desc">
+              全團隊搶救目標與終點線一致！<br>
+              第一時間確立處置優先級與共同目標，凝聚共識，杜絕多頭馬車。
+            </p>
           </div>
-          <h3 style="color:#ffffff; font-size:0.95em; margin-bottom:8px;">情境型領導者 (Situational Leader)</h3>
-          <p class="card-desc" style="font-size:0.48em; line-height:1.8; color:#c9d1d9;">
-            <strong>看專業能力不看年資！</strong>在突發高壓危急當下，誰最掌握病患現況、最熟稔現場特殊規範（如 MRI 鐵磁安全），誰就是那一刻全場的總指揮！
-          </p>
+
+          <!-- 框格 2: 發生了什麼事？ -->
+          <div class="slide4-jump-card slide4-jump-2">
+            <div class="slide4-jump-header">
+              <span class="badge-tag badge-warn">指引 2</span>
+              <i class="fa-solid fa-triangle-exclamation" style="color:var(--warn); font-size:1.3em;"></i>
+            </div>
+            <h3 class="slide4-jump-title" style="color:#ffe082;">發生了什麼事？</h3>
+            <p class="slide4-jump-desc">
+              第一時間 Call-Out 大聲通報！<br>
+              動態同步生命徵象與最新危機現況，打破個人資訊黑洞，共享心智模型。
+            </p>
+          </div>
+
+          <!-- 框格 3: 接下來該做什麼！ -->
+          <div class="slide4-jump-card slide4-jump-3">
+            <div class="slide4-jump-header">
+              <span class="badge-tag badge-success">指引 3</span>
+              <i class="fa-solid fa-forward-step" style="color:var(--success); font-size:1.3em;"></i>
+            </div>
+            <h3 class="slide4-jump-title" style="color:#a5d6a7;">接下來該做什麼！</h3>
+            <p class="slide4-jump-desc">
+              明確點名指派任務與 Check-Back！<br>
+              落實閉環回饋確認，確保每位夥伴各司其職、主動補位，達成零漏失。
+            </p>
+          </div>
+
         </div>
 
       </div>
 
-      <div class="highlight-box auto-fade auto-fade-3" style="margin-top:20px; text-align:left; background:rgba(79, 195, 247, 0.12); border-left-color:var(--accent2);">
-        <strong style="color:var(--accent2);"><i class="fa-solid fa-map-location-dot"></i> 真正的領導核心定位：</strong>
-        現場最混亂時，主動站出來擔任全團隊的<strong>「醫療 GPS」</strong>——讓每位成員清清楚楚知道：目標是什麼、發生了什麼事、接下來每個人該做什麼！
+      <!-- 下方的格子：醫療 GPS 放大為紅色字體，移入時觸發上方三個框格跳躍覆蓋 -->
+      <div class="slide4-gps-trigger-box auto-fade auto-fade-3" id="slide4-gps-trigger">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="text-align:left;">
+            <strong style="color:var(--accent2); font-size:0.92em;"><i class="fa-solid fa-map-location-dot"></i> 真正的領導核心定位：</strong>
+            <span style="font-size:0.82em; color:#ffffff; margin-left:4px;">現場最混亂時，主動站出來擔任全團隊的</span>
+            <span class="slide4-red-gps">醫療 GPS</span>
+            <span style="font-size:0.8em; color:#c9d1d9; margin-left:2px;">——讓每位成員清清楚楚知道：</span>
+          </div>
+          <div class="slide4-trigger-hint">
+            <i class="fa-solid fa-arrow-up"></i> 移入展開三大指引 ↑
+          </div>
+        </div>
+        <div class="slide4-mini-indicators">
+          <span class="mini-pill"><i class="fa-solid fa-bullseye" style="color:var(--accent2);"></i> 目標是什麼</span>
+          <span class="mini-pill"><i class="fa-solid fa-triangle-exclamation" style="color:var(--warn);"></i> 發生了什麼事</span>
+          <span class="mini-pill"><i class="fa-solid fa-forward-step" style="color:var(--success);"></i> 接下來該做什麼</span>
+        </div>
       </div>
 
       <aside class="notes">
@@ -2059,6 +2516,105 @@
       navBar.classList.remove("hidden-mode");
     });
   }
+
+  // ✨ 第 2 頁痛點卡片：切換到第二頁時啟用，滑鼠移入卡片與文字圖標放大兩倍 (scale 1.85)，移出平滑復原，可重複無限次使用
+  function initSlide2CardZoom() {
+    const painCards = document.querySelectorAll(".stagger-pain-card");
+    painCards.forEach((card, index) => {
+      // 依位置指定縮放錨點，確保卡片放大時不超出螢幕
+      if (index === 0) card.style.transformOrigin = "15% 45%";
+      else if (index === 1) card.style.transformOrigin = "50% 45%";
+      else if (index === 2) card.style.transformOrigin = "85% 45%";
+
+      // 清除舊事件避免重複綁定
+      card.onmouseenter = function() {
+        this.classList.add("is-magnified");
+        this.style.setProperty("transform", "scale(1.85)", "important");
+        this.style.setProperty("z-index", "999999", "important");
+      };
+
+      card.onmouseleave = function() {
+        this.classList.remove("is-magnified");
+        this.style.removeProperty("transform");
+        this.style.removeProperty("z-index");
+      };
+    });
+  }
+
+  // ✨ 第 3 頁四大支柱卡片：切換到第三頁時啟用，滑鼠移入卡片與文字圖標放大兩倍 (scale 1.85)，移出平滑復原，可重複無限次使用
+  function initSlide3CardZoom() {
+    const pillarCards = document.querySelectorAll(".stagger-pillar-card");
+    pillarCards.forEach((card, index) => {
+      // 依位置指定縮放錨點，確保 4 欄卡片放大時不超出螢幕
+      if (index === 0) card.style.transformOrigin = "10% 45%";
+      else if (index === 1) card.style.transformOrigin = "35% 45%";
+      else if (index === 2) card.style.transformOrigin = "65% 45%";
+      else if (index === 3) card.style.transformOrigin = "90% 45%";
+
+      // 移入放大與移出復原事件
+      card.onmouseenter = function() {
+        this.classList.add("is-magnified");
+        this.style.setProperty("transform", "scale(1.85)", "important");
+        this.style.setProperty("z-index", "999999", "important");
+      };
+
+      card.onmouseleave = function() {
+        this.classList.remove("is-magnified");
+        this.style.removeProperty("transform");
+        this.style.removeProperty("z-index");
+      };
+    });
+  }
+
+  // ✨ 第 4 頁：滑鼠移向下方「醫療 GPS」或上方覆蓋的三個框格時，直接往上跳躍完全覆蓋上方兩張領導者卡片（平均分配在中間），移開平滑復原
+  function initSlide4JumpCover() {
+    const triggerBox = document.getElementById("slide4-gps-trigger");
+    const trioStage = document.getElementById("slide4-trio-stage");
+    const baseCards = document.getElementById("slide4-base-cards");
+
+    if (!triggerBox || !trioStage) return;
+
+    let hoverTimer = null;
+
+    function showCover() {
+      if (hoverTimer) clearTimeout(hoverTimer);
+      trioStage.classList.add("is-active");
+      triggerBox.classList.add("is-active");
+      if (baseCards) baseCards.classList.add("is-dimmed");
+    }
+
+    function hideCover() {
+      hoverTimer = setTimeout(() => {
+        trioStage.classList.remove("is-active");
+        triggerBox.classList.remove("is-active");
+        if (baseCards) baseCards.classList.remove("is-dimmed");
+      }, 120);
+    }
+
+    triggerBox.onmouseenter = showCover;
+    triggerBox.onmouseleave = hideCover;
+    trioStage.onmouseenter = showCover;
+    trioStage.onmouseleave = hideCover;
+  }
+
+  // 頁面載入與每次切換投影片時持續確保事件生效
+  initSlide2CardZoom();
+  initSlide3CardZoom();
+  initSlide4JumpCover();
+  Reveal.on("slidechanged", function(event) {
+    if (event.indexh === 1) { // 第 2 頁 (index 1)
+      initSlide2CardZoom();
+    } else if (event.indexh === 2) { // 第 3 頁 (index 2)
+      initSlide3CardZoom();
+    } else if (event.indexh === 3) { // 第 4 頁 (index 3)
+      initSlide4JumpCover();
+    }
+  });
+  Reveal.on("ready", function() {
+    initSlide2CardZoom();
+    initSlide3CardZoom();
+    initSlide4JumpCover();
+  });
 
   // 滑桿對比控制 JS (Slide 8)
   function updateSlider12(val) {
