@@ -813,6 +813,47 @@
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
+    /* Slide 18: ISBAR 與閉環溝通 專用懸停放大樣式（左向右長、右向左長，不出螢幕邊界） */
+    .glass-card:has(.isbar-row),
+    .glass-card:has(.closed-loop-row) {
+      overflow: visible;
+      position: relative;
+    }
+    .glass-card:has(.isbar-row:hover),
+    .glass-card:has(.closed-loop-row:hover),
+    .glass-card:has(.closed-loop-row.active) {
+      z-index: 15;
+    }
+    .isbar-row,
+    .closed-loop-row {
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+    }
+    .isbar-row {
+      transform-origin: left center;
+    }
+    .closed-loop-row {
+      transform-origin: right center;
+    }
+    .isbar-row:hover {
+      transform: scale(1.5);
+      z-index: 10;
+      box-shadow: 0 8px 28px rgba(0,0,0,.6);
+      background: rgba(22, 27, 34, 0.95) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .closed-loop-row:hover,
+    .closed-loop-row.active {
+      transform: scale(1.5);
+      z-index: 10;
+      box-shadow: 0 8px 28px rgba(0,0,0,.6);
+      background: rgba(22, 27, 34, 0.95) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
   </style>
 </head>
 <body>
@@ -1223,7 +1264,7 @@
           <!-- 小小點擊播放按鈕方格 -->
           <div style="margin-top:10px;">
             <button onclick="openBriefVideoModal()" style="background:rgba(79, 195, 247, 0.18); color:var(--accent2); border:1px solid var(--accent2); border-radius:14px; padding:6px 14px; font-size:0.44em; font-weight:bold; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s ease;">
-              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看 30 秒教學影片
+              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看約35秒教學影片
             </button>
           </div>
         </div>
@@ -1241,7 +1282,7 @@
           <!-- 小小點擊播放按鈕方格 -->
           <div style="margin-top:10px;">
             <button onclick="openHuddleVideoModal()" style="background:rgba(255, 183, 77, 0.18); color:var(--warn); border:1px solid var(--warn); border-radius:14px; padding:6px 14px; font-size:0.44em; font-weight:bold; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s ease;">
-              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看 30 秒教學影片
+              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看約35秒教學影片
             </button>
           </div>
         </div>
@@ -1259,7 +1300,7 @@
           <!-- 小小點擊播放按鈕方格 -->
           <div style="margin-top:10px;">
             <button onclick="openDebriefVideoModal()" style="background:rgba(129, 199, 132, 0.18); color:var(--success); border:1px solid var(--success); border-radius:14px; padding:6px 14px; font-size:0.44em; font-weight:bold; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s ease;">
-              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看 30 秒教學影片
+              <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看約35秒教學影片
             </button>
           </div>
         </div>
@@ -1781,7 +1822,7 @@
 
           <div style="display:flex; flex-direction:column; gap:6px;">
             <!-- I -->
-            <div style="background:rgba(255,255,255,0.05); border-left:3px solid #4fc3f7; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
+            <div class="isbar-row" style="background:rgba(255,255,255,0.05); border-left:3px solid #4fc3f7; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
               <span style="background:#4fc3f7; color:#000; font-weight:800; font-size:0.48em; padding:1px 5px; border-radius:4px;">I</span>
               <div>
                 <strong style="color:#4fc3f7; font-size:0.48em;">Intro (自我介紹)：</strong>
@@ -1790,7 +1831,7 @@
             </div>
 
             <!-- S -->
-            <div style="background:rgba(255,255,255,0.05); border-left:3px solid #ff7043; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
+            <div class="isbar-row" style="background:rgba(255,255,255,0.05); border-left:3px solid #ff7043; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
               <span style="background:#ff7043; color:#fff; font-weight:800; font-size:0.48em; padding:1px 5px; border-radius:4px;">S</span>
               <div>
                 <strong style="color:#ff7043; font-size:0.48em;">Situation (目前狀況)：</strong>
@@ -1799,7 +1840,7 @@
             </div>
 
             <!-- B -->
-            <div style="background:rgba(255,255,255,0.05); border-left:3px solid #ba68c8; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
+            <div class="isbar-row" style="background:rgba(255,255,255,0.05); border-left:3px solid #ba68c8; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
               <span style="background:#ba68c8; color:#fff; font-weight:800; font-size:0.48em; padding:1px 5px; border-radius:4px;">B</span>
               <div>
                 <strong style="color:#ba68c8; font-size:0.48em;">Background (重要背景)：</strong>
@@ -1808,7 +1849,7 @@
             </div>
 
             <!-- A -->
-            <div style="background:rgba(255,255,255,0.05); border-left:3px solid #ffb74d; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
+            <div class="isbar-row" style="background:rgba(255,255,255,0.05); border-left:3px solid #ffb74d; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
               <span style="background:#ffb74d; color:#000; font-weight:800; font-size:0.48em; padding:1px 5px; border-radius:4px;">A</span>
               <div>
                 <strong style="color:#ffb74d; font-size:0.48em;">Assessment (評估檢查)：</strong>
@@ -1817,7 +1858,7 @@
             </div>
 
             <!-- R -->
-            <div style="background:rgba(255,255,255,0.05); border-left:3px solid #81c784; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
+            <div class="isbar-row" style="background:rgba(255,255,255,0.05); border-left:3px solid #81c784; padding:4px 8px; border-radius:5px; display:flex; align-items:center; gap:8px;">
               <span style="background:#81c784; color:#000; font-weight:800; font-size:0.48em; padding:1px 5px; border-radius:4px;">R</span>
               <div>
                 <strong style="color:#81c784; font-size:0.48em;">Recommendation (建議處置)：</strong>
@@ -1850,7 +1891,7 @@
 
             <div style="display:flex; flex-direction:column; gap:5px;">
               <!-- 第 1 步：Call-Out -->
-              <div style="background:rgba(255, 183, 77, 0.08); border-left:3px solid #ffb74d; padding:4px 8px; border-radius:5px;">
+              <div class="closed-loop-row" style="background:rgba(255, 183, 77, 0.08); border-left:3px solid #ffb74d; padding:4px 8px; border-radius:5px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1px;">
                   <span style="background:#ffb74d; color:#000; font-weight:800; font-size:0.42em; padding:1px 5px; border-radius:3px;">1. Call-Out (發送通報)</span>
                   <span style="font-size:0.38em; color:#ffe0b2;">大聲宣告關鍵數據</span>
@@ -1861,7 +1902,7 @@
               </div>
 
               <!-- 第 2 步：Check-Back -->
-              <div style="background:rgba(79, 195, 247, 0.08); border-left:3px solid #4fc3f7; padding:4px 8px; border-radius:5px;">
+              <div class="closed-loop-row" style="background:rgba(79, 195, 247, 0.08); border-left:3px solid #4fc3f7; padding:4px 8px; border-radius:5px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1px;">
                   <span style="background:#4fc3f7; color:#000; font-weight:800; font-size:0.42em; padding:1px 5px; border-radius:3px;">2. Check-Back (接收覆核)</span>
                   <span style="font-size:0.38em; color:#b3e5fc;">完整重複關鍵參數</span>
@@ -1872,7 +1913,7 @@
               </div>
 
               <!-- 第 3 步：Close the Loop -->
-              <div style="background:rgba(129, 199, 132, 0.08); border-left:3px solid #81c784; padding:4px 8px; border-radius:5px;">
+              <div class="closed-loop-row" style="background:rgba(129, 199, 132, 0.08); border-left:3px solid #81c784; padding:4px 8px; border-radius:5px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1px;">
                   <span style="background:#81c784; color:#000; font-weight:800; font-size:0.42em; padding:1px 5px; border-radius:3px;">3. Close the Loop (雙向驗證)</span>
                   <span style="font-size:0.38em; color:#c8e6c9;">參數驗證完成閉環</span>
@@ -1883,7 +1924,7 @@
               </div>
 
               <!-- 第 4 步：Execute -->
-              <div style="background:rgba(232, 100, 58, 0.08); border-left:3px solid #e8643a; padding:4px 8px; border-radius:5px;">
+              <div class="closed-loop-row" style="background:rgba(232, 100, 58, 0.08); border-left:3px solid #e8643a; padding:4px 8px; border-radius:5px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1px;">
                   <span style="background:#e8643a; color:#fff; font-weight:800; font-size:0.42em; padding:1px 5px; border-radius:3px;">4. Execute (確認執行)</span>
                   <span style="font-size:0.38em; color:#ffccbc;">全團隊同步啟動處置</span>
@@ -2831,8 +2872,100 @@
       closeAllVideoModals();
     }
   }, true);
+  // ✨ Slide 17/18：右格「訊息閉環迴路」語音播放與 4 格時間軸連動放大
+  (function initClosedLoopAudioSync() {
+    const audio = document.getElementById('closed-loop-audio');
+    const playBtn = document.getElementById('closed-loop-play-btn');
+    if (!audio) return;
 
+    // 4 段旁白實測起迄時間常數（秒，靜音空檔歸前一段，全程有且僅有一格放大）
+    const CLOSED_LOOP_TIMELINE = [
+      { step: 1, start: 0.0,  end: 15.0 }, // 1. Call-Out (陳護理師 18號IC/Optiray 350)
+      { step: 2, start: 15.0, end: 28.4 }, // 2. Check-Back (林放射師 流速3ml/總量80)
+      { step: 3, start: 28.4, end: 41.8 }, // 3. Close the Loop (陳護理師 確認無氣泡)
+      { step: 4, start: 41.8, end: 45.0 }  // 4. Execute (林放射師 檢查開始)
+    ];
 
+    function getRows() {
+      return document.querySelectorAll('.closed-loop-row');
+    }
+
+    function clearAllActive() {
+      const rows = getRows();
+      rows.forEach(r => r.classList.remove('active'));
+    }
+
+    function updateActiveByTime(currentTime) {
+      const rows = getRows();
+      if (!rows.length) return;
+
+      let matchedIndex = -1;
+      for (let i = 0; i < CLOSED_LOOP_TIMELINE.length; i++) {
+        const seg = CLOSED_LOOP_TIMELINE[i];
+        if (currentTime >= seg.start && currentTime < seg.end) {
+          matchedIndex = i;
+          break;
+        }
+      }
+
+      rows.forEach((row, i) => {
+        if (i === matchedIndex) {
+          row.classList.add('active');
+        } else {
+          row.classList.remove('active');
+        }
+      });
+    }
+
+    // 監聽時間更新
+    audio.addEventListener('timeupdate', function() {
+      if (!audio.paused && !audio.ended) {
+        updateActiveByTime(audio.currentTime);
+      }
+    });
+
+    // 監聽播放開始
+    audio.addEventListener('play', function() {
+      updateActiveByTime(audio.currentTime);
+    });
+
+    // 監聽暫停
+    audio.addEventListener('pause', function() {
+      clearAllActive();
+    });
+
+    // 監聽播放結束
+    audio.addEventListener('ended', function() {
+      clearAllActive();
+    });
+
+    // 監聽進度跳轉
+    audio.addEventListener('seeked', function() {
+      if (!audio.paused && !audio.ended) {
+        updateActiveByTime(audio.currentTime);
+      } else {
+        clearAllActive();
+      }
+    });
+
+    // 監聽 Reveal 切換投影片時，暫停音檔並清除 active
+    if (window.Reveal) {
+      Reveal.on('slidechanged', function() {
+        if (!audio.paused) {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+        clearAllActive();
+        if (playBtn) {
+          const span = playBtn.querySelector('span');
+          const icon = playBtn.querySelector('i');
+          if (span) span.textContent = '播放語音 (44s)';
+          if (icon) icon.className = 'fa-solid fa-play';
+          playBtn.style.background = 'linear-gradient(135deg, #ffb74d, #ff9800)';
+        }
+      });
+    }
+  })();
 
 </script>
 
@@ -2840,7 +2973,7 @@
 <div id="brief-video-modal" class="video-modal-overlay" onclick="closeBriefVideoModal(event)">
   <div class="video-modal-box" onclick="event.stopPropagation()">
     <div class="video-modal-header">
-      <div class="video-modal-title"><i class="fa-solid fa-circle-play" style="color:var(--accent2);"></i> 30 秒 Brief (事前說明) 精華教學影片</div>
+      <div class="video-modal-title"><i class="fa-solid fa-circle-play" style="color:var(--accent2);"></i> 約 35 秒 Brief (事前說明) 精華教學影片</div>
       <button class="video-modal-close-btn" onclick="closeBriefVideoModal(event)">✕ 關閉影片</button>
     </div>
     <div class="video-modal-body">
@@ -2856,7 +2989,7 @@
 <div id="huddle-video-modal" class="video-modal-overlay" onclick="closeHuddleVideoModal(event)">
   <div class="video-modal-box" onclick="event.stopPropagation()">
     <div class="video-modal-header">
-      <div class="video-modal-title"><i class="fa-solid fa-circle-play" style="color:var(--warn);"></i> 30 秒 Huddle (過程中討論) 精華教學影片</div>
+      <div class="video-modal-title"><i class="fa-solid fa-circle-play" style="color:var(--warn);"></i> 約 35 秒 Huddle (過程中討論) 精華教學影片</div>
       <button class="video-modal-close-btn" onclick="closeHuddleVideoModal(event)">✕ 關閉影片</button>
     </div>
     <div class="video-modal-body">
@@ -2872,7 +3005,7 @@
 <div id="debrief-video-modal" class="video-modal-overlay" onclick="closeDebriefVideoModal(event)">
   <div class="video-modal-box" onclick="event.stopPropagation()">
     <div class="video-modal-header">
-      <div class="video-modal-title"><i class="fa-solid fa-circle-play" style="color:var(--success);"></i> 30 秒 Debrief (事後檢視) 精華教學影片</div>
+      <div class="video-modal-title"><i class="fa-solid fa-circle-play" style="color:var(--success);"></i> 約 35 秒 Debrief (事後檢視) 精華教學影片</div>
       <button class="video-modal-close-btn" onclick="closeDebriefVideoModal(event)">✕ 關閉影片</button>
     </div>
     <div class="video-modal-body">
