@@ -1760,38 +1760,34 @@
       .s12-src, .s12-pat, .s12.blame .s12-stage::before { animation: none !important; }
     }
 
-    /* 🛑 Slide 13：STOP THE LINE 安燈拉繩（輸送帶載著病人進掃描儀；聲音一級一級升高，直到「安全 STOP」讓整條線停下） */
-    .reveal .s13 .s13-sub { margin-bottom: 8px !important; }
-    .s13-stage { position: relative; height: 172px; margin: 0 0 8px; }
+    /* 🛑 Slide 13（重做）：同一個案例、兩幕。第一幕「二次挑戰」＝敲門兩次（第一次被當雜音、第二次才是訊號）；第二幕「CUS」＝一階一階往上走，聽到的人越來越多，直到「安全 STOP」讓整條線停下 */
+    .reveal .s13 .s13-sub { margin-bottom: 6px !important; }
     .reveal .s13 h2 { margin-bottom: 0.2em !important; }
+    .s13-stage { position: relative; height: 308px; margin: 0 0 2px; }
+    .s13-stage.snap * { transition: none !important; }
     .s13-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
     /* 發聲的人（放射師） */
     .s13-spk {
-      position: absolute; transform: translate(-50%, -50%); width: 76px; height: 76px; border-radius: 50%;
+      position: absolute; transform: translate(-50%, -50%); width: 76px; height: 76px; border-radius: 50%; z-index: 2;
       display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.95em; pointer-events: none;
       background: radial-gradient(circle at 35% 30%, #b3ecff, #0288d1 76%);
       box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.25), 0 0 30px rgba(79, 195, 247, 0.7);
+      transition: left 0.75s cubic-bezier(0.4, 0, 0.2, 1), top 0.75s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease;
     }
     .s13-spk.talk { animation: s13Talk 0.55s ease; }
     @keyframes s13Talk { 0% { scale: 1; } 30% { scale: 1.16; box-shadow: 0 0 0 10px rgba(79, 195, 247, 0.3), 0 0 46px rgba(79, 195, 247, 0.95); } 100% { scale: 1; } }
     .s13-spk.loud { background: radial-gradient(circle at 35% 30%, #ffcdd2, #e53935 76%); box-shadow: 0 0 0 5px rgba(255, 82, 82, 0.3), 0 0 40px rgba(255, 82, 82, 0.9); }
-    /* 語氣層層升級：C U S 三格（字母沿用原文） */
-    .s13-lv {
-      position: absolute; transform: translate(-50%, -50%); width: 32px; height: 32px; border-radius: 9px; pointer-events: none;
-      display: flex; align-items: center; justify-content: center; font-size: 0.46em; font-weight: 900;
-      color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.22);
-      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .s13-lv.on { color: #0d1117; background: var(--c); border-color: var(--c); box-shadow: 0 0 16px var(--c); scale: 1.15; }
 
-    /* 忙碌的同事：低頭工作 → 瞥見 → 警覺 → 全員凍結 */
+    /* 同事：低頭工作 → 敷衍 → 瞥見 → 警覺 → 全員凍結 */
     .s13-stf {
-      position: absolute; transform: translate(-50%, -50%); width: 60px; height: 60px; border-radius: 50%; color: #cfd8dc;
+      position: absolute; transform: translate(-50%, -50%); width: 60px; height: 60px; border-radius: 50%; color: #cfd8dc; z-index: 2;
       display: flex; align-items: center; justify-content: center; font-size: 0.8em;
       background: radial-gradient(circle at 35% 30%, #4b5b6e, #232d3a 76%); border: 2px solid rgba(255, 255, 255, 0.2);
-      transition: background 0.4s ease, box-shadow 0.4s ease, scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease;
+      transition: left 0.75s cubic-bezier(0.4, 0, 0.2, 1), top 0.75s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease,
+                  background 0.4s ease, box-shadow 0.4s ease, scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease;
     }
+    .s13-stf.hid { opacity: 0; pointer-events: none; }
     .s13-stf i { transition: transform 0.45s ease; transform: rotate(13deg) translateY(3px); }
     .s13-stf::after {
       content: ''; position: absolute; right: -8px; top: -12px; width: 28px; height: 28px; border-radius: 50%; opacity: 0; scale: 0.3;
@@ -1799,18 +1795,53 @@
       transition: opacity 0.3s ease, scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .s13-stf.glance i, .s13-stf.alert i { transform: none; }
+    .s13-stf.dismiss { background: radial-gradient(circle at 35% 30%, #78909c, #37474f 76%); border-color: rgba(255, 255, 255, 0.35); }
+    .s13-stf.dismiss i { transform: rotate(-16deg) translateY(2px); }
+    .s13-stf.dismiss::after { content: '…'; opacity: 1; scale: 1; background: #90a4ae; color: #fff; }
     .s13-stf.glance::after { content: '?'; opacity: 1; scale: 1; background: #ffee58; color: #000; }
     .s13-stf.alert { background: radial-gradient(circle at 35% 30%, #ffcc80, #ef6c00 76%); box-shadow: 0 0 28px #ffb74d; scale: 1.15; border-color: #ffe0b2; color: #fff; }
     .s13-stf.alert::after { content: '!'; opacity: 1; scale: 1; background: #ff5722; color: #fff; }
     .s13-stf.frozen { background: radial-gradient(circle at 35% 30%, #b3e5fc, #0277bd 78%); box-shadow: 0 0 28px #4fc3f7; border-color: #e1f5fe; color: #fff; }
     .s13-stf.frozen i { transform: none; }
-    .s13.live:not(.frozen) .s13-stf { cursor: pointer; }
-    .s13.live:not(.frozen) .s13-stf { animation: s13Click 1.6s ease-in-out infinite; }
+    .s13.live:not(.frozen) .s13-stf:not(.hid) { cursor: pointer; animation: s13Click 1.6s ease-in-out infinite; }
     @keyframes s13Click { 50% { box-shadow: 0 0 0 9px rgba(255, 255, 255, 0.14), 0 0 24px rgba(255, 255, 255, 0.35); } }
+
+    /* 對話泡泡：句子沿用原文；第二幕的字級一階比一階大 */
+    .s13-bub {
+      position: absolute; z-index: 3; box-sizing: border-box; padding: 7px 14px 8px; border-radius: 14px; pointer-events: none;
+      color: #eef6ff; line-height: 1.4; font-size: 18px; font-weight: 600; width: max-content; max-width: 600px;
+      background: rgba(14, 22, 34, 0.94); border: 2px solid var(--c, #4fc3f7);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--c, #4fc3f7) 40%, transparent);
+      opacity: 0; translate: 0 10px; scale: 0.92; transform-origin: 0 100%;
+      transition: opacity 0.35s ease, translate 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s ease;
+    }
+    .s13-bub.show { opacity: 1; translate: 0 0; scale: 1; }
+    .s13-bub.show.dim { opacity: 0.42; filter: saturate(0.25); }
+    .s13-bub-tag { display: inline-block; margin-right: 8px; padding: 0 8px; border-radius: 6px; background: var(--c); color: #0d1117; font-size: 0.78em; font-weight: 900; }
+    .s13-bub-ign {
+      position: absolute; right: 12px; bottom: -14px; padding: 1px 10px; border-radius: 10px; font-size: 15px; font-weight: 900; color: #fff;
+      background: #e53935; box-shadow: 0 0 12px rgba(255, 82, 82, 0.7); opacity: 0; scale: 0.4;
+      transition: opacity 0.3s ease 0.15s, scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s;
+    }
+    .s13-bub.ign .s13-bub-ign { opacity: 1; scale: 1; }
+    .s13-b2 { font-size: 22px; font-weight: 800; border-width: 3px; }
+    .s13-bc { font-size: 19px; }
+    .s13-bu { font-size: 22px; font-weight: 700; border-width: 3px; }
+    .s13-bs { font-size: 27px; font-weight: 800; border-width: 3.5px; box-shadow: 0 0 34px rgba(255, 82, 82, 0.65); }
+
+    /* 第二幕：有反應的人數 */
+    .s13-cnt {
+      position: absolute; top: 172px; z-index: 3; font-size: 17px; font-weight: 700; color: #b0bec5; white-space: nowrap; pointer-events: none;
+      opacity: 0; transition: opacity 0.5s ease, color 0.4s ease;
+    }
+    .s13.act2 .s13-cnt { opacity: 1; }
+    .s13-cnt b { display: inline-block; min-width: 0.8em; text-align: center; font-size: 1.25em; color: #ffee58; }
+    .s13-cnt.hot { color: #e1f5fe; }
+    .s13-cnt.hot b { color: #4fc3f7; }
 
     /* 現場互動：T 鍵（或點這顆）在「停」與「放行」之間切換 */
     .s13-ctrl {
-      position: absolute; left: 6px; top: 0; z-index: 6; display: flex; align-items: center; gap: 8px; cursor: pointer;
+      position: absolute; left: 8px; bottom: 4px; z-index: 6; display: flex; align-items: center; gap: 8px; cursor: pointer;
       font: inherit; font-size: 0.5em; font-weight: 800; padding: 5px 14px; border-radius: 22px; color: #fff;
       background: rgba(10, 16, 26, 0.88); border: 1px solid rgba(255, 82, 82, 0.6); box-shadow: 0 0 18px rgba(255, 82, 82, 0.35);
       opacity: 0; pointer-events: none; transition: opacity 0.6s ease 0.8s;
@@ -1819,23 +1850,32 @@
     .s13-ctrl kbd { padding: 0 6px; font: inherit; font-size: 0.7em; color: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.3); border-bottom-width: 2px; border-radius: 4px; }
     .s13.frozen .s13-ctrl { border-color: rgba(105, 240, 174, 0.7); box-shadow: 0 0 18px rgba(105, 240, 174, 0.4); }
 
-    /* 下方兩個面板（原文）：依步驟亮起，最新那一列浮起發光 */
-    .s13 .s13-grid { grid-template-columns: 0.84fr 1.16fr; align-items: start !important; }
+    /* 下方兩個面板（原文）：兩幕輪流展開，另一幕收成一條窄標題列；展開的面板內，列改為橫向並排 */
+    .s13 .s13-grid { display: flex !important; flex-direction: column; gap: 4px !important; align-items: stretch !important; }
     .s13 .s13-panel {
-      padding: 9px 14px !important; opacity: 0.5; filter: saturate(0.55);
+      display: grid; grid-template-columns: 390px 1fr; column-gap: 16px; align-items: center;
+      padding: 8px 14px !important; opacity: 0.45; filter: saturate(0.5);
       transition: opacity 0.6s ease, filter 0.6s ease;
     }
     .s13 .s13-panel.on { opacity: 1; filter: none; }
-    .reveal .s13 .s13-panel > div:first-child { margin-bottom: 4px !important; }
-    .reveal .s13 .s13-panel h3 { font-size: 0.6em !important; margin: 2px 0 6px !important; }
-    .s13 .s13-panel > div:last-child { gap: 6px !important; }
-    /* 右邊三列：標題與台詞盡量排在同一行 */
-    .s13 .s13-r3, .s13 .s13-r4, .s13 .s13-r5 { display: flex; flex-wrap: wrap; align-items: center; column-gap: 12px; }
-    .s13 .s13-r3 > div, .s13 .s13-r4 > div, .s13 .s13-r5 > div { flex: 0 0 auto; margin: 0 !important; }
-    .s13 .s13-r3 > p, .s13 .s13-r4 > p, .s13 .s13-r5 > p { flex: 1 1 auto; margin: 0 !important; }
+    .s13 .s13-panel > div:first-child { grid-column: 1; grid-row: 1; margin: 0 0 2px !important; }
+    .s13 .s13-panel > div:first-child { gap: 10px; }
+    .s13 .s13-panel > div:first-child > span { white-space: nowrap; }
+    .s13 .s13-panel > div:first-child > span:first-child { font-size: 0.5em !important; padding: 2px 12px !important; }
+    .s13 .s13-panel > div:first-child > i { font-size: 1em !important; }
+    .reveal .s13 .s13-panel h3 { grid-column: 1; grid-row: 2; font-size: 0.6em !important; margin: 0 !important; }
+    .s13 .s13-panel > div:last-child { grid-column: 2; grid-row: 1 / span 2; display: flex !important; flex-direction: row !important; align-items: stretch; gap: 10px !important; }
+    .s13 .s13-panel > div:last-child > .s13-row { flex: 1 1 0; min-width: 0; }
+    .s13 .s13-panel:not(.open) { grid-template-columns: auto 1fr; padding: 5px 14px !important; }
+    .reveal .s13 .s13-panel:not(.open) h3 { grid-column: 2; grid-row: 1; }
+    .s13 .s13-panel:not(.open) > div:last-child { display: none !important; }
+    /* 右邊三列：標題一行、台詞一行（欄位窄，不並排） */
+    .s13 .s13-r3, .s13 .s13-r4, .s13 .s13-r5 { display: block; }
+    .s13 .s13-r3 > div, .s13 .s13-r4 > div, .s13 .s13-r5 > div { flex-wrap: wrap; margin: 0 !important; row-gap: 2px; }
+    .s13 .s13-r3 > p, .s13 .s13-r4 > p, .s13 .s13-r5 > p { margin: 2px 0 0 !important; }
     .s13 .s13-row {
       padding: 4px 11px !important; opacity: 0.3; filter: saturate(0.4);
-      width: 100% !important; margin-left: 0 !important;
+      margin-left: 0 !important;
       transition: opacity 0.5s ease, filter 0.5s ease, box-shadow 0.5s ease, translate 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .s13 .s13-row.on { opacity: 1; filter: none; }
@@ -1845,7 +1885,7 @@
 
     /* 使命框：全線暫停之後登場 */
     .s13 .s13-mission {
-      opacity: 0; translate: 0 18px; margin-top: 8px !important; padding: 8px 18px !important; font-size: 0.5em !important;
+      opacity: 0; translate: 0 18px; margin-top: 4px !important; padding: 8px 18px !important; font-size: 0.5em !important;
       transition: opacity 0.7s ease 1s, translate 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1s;
     }
     .s13.st5 .s13-mission { opacity: 1; translate: 0 0; }
@@ -3262,12 +3302,12 @@
               <div class="s7-static"></div>
               <video class="s7-video" preload="metadata" playsinline></video>
               <button type="button" class="s7-play">
-                <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看約35秒教學影片
+                <i class="fa-solid fa-circle-play" style="font-size:1.2em;"></i> 🎬 觀看約40秒教學影片
               </button>
               <div class="s7-thumbs">
-                <button type="button" class="s7-thumb" data-i="0" style="--c: var(--accent2);"><img src="videos/poster4.jpg" alt="Brief 教學影片"><span>Brief</span></button>
-                <button type="button" class="s7-thumb" data-i="1" style="--c: var(--warn);"><img src="videos/poster5.jpg" alt="Huddle 教學影片"><span>Huddle</span></button>
-                <button type="button" class="s7-thumb" data-i="2" style="--c: var(--success);"><img src="videos/poster6.jpg" alt="Debrief 教學影片"><span>Debrief</span></button>
+                <button type="button" class="s7-thumb" data-i="0" style="--c: var(--accent2);"><img src="videos/poster4_v2.jpg" alt="Brief 教學影片"><span>Brief</span></button>
+                <button type="button" class="s7-thumb" data-i="1" style="--c: var(--warn);"><img src="videos/poster5_v2.jpg" alt="Huddle 教學影片"><span>Huddle</span></button>
+                <button type="button" class="s7-thumb" data-i="2" style="--c: var(--success);"><img src="videos/poster6_v2.jpg" alt="Debrief 教學影片"><span>Debrief</span></button>
               </div>
               <i class="s7-corner s7-c-tl"></i><i class="s7-corner s7-c-tr"></i><i class="s7-corner s7-c-bl"></i><i class="s7-corner s7-c-br"></i>
             </div>
@@ -3730,16 +3770,21 @@
       <h2><i class="fa-solid fa-shield-cat"></i> 替病人發聲工具：二次挑戰與 CUS</h2>
       <p class="s13-sub" style="font-size:0.52em; color:#a3b8cc; margin-bottom:16px;">當發現潛在風險時，運用階梯式語言與雙重發聲堅定守護病人安全：</p>
 
-      <!-- 舞台：安燈拉繩（STOP THE LINE 的原意）。輸送帶載著病人進掃描儀，有一位手圈與單張顏色對不上 -->
+      <!-- 舞台（兩幕）：第一幕＝二次挑戰（敲門兩次）；第二幕＝CUS 階梯（一階一階往上走，聽到的人越來越多）。案例：病人手圈與單張對不上，輸送帶正載著他進掃描儀 -->
       <div class="s13-stage">
         <canvas class="s13-canvas" aria-hidden="true"></canvas>
         <div class="s13-spk"><i class="fa-solid fa-user-gear"></i></div>
-        <div class="s13-lv" style="--c:#ffee58;">C</div>
-        <div class="s13-lv" style="--c:#ffa726;">U</div>
-        <div class="s13-lv" style="--c:#ff5252;">S</div>
         <div class="s13-stf"><i class="fa-solid fa-user-nurse"></i></div>
         <div class="s13-stf"><i class="fa-solid fa-user-doctor"></i></div>
         <div class="s13-stf"><i class="fa-solid fa-user-graduate"></i></div>
+        <div class="s13-stf"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="s13-bub s13-b1" style="--c:#4fc3f7;"><span class="s13-bub-tag">第一次挑戰</span>「不好意思，我想再確認一下病人身分與單張細節。」<span class="s13-bub-ign">被忽略了</span></div>
+        <div class="s13-bub s13-br" style="--c:#90a4ae;">「沒事啦，我們一直都這樣做。」</div>
+        <div class="s13-bub s13-b2" style="--c:#ffb74d;"><span class="s13-bub-tag">第二次挑戰</span>「我再次提醒！病人手圈與單張資料不同，請先暫停！」</div>
+        <div class="s13-bub s13-bc" style="--c:#ffee58;"><span class="s13-bub-tag">階梯 1 · C</span>「我有點擔心，身分證件好像對不上...」</div>
+        <div class="s13-bub s13-bu" style="--c:#ffa726;"><span class="s13-bub-tag">階梯 2 · U</span>「身分沒確定前掃描讓我很不安...」</div>
+        <div class="s13-bub s13-bs" style="--c:#ff5252;"><span class="s13-bub-tag">頂階 · S</span>「這攸關病人安全！請立刻暫停！」</div>
+        <div class="s13-cnt">有反應的人　<b>0</b> / 4</div>
         <div class="s13-ctrl" role="button" title="停 / 放行"><i class="fa-solid fa-hand"></i><kbd>T</kbd></div>
       </div>
       
@@ -4824,11 +4869,11 @@
       
       <!-- 步驟計數（隱藏）：1 盾牌覺醒　2 標題　3 副標題　4 四大支柱匯聚　5 謝幕煙火 -->
       <div class="s2-steps" aria-hidden="true">
-        <span class="fragment s25-step" data-fragment-index="1"></span>
-        <span class="fragment s25-step" data-fragment-index="2"></span>
-        <span class="fragment s25-step" data-fragment-index="3"></span>
-        <span class="fragment s25-step" data-fragment-index="4"></span>
-        <span class="fragment s25-step" data-fragment-index="5"></span>
+        <span class="s25-step" data-fragment-index="1"></span>
+        <span class="s25-step" data-fragment-index="2"></span>
+        <span class="s25-step" data-fragment-index="3"></span>
+        <span class="s25-step" data-fragment-index="4"></span>
+        <span class="s25-step" data-fragment-index="5"></span>
       </div>
 
       <aside class="notes">
@@ -5465,7 +5510,7 @@
     sync();
   });
 
-  // 🛑 Slide 13：STOP THE LINE 安燈拉繩 —— 輸送帶載著病人進掃描儀，有一位手圈與單張對不上；聲音一級一級升高，直到「安全 STOP」讓整條線停下
+  // 🛑 Slide 13（重做）：同一個案例、兩幕 —— 第一幕「二次挑戰」＝敲門兩次（第一次被當雜音，第二次帶著證據、多一個人一起發聲才攔得下）；第二幕「CUS」＝一階一階往上走，聽到的人越來越多，直到「安全 STOP」讓整條線停下
   Reveal.on('ready', () => {
     const section = document.querySelector('section.s13');
     if (!section) return;
@@ -5475,44 +5520,57 @@
     const ctx = canvas.getContext('2d');
     const spk = section.querySelector('.s13-spk');
     const staffEls = [...section.querySelectorAll('.s13-stf')];
-    const chips = [...section.querySelectorAll('.s13-lv')];
     const ctrl = section.querySelector('.s13-ctrl');
     const panels = [...section.querySelectorAll('.s13-panel')];
     const rows = [...section.querySelectorAll('.s13-row')];
+    const cnt = section.querySelector('.s13-cnt'), cntN = cnt.querySelector('b');
+    const bub = { b1: '.s13-b1', br: '.s13-br', b2: '.s13-b2', bc: '.s13-bc', bu: '.s13-bu', bs: '.s13-bs' };
+    Object.keys(bub).forEach(k => { bub[k] = section.querySelector(bub[k]); });
     const A = S2Audio.api;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // —— 場景幾何（舞台座標 px）——
-    const BELT_V = 220, ITEM_Y = 92, BELT_TOP = 118;
-    const SPK = { x: 62, y: 78 };
-    const STAFF_Y = 30;
-    const WAVE = {   // 五種聲音：顏色、粗細、傳得多遠、傳多快
-      G: { color: '#4fc3f7', lw: 3, reach: 260, spd: 420 },     // 第一次挑戰（溫和）：傳不到同事
-      F: { color: '#ffb74d', lw: 8, reach: 640, spd: 430 },     // 第二次挑戰（堅定）：傳到兩位
-      C: { color: '#ffee58', lw: 3, reach: 350, spd: 420 },     // 階梯 1 擔心：只有最近的人瞥一眼
-      U: { color: '#ffa726', lw: 7, reach: 480, spd: 430 },     // 階梯 2 不安：最近的人警覺
-      S: { color: '#ff5252', lw: 11, reach: 2400, spd: 1500 }   // 頂階 安全 STOP：全線暫停
+    // —— 場景幾何（舞台座標 px；舞台實際寬度從 DOM 量）——
+    const BELT_V = 200, ITEM_Y = 242, BELT_TOP = 268, GATE_Y = 250, ACTOR_Y = 136;
+    const STAIR = {
+      x0: 50, w: 170, tops: [162, 128, 94], base: 196,
+      col: ['#ffee58', '#ffa726', '#ff5252'], fill: ['rgba(255,238,88,0.2)', 'rgba(255,167,38,0.22)', 'rgba(255,82,82,0.24)'], ch: ['C', 'U', 'S']
     };
-    // 每個步驟的一段「劇本」：[時間, 動作]。D = 手圈與單張對不上的病人
+    const JR1 = { x: 130, y: ACTOR_Y }, SEN = { x: 390, y: ACTOR_Y }, HLP0 = { x: 700, y: ACTOR_Y }, HLP1 = { x: 262, y: ACTOR_Y };
+    const jrStair = i => ({ x: STAIR.x0 + STAIR.w * (i + 0.5), y: STAIR.tops[i] - 40 });
+    const COL = { G: '#4fc3f7', F: '#ffb74d', C: '#ffee58', U: '#ffa726', S: '#ff5252' };
+    const WSPD = { G: 420, F: 430, C: 420, U: 430, S: 1500 }, WLW = { G: 3, F: 8, C: 3, U: 7, S: 11 };
+    let W = 1280, H = 316, dpr = 1, GATE_X = 1208, X2 = [760, 890, 1020, 1150];
+
+    // 每個步驟的一段「劇本」：[時間, 動作]。D＝手圈與單張對不上的病人
     const SCRIPT = {
-      1: [[0.2, 'D'], [1.0, 'G']],
-      2: [[0.2, 'D'], [0.9, 'G'], [2.0, 'F']],
-      3: [[0.2, 'D'], [0.8, 'D'], [1.0, 'C']],
-      4: [[0.2, 'D'], [0.8, 'D'], [0.8, 'C'], [1.9, 'U']],
-      5: [[0.2, 'D'], [0.8, 'D'], [0.8, 'C'], [1.6, 'U'], [2.6, 'S']]
+      1: [[0.2, 'D'], [0.4, 'G'], [0.95, 'ign']],
+      2: [[0.2, 'D'], [0.4, 'G'], [0.95, 'ign'], [1.9, 'F'], [2.0, 'helper'], [2.3, 'senAlert'], [2.8, 'helperAlert'], [3.0, 'catch']],
+      3: [[0.2, 'D'], [0.3, 'jr0'], [0.5, 'C']],
+      4: [[0.2, 'D'], [0.3, 'jr0'], [0.5, 'C'], [1.5, 'jr1'], [2.2, 'U']],
+      5: [[0.2, 'D'], [0.3, 'jr0'], [0.5, 'C'], [1.4, 'D'], [1.5, 'jr1'], [2.2, 'U'], [3.4, 'jr2'], [4.2, 'S']]
     };
-    let W = 1128, H = 172, dpr = 1, GATE_X = 1056, GATE_Y = 100, staffX = [430, 660, 890];
 
     // —— 狀態 ——
-    let step = 0, applied = -1, onSlide = false, raf = 0, last = 0, t = 0, te = 0;   // applied：目前畫面實際套用的步驟（-1 = 尚未套用）
+    let step = 0, applied = -1, onSlide = false, raf = 0, last = 0, t = 0, te = 0, runs = 0, silent = true, noReplay = false;
     let items = [], waves = [], queue = [], bursts = [];
-    let beltV = BELT_V, phase = 0, frozen = false, mode = 'ep', liveTimer = 0, liveIdx = 0;
-    let gateFlash = 0, gateOk = 0, flash = 0, freezeTint = 0, talk = 0, idle = null, runs = 0, silent = true, hold = 0;
-    const staff = [0, 1, 2].map(() => ({ st: 'busy', t: 0 }));
+    let beltV = BELT_V, phase = 0, frozen = false, mode = 'ep', liveTimer = 0, liveIdx = 0, idle = null;
+    let gateFlash = 0, gateOk = 0, flash = 0, freezeTint = 0, act = 1, actMix = 0, stairAt = -1, jrPos = JR1, helperOut = false;
+    const staffSt = ['busy', 'busy', 'busy', 'busy'];
 
     const smooth = (a, b, x) => { const k = Math.max(0, Math.min(1, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
     function rr(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+    const pos = (el, p) => { el.style.left = p.x + 'px'; el.style.top = p.y + 'px'; };
 
+    function placeActors() {
+      pos(spk, jrPos);
+      if (act === 1) {
+        pos(staffEls[1], SEN); pos(staffEls[0], helperOut ? HLP1 : HLP0);
+        pos(staffEls[2], { x: X2[2], y: ACTOR_Y }); pos(staffEls[3], { x: X2[3], y: ACTOR_Y });
+        staffEls[0].classList.toggle('hid', !helperOut); staffEls[1].classList.remove('hid'); staffEls[2].classList.add('hid'); staffEls[3].classList.add('hid');
+      } else {
+        staffEls.forEach((el, i) => { pos(el, { x: X2[i], y: ACTOR_Y }); el.classList.remove('hid'); });
+      }
+    }
     function layout() {
       const k = Reveal.getScale();
       if (!stage.getBoundingClientRect().width) return;
@@ -5520,14 +5578,12 @@
       dpr = Math.min(2, window.devicePixelRatio || 1) * Math.max(1, k);
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      GATE_X = W - 72;
-      staffX = [W * 0.34, W * 0.52, W * 0.70];
-      // 聲波能傳多遠，依同事「實際位置」計算（不管舞台多寬都對）：溫和的傳不到、擔心只到最近的人、不安到最近的人、堅定到前兩位
-      const d = staffX.map(x => x - (SPK.x + 44));
-      WAVE.G.reach = d[0] * 0.8; WAVE.C.reach = d[0] + 30; WAVE.U.reach = (d[0] + d[1]) / 2; WAVE.F.reach = d[1] + 70;
-      spk.style.left = SPK.x + 'px'; spk.style.top = SPK.y + 'px';
-      staffEls.forEach((el, i) => { el.style.left = staffX[i] + 'px'; el.style.top = STAFF_Y + 'px'; });
-      chips.forEach((el, i) => { el.style.left = (26 + i * 38) + 'px'; el.style.top = '148px'; });
+      GATE_X = W - 72; X2 = [W - 520, W - 390, W - 260, W - 130];
+      const put = (el, x, y, w) => { el.style.left = x + 'px'; el.style.top = y + 'px'; if (w) el.style.width = w + 'px'; };
+      put(bub.b1, 20, 2, 340); put(bub.b2, 388, 2, 480); put(bub.br, SEN.x + 44, 112);
+      put(bub.bc, jrStair(0).x + 52, 2, 520); put(bub.bu, jrStair(1).x + 52, 2, 540); put(bub.bs, jrStair(2).x + 52, 2, 580);
+      cnt.style.left = (X2[0] - 40) + 'px';
+      stage.classList.add('snap'); placeActors(); void stage.offsetWidth; stage.classList.remove('snap');
     }
 
     // —— 音效（每個聲音都短；只有「錯誤進掃描儀」與「STOP」會刺一下；沒有持續的低頻嗡鳴）——
@@ -5550,7 +5606,9 @@
         A.tone(120, 0.34, { gain: 0.26 * v, freqEnd: 42, when: 0.32, attack: 0.004 });
         noiseShot(c, { type: 'lowpass', f: 3200, f1: 220, gain: 0.16 * v, dur: 0.7, when: 0.3 });
       }),
-      confirm: () => sfx((c, v) => [784, 987.77, 1174.66].forEach((f, i) => A.tone(f, 1.2, { gain: 0.04 * v, when: i * 0.11 }))),   // 全線暫停後：重新確認的柔和三音
+      dismiss: () => sfx((c, v) => A.tone(392, 0.32, { gain: 0.035 * v, freqEnd: 294, attack: 0.02 })),   // 被敷衍帶過：一聲往下滑的悶音
+      climb: i => sfx((c, v) => A.tone([523.25, 659.25, 783.99][i], 0.3, { type: 'triangle', gain: 0.04 * v })),   // 上一階
+      confirm: () => sfx((c, v) => [784, 987.77, 1174.66].forEach((f, i) => A.tone(f, 1.2, { gain: 0.04 * v, when: i * 0.11 }))),   // 攔下／全線暫停後：重新確認的柔和三音
       glance: () => sfx((c, v) => A.tone(1760, 0.06, { gain: 0.02 * v })),
       alert: () => sfx((c, v) => { A.tone(1318.5, 0.35, { gain: 0.045 * v }); A.tone(1975.5, 0.2, { gain: 0.02 * v, when: 0.04 }); }),
       caught: () => sfx((c, v) => { A.tone(1046.5, 0.5, { gain: 0.05 * v }); A.tone(1568, 0.9, { gain: 0.05 * v, when: 0.1 }); }),   // 攔下錯誤病人
@@ -5563,24 +5621,30 @@
       items.push({ x: 176, y: ITEM_Y, defect, state: 'run', alpha: 1, passed: false, flagT: 0, colW: defect ? '#4fc3f7' : '#69f0ae', colF: defect ? '#ff8a65' : '#69f0ae' });
     }
     function setStaff(i, st) {
-      staff[i].st = st; staff[i].t = t;
-      const el = staffEls[i]; ['glance', 'alert', 'frozen'].forEach(c => el.classList.toggle(c, c === st));
+      staffSt[i] = st;
+      const el = staffEls[i]; ['glance', 'alert', 'frozen', 'dismiss'].forEach(c => el.classList.toggle(c, c === st));
+      const n = staffSt.filter(s => s === 'glance' || s === 'alert' || s === 'frozen').length;
+      cntN.textContent = n; cnt.classList.toggle('hot', n >= 4);
     }
-    function speak(kind) {
-      const w = WAVE[kind];
-      waves.push({ kind, r: 0, ox: SPK.x + 44, oy: SPK.y - 4, heard: [false, false, false], ...w });
-      talk = 1; spk.classList.remove('talk'); void spk.offsetWidth; spk.classList.add('talk');
-      spk.classList.toggle('loud', kind === 'S' || kind === 'U' || kind === 'F');
-      const ci = { C: 0, U: 1, S: 2 }[kind]; if (ci !== undefined) chips[ci].classList.add('on');
+    const later = (d, fn) => { queue.push({ at: (t - te) + d, fn }); queue.sort((a, b) => a.at - b.at); };
+    const travel = (ox, x, spd) => Math.max(0, x - ox) / spd;
+    function say(kind, ox, oy, reach, loud) {
+      waves.push({ kind, r: 0, ox, oy, reach, spd: WSPD[kind], lw: WLW[kind], color: COL[kind] });
+      spk.classList.remove('talk'); void spk.offsetWidth; spk.classList.add('talk');
+      spk.classList.toggle('loud', !!loud);
       sound[kind]();
-      if (kind === 'S') freeze();
+    }
+    function showOnly(el) { [bub.bc, bub.bu, bub.bs].forEach(b => b.classList.toggle('show', b === el)); }
+    function intercept() {   // 最近的人攔下最前面那位手圈對不上的病人
+      const it = items.filter(d => d.defect && d.state === 'run' && d.x < GATE_X - 150).sort((a, b) => b.x - a.x)[0];
+      if (it) { it.state = 'flag'; it.flagT = 0; later(0.25, () => sound.caught()); }
     }
     function freeze(fromX) {
       if (frozen) return;
-      frozen = true; flash = 1; freezeTint = Math.max(freezeTint, 0.01); hold = 0;
+      frozen = true; flash = 1; freezeTint = Math.max(freezeTint, 0.01);
       items.forEach(it => { if (it.state === 'run' || it.state === 'flag') it.state = 'hold'; });
       staffEls.forEach((_, i) => setStaff(i, 'frozen'));
-      if (fromX !== undefined) { waves.push({ kind: 'S', r: 0, ox: fromX, oy: STAFF_Y, heard: [true, true, true], ...WAVE.S }); sound.S(); }
+      if (fromX !== undefined) { waves.push({ kind: 'S', r: 0, ox: fromX, oy: ACTOR_Y, reach: 2400, spd: WSPD.S, lw: WLW.S, color: COL.S }); sound.S(); }
       setTimeout(() => { if (frozen && onSlide) sound.confirm(); }, 1300);
       paintUI();
     }
@@ -5591,70 +5655,120 @@
       staffEls.forEach((_, i) => setStaff(i, 'busy'));
       sound.release(); paintUI();
     }
-    function hear(i, w) {
-      if (w.kind === 'C') { setStaff(i, 'glance'); sound.glance(); }
-      else if (w.kind === 'U' || w.kind === 'F') {
-        setStaff(i, 'alert'); sound.alert();
-        if (i === 0) {   // 最近的人攔下最前面那位手圈對不上的病人
-          const it = items.filter(d => d.defect && d.state === 'run' && d.x < GATE_X - 150).sort((a, b) => b.x - a.x)[0];
-          if (it) { it.state = 'flag'; it.flagT = 0; setTimeout(() => sound.caught(), 250); }
-        }
-      }
-    }
-    function gateError() { gateFlash = 1; flash = Math.max(flash, 0.0); burst(GATE_X - 30, GATE_Y, '#ff5252'); sound.error(); }
+    function gateError() { gateFlash = 1; burst(GATE_X - 30, GATE_Y, '#ff5252'); sound.error(); }
     function burst(x, y, color) { for (let i = 0; i < 16; i++) { const a = Math.random() * Math.PI * 2, s = 70 + Math.random() * 200; bursts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 0.6, max: 0.6, color }); } }
 
-    function startEpisode(n, quiet) {
+    function doAct(name) {
+      const jx = jrPos.x + 44, jy = jrPos.y - 4;
+      switch (name) {
+        case 'D': spawn(true); break;
+        // —— 第一幕：二次挑戰 ——
+        case 'G': bub.b1.classList.add('show'); say('G', jx, jy, SEN.x - 34 - jx, false); break;
+        case 'ign': setStaff(1, 'dismiss'); bub.br.classList.add('show'); bub.b1.classList.add('dim', 'ign'); sound.dismiss(); break;
+        case 'F': bub.b2.classList.add('show'); bub.br.classList.remove('show'); say('F', jx, jy, SEN.x - jx + 80, true); break;
+        case 'helper': helperOut = true; placeActors(); break;
+        case 'senAlert': setStaff(1, 'alert'); sound.alert(); break;
+        case 'helperAlert': setStaff(0, 'alert'); sound.alert(); waves.push({ kind: 'F', r: 0, ox: HLP1.x + 40, oy: jy, reach: SEN.x - HLP1.x - 70, spd: WSPD.F, lw: 6, color: COL.F }); break;
+        case 'catch': intercept(); break;
+        // —— 第二幕：CUS 階梯 ——
+        case 'jr0': case 'jr1': case 'jr2': { const i = +name[2]; stairAt = i; jrPos = jrStair(i); pos(spk, jrPos); sound.climb(i); break; }
+        case 'C':
+          showOnly(bub.bc); say('C', jx, jy, X2[0] - jx + 20, false);
+          later(travel(jx, X2[0], WSPD.C), () => { setStaff(0, 'glance'); sound.glance(); });
+          break;
+        case 'U':
+          showOnly(bub.bu); say('U', jx, jy, X2[1] - jx + 20, true);
+          later(travel(jx, X2[0], WSPD.U), () => { setStaff(0, 'alert'); sound.alert(); intercept(); });
+          later(travel(jx, X2[1], WSPD.U), () => { setStaff(1, 'alert'); sound.alert(); });
+          break;
+        case 'S': showOnly(bub.bs); say('S', jx, jy, 2400, true); freeze(); break;
+      }
+    }
+
+    function resetScene(a, instant) {
+      act = a; helperOut = false; stairAt = a === 2 ? 0 : -1; jrPos = a === 2 ? jrStair(0) : JR1;
       items = []; waves = []; bursts = []; queue = []; idle = null;
-      frozen = false; mode = 'ep'; beltV = BELT_V; freezeTint = 0; flash = 0; gateFlash = 0; talk = 0;
-      staffEls.forEach((_, i) => setStaff(i, 'busy'));
-      chips.forEach(c => c.classList.remove('on')); spk.classList.remove('loud');
+      frozen = false; mode = 'ep'; beltV = BELT_V; freezeTint = 0; flash = 0; gateFlash = 0; liveTimer = 0;
+      Object.values(bub).forEach(b => b.classList.remove('show', 'dim', 'ign'));
+      staffEls.forEach((_, i) => setStaff(i, 'busy')); spk.classList.remove('loud');
+      section.classList.toggle('act2', a === 2);
+      if (instant) stage.classList.add('snap');
+      placeActors();
+      if (instant) { void stage.offsetWidth; stage.classList.remove('snap'); }
+    }
+    function startEpisode(n, quiet) {
+      resetScene(n >= 3 ? 2 : 1, quiet);
       te = t; silent = !!quiet;
-      (SCRIPT[n] || []).forEach(([at, what]) => queue.push({ at, what }));
+      (SCRIPT[n] || []).forEach(([at, what]) => queue.push({ at, fn: () => doAct(what) }));
       queue.sort((a, b) => a.at - b.at);
       paintUI();
     }
-    // 第 5 步直接進入時：不重播過程，直接擺成「全線暫停」的最終畫面
-    function staticFrozen() {
-      items = []; waves = []; bursts = []; queue = []; idle = null; mode = 'ep'; silent = true;
-      const d = { x: 704, y: ITEM_Y, defect: true, state: 'hold', alpha: 1, passed: false, flagT: 0, colW: '#4fc3f7', colF: '#ff8a65' };
-      items.push(d, { ...d, x: 572 });
-      frozen = true; beltV = 0; freezeTint = 1; flash = 0; gateFlash = 0;
-      staffEls.forEach((_, i) => setStaff(i, 'frozen')); chips.forEach(c => c.classList.add('on')); spk.classList.add('loud');
-      paintUI();
+    // 直接進入某一步（跳頁、從下一頁按 ← 退回、減少動態）時：不重播過程，快轉到劇本演完的最終畫面
+    function settle() {
+      noReplay = true; stage.classList.add('snap');
+      for (let k = 0; k < 170; k++) update(0.05);
+      noReplay = false; void stage.offsetWidth; stage.classList.remove('snap');
     }
 
     // —— 更新 ——
     function update(dt) {
       t += dt;
+      actMix += ((act === 2 ? 1 : 0) - actMix) * Math.min(1, dt * 3.5);
       beltV += ((frozen ? 0 : BELT_V) - beltV) * Math.min(1, dt * (frozen ? 9 : 4));
       phase += beltV * dt;
-      while (queue.length && queue[0].at <= t - te) { const q = queue.shift(); if (q.what === 'D') spawn(true); else speak(q.what); }
+      while (queue.length && queue[0].at <= t - te) queue.shift().fn();
       if (mode === 'live' && !frozen) { liveTimer -= dt; if (liveTimer <= 0) { spawn(liveIdx++ % 2 === 1); liveTimer = 1.5; } }
       for (let k = items.length - 1; k >= 0; k--) {
         const it = items[k];
         if (it.state === 'run') it.x += beltV * dt;
-        else if (it.state === 'flag') { it.x += beltV * dt * 0.5; it.flagT += dt; if (it.flagT > 0.95) { it.state = 'pull'; burst(it.x, it.y - 12, '#69f0ae'); } }
+        else if (it.state === 'flag') { it.x += beltV * dt * 0.5; it.flagT += dt; if (it.flagT > 0.95) { it.state = 'pull'; burst(it.x, it.y - 12, '#69f0ae'); sound.confirm(); } }
         else if (it.state === 'pull') { it.y -= 105 * dt; it.alpha -= dt * 0.95; it.x += beltV * dt * 0.2; if (it.alpha <= 0) { items.splice(k, 1); continue; } }
         if (!it.passed && it.state === 'run' && it.x >= GATE_X - 44) { it.passed = true; if (it.defect) gateError(); else gateOk = 1; }
         if (it.x > GATE_X + 84) items.splice(k, 1);
       }
-      for (let k = waves.length - 1; k >= 0; k--) {
-        const w = waves[k]; w.r += w.spd * dt;
-        staffX.forEach((sx, i) => { const dx = sx - w.ox; if (!w.heard[i] && w.r >= Math.abs(dx) && Math.abs(dx) <= w.reach) { w.heard[i] = true; if (w.kind !== 'S' && w.kind !== 'G' && !frozen) hear(i, w); } });
-        if (w.r > w.reach + 60 || w.r > W + 200) waves.splice(k, 1);
-      }
+      for (let k = waves.length - 1; k >= 0; k--) { const w = waves[k]; w.r += w.spd * dt; if (w.r > w.reach + 60 || w.r > W + 200) waves.splice(k, 1); }
       bursts = bursts.filter(p => (p.life -= dt) > 0); bursts.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.95; p.vy *= 0.95; });
-      gateFlash = Math.max(0, gateFlash - dt * 1.6); gateOk = Math.max(0, gateOk - dt * 2); flash = Math.max(0, flash - dt * 2.2); talk = Math.max(0, talk - dt * 2);
+      gateFlash = Math.max(0, gateFlash - dt * 1.6); gateOk = Math.max(0, gateOk - dt * 2); flash = Math.max(0, flash - dt * 2.2);
       freezeTint += ((frozen ? 1 : 0) - freezeTint) * Math.min(1, dt * 3);
-      // 步驟 1～4：一段劇本演完就停一下，再重來
-      if (mode === 'ep' && step >= 1 && step <= 4 && !queue.length && !items.length && !waves.length) {
+      // 步驟 1～4：一段劇本演完就停一下（讓講者講解），再重來
+      if (!noReplay && mode === 'ep' && step >= 1 && step <= 4 && !queue.length && !items.length && !waves.length) {
         if (idle === null) idle = t;
-        if (t - idle > 2.4) { runs++; startEpisode(step, false); }
+        if (t - idle > 5) { runs++; startEpisode(step, false); }
       } else if (items.length || waves.length || queue.length) idle = null;
     }
 
     // —— 繪製 ——
+    function drawStairs(al) {
+      if (al < 0.02) return;
+      ctx.save(); ctx.globalAlpha = al;
+      for (let i = 0; i < 3; i++) {
+        const x = STAIR.x0 + i * STAIR.w, top = STAIR.tops[i], h = STAIR.base - top, lit = stairAt >= i, cur = stairAt === i, col = STAIR.col[i];
+        ctx.save();
+        if (cur) { ctx.shadowColor = col; ctx.shadowBlur = 22; }
+        ctx.fillStyle = lit ? STAIR.fill[i] : 'rgba(255,255,255,0.05)'; rr(ctx, x + 3, top, STAIR.w - 6, h, 8); ctx.fill();
+        ctx.strokeStyle = lit ? col : 'rgba(255,255,255,0.18)'; ctx.lineWidth = cur ? 3 : 2; rr(ctx, x + 3, top, STAIR.w - 6, h, 8); ctx.stroke();
+        ctx.restore();
+        ctx.fillStyle = lit ? col : 'rgba(255,255,255,0.2)'; ctx.fillRect(x + 12, top + 1, STAIR.w - 24, 4);
+        ctx.fillStyle = lit ? col : 'rgba(255,255,255,0.3)'; ctx.font = '900 26px "Segoe UI",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(STAIR.ch[i], x + STAIR.w - 26, top + Math.min(h / 2 + 3, 22));
+      }
+      ctx.restore();
+    }
+    function drawEvidence(al) {      // 第一幕右上：把「手圈 ≠ 單張」放大讓後排也看得到
+      if (al < 0.02) return;
+      const x = W - 400, y = 8, w = 260, h = 172;
+      ctx.save(); ctx.globalAlpha = al;
+      ctx.fillStyle = 'rgba(14,22,34,0.72)'; rr(ctx, x, y, w, h, 16); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.lineWidth = 2; rr(ctx, x, y, w, h, 16); ctx.stroke();
+      ctx.shadowColor = '#4fc3f7'; ctx.shadowBlur = 14; ctx.strokeStyle = '#4fc3f7'; ctx.lineWidth = 12; ctx.beginPath(); ctx.arc(x + 70, y + 72, 32, 0, Math.PI * 2); ctx.stroke();
+      ctx.shadowColor = '#ff8a65'; ctx.fillStyle = '#ff8a65'; rr(ctx, x + 172, y + 32, 62, 80, 8); ctx.fill();
+      ctx.shadowBlur = 0; ctx.fillStyle = 'rgba(0,0,0,0.28)'; [52, 66, 80].forEach(yy => ctx.fillRect(x + 182, y + yy, 42, 5));
+      ctx.save(); ctx.shadowColor = '#ff5252'; ctx.shadowBlur = 14 + 6 * Math.sin(t * 4); ctx.fillStyle = '#ff5252';
+      ctx.font = '800 46px "Segoe UI",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('≠', x + 128, y + 72); ctx.restore();
+      ctx.fillStyle = '#cfd8dc'; ctx.font = '700 22px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('手圈', x + 70, y + 140); ctx.fillText('單張', x + 203, y + 140);
+      ctx.restore();
+    }
     function drawBelt() {
       const x0 = 150, x1 = GATE_X - 6, y = BELT_TOP, h = 30;
       const g = ctx.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, '#2a3646'); g.addColorStop(1, '#141b25');
@@ -5703,7 +5817,7 @@
       if (!frozen && !err) { const sy = cy + Math.sin(t * 2.4) * (R - 20); ctx.strokeStyle = 'rgba(79,195,247,0.35)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx - 36, sy); ctx.lineTo(cx + 36, sy); ctx.stroke(); }
       // 安燈：綠 → 紅（全線暫停時閃爍）
       const beacon = frozen ? (Math.sin(t * 9) > 0 ? '#ff5252' : '#7f1d1d') : (err > 0.2 ? '#ff5252' : '#69f0ae');
-      ctx.save(); ctx.fillStyle = beacon; ctx.shadowColor = beacon; ctx.shadowBlur = 20; ctx.beginPath(); ctx.arc(cx, 14, 10, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      ctx.save(); ctx.fillStyle = beacon; ctx.shadowColor = beacon; ctx.shadowBlur = 20; ctx.beginPath(); ctx.arc(cx, cy - 86, 10, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       if (ok > 0.02) { ctx.save(); ctx.globalAlpha = ok; ctx.strokeStyle = '#69f0ae'; ctx.lineWidth = 4; ctx.shadowColor = '#69f0ae'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.moveTo(cx - 12, cy); ctx.lineTo(cx - 3, cy + 10); ctx.lineTo(cx + 14, cy - 10); ctx.stroke(); ctx.restore(); }
     }
     function drawWave(w) {
@@ -5723,13 +5837,14 @@
     }
     function draw() {
       ctx.clearRect(0, 0, W, H);
+      drawStairs(actMix); drawEvidence(1 - actMix);
       drawBelt(); items.forEach(drawItem); drawGate(); waves.forEach(drawWave);
       bursts.forEach(p => { ctx.save(); ctx.globalAlpha = Math.max(0, p.life / p.max); ctx.fillStyle = p.color; ctx.shadowColor = p.color; ctx.shadowBlur = 8; ctx.beginPath(); ctx.arc(p.x, p.y, 3.2, 0, Math.PI * 2); ctx.fill(); ctx.restore(); });
       if (freezeTint > 0.01) {     // 全線暫停：冷色薄霧 + 大「暫停」符號
         const g = ctx.createRadialGradient(W / 2, H / 2, 40, W / 2, H / 2, W * 0.6); g.addColorStop(0, `rgba(120,220,255,${0.05 * freezeTint})`); g.addColorStop(1, `rgba(60,140,220,${0.16 * freezeTint})`);
         ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
         ctx.save(); ctx.globalAlpha = 0.5 * freezeTint * (0.75 + 0.25 * Math.sin(t * 3)); ctx.fillStyle = '#e1f5fe'; ctx.shadowColor = '#4fc3f7'; ctx.shadowBlur = 24;
-        rr(ctx, W / 2 - 44, 46, 28, 76, 8); ctx.fill(); rr(ctx, W / 2 + 16, 46, 28, 76, 8); ctx.fill(); ctx.restore();
+        rr(ctx, W / 2 - 44, 108, 28, 76, 8); ctx.fill(); rr(ctx, W / 2 + 16, 108, 28, 76, 8); ctx.fill(); ctx.restore();
       }
       if (flash > 0.02) { ctx.fillStyle = `rgba(255,255,255,${flash * 0.35})`; ctx.fillRect(0, 0, W, H); }
     }
@@ -5739,11 +5854,13 @@
       if (onSlide && !reduce) raf = requestAnimationFrame(frame);
     }
     function start() { cancelAnimationFrame(raf); last = 0; if (reduce) { update(0.016); draw(); } else raf = requestAnimationFrame(frame); }
-    function stop() { applied = -1; cancelAnimationFrame(raf); items = []; waves = []; queue = []; bursts = []; frozen = false; mode = 'ep'; staffEls.forEach((_, i) => setStaff(i, 'busy')); }
+    function stop() { applied = -1; cancelAnimationFrame(raf); resetScene(1, true); }
 
     // —— 步驟與互動 ——
     function paintUI() {
       for (let i = 1; i <= 5; i++) section.classList.toggle('st' + i, i <= step);
+      const second = step >= 3;
+      panels[0].classList.toggle('open', !second); panels[1].classList.toggle('open', second);
       panels[0].classList.toggle('on', step >= 1); panels[1].classList.toggle('on', step >= 3);
       rows.forEach((r, i) => { r.classList.toggle('on', step > i); r.classList.toggle('cur', step === i + 1); });
       section.classList.toggle('frozen', frozen); section.classList.toggle('live', mode === 'live');
@@ -5751,22 +5868,22 @@
     }
     function setStep(n, animate) {
       if (animate && n === applied) return;      // Reveal 對同一步驟會重複通知（例如直接跳到第 5 步）：忽略，避免把靜止畫面重播
-      const prev = step; step = n; applied = n; runs = 0;
-      if (n === 0) { items = []; waves = []; queue = []; frozen = false; mode = 'ep'; chips.forEach(c => c.classList.remove('on')); staffEls.forEach((_, i) => setStaff(i, 'busy')); silent = true; paintUI(); return; }
-      if (n === 5 && !animate) { staticFrozen(); return; }
-      startEpisode(n, !animate);
+      step = n; applied = n; runs = 0;
+      if (n === 0) { resetScene(1, !animate); silent = true; paintUI(); return; }
+      if (!animate || reduce) { startEpisode(n, true); settle(); paintUI(); return; }
+      startEpisode(n, false);
     }
     // 現場互動：放行 ⇄ 停（T 鍵）；放行後點任何一位同事，就是「那個人」喊了 STOP
     function toggleLine() {
       if (!onSlide || step < 5) return;
       silent = false; runs = 0;
-      if (frozen) release(); else { spk.classList.add('loud'); freeze(SPK.x + 44); }
+      if (frozen) release(); else { spk.classList.add('loud'); freeze(jrPos.x + 44); }
     }
     ctrl.addEventListener('click', e => { e.stopPropagation(); toggleLine(); });
     staffEls.forEach((el, i) => el.addEventListener('click', e => {
       e.stopPropagation();
       if (!onSlide || step < 5 || mode !== 'live' || frozen) return;
-      silent = false; runs = 0; freeze(staffX[i]);
+      silent = false; runs = 0; freeze(X2[i]);
     }));
     Reveal.addKeyBinding({ keyCode: 84, key: 'T', description: '第 13 頁：STOP THE LINE 停 ⇄ 放行' }, toggleLine);
 
@@ -8407,9 +8524,9 @@
       if (!now && onSlide) { stop(); step = 0; paintUI(); }
       onSlide = now;
       if (!now) return;
-      const n = section.querySelectorAll('.s25-step.visible').length;
-      if (entering) { step = n; layout(); start(); }
-      setStep(n, !entering);
+      const n = 5;   // 結尾頁：一進來就直接呈現最終畫面，不必逐步按鍵（步驟 span 已移除 fragment）
+      if (entering) { step = reduce ? n : n - 1; layout(); start(); }   // 前四步視為已完成（畫面一次到位），只把第 5 步「謝幕」當作進場演出，音效才會響
+      setStep(n, !(entering && reduce));
       if (reduce) { update(0.016); draw(); paintDom(); }
     }
     window.addEventListener('resize', () => { if (onSlide) layout(); });
@@ -8897,9 +9014,9 @@
     const A = S2Audio.api;
     const C = 2 * Math.PI * 160;
     const VIDS = [
-      { src: 'videos/media4_brief.mp4', poster: 'videos/poster4.jpg', chan: 'STEP 01 // BRIEF 事前說明', color: '#4fc3f7', note: 783.99 },
-      { src: 'videos/media5_huddle.mp4', poster: 'videos/poster5.jpg', chan: 'STEP 02 // HUDDLE 過程中討論', color: '#ffb74d', note: 987.77 },
-      { src: 'videos/media6_debrief.mp4', poster: 'videos/poster6.jpg', chan: 'STEP 03 // DEBRIEF 事後檢視', color: '#81c784', note: 1174.66 }
+      { src: 'videos/media4_brief_v2.mp4', poster: 'videos/poster4_v2.jpg', chan: 'STEP 01 // BRIEF 事前說明', color: '#4fc3f7', note: 783.99 },
+      { src: 'videos/media5_huddle_v2.mp4', poster: 'videos/poster5_v2.jpg', chan: 'STEP 02 // HUDDLE 過程中討論', color: '#ffb74d', note: 987.77 },
+      { src: 'videos/media6_debrief_v2.mp4', poster: 'videos/poster6_v2.jpg', chan: 'STEP 03 // DEBRIEF 事後檢視', color: '#81c784', note: 1174.66 }
     ];
     let step = 0, onSlide = false, angle = 0, raf = 0, orbiting = false, loaded = -1;
 
@@ -8944,7 +9061,7 @@
       else video.currentTime = 0;
       monitor.style.setProperty('--mc', VIDS[i].color);
       chan.textContent = VIDS[i].chan;
-      bar.style.setProperty('--p', '0%'); timeEl.textContent = '00:00 / ' + fmt([36.8, 37.1, 38.8][i]);
+      bar.style.setProperty('--p', '0%'); timeEl.textContent = '00:00 / ' + fmt([41.2, 45.5, 42.0][i]);
       setMode('video'); switching();
       if (sfx) sound.channel();
     }
